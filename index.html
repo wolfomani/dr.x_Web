@@ -3,48 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dr.X - مساعد الذكاء الاصطناعي</title>
+    <title>Dr X - مساعد الذكاء الاصطناعي المتطور</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="icon" href="https://cdn1.genspark.ai/user-upload-image/gpt_image_generated/2cb56500-100e-4ba3-a75d-e5c85744490f" type="image/png">
     <style>
-        body {
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap');
+        
+        * {
             font-family: 'Cairo', sans-serif;
         }
         
         .gradient-bg {
-            background: linear-gradient(135deg, #0c0c0c 0%, #1a0a0a 25%, #2d1b1b 50%, #1a0a0a 75%, #0c0c0c 100%);
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d1b69 50%, #ff4d00 100%);
         }
         
-        .mystical-glow {
-            box-shadow: 0 0 20px rgba(220, 38, 38, 0.3), inset 0 0 20px rgba(220, 38, 38, 0.1);
+        .gradient-text {
+            background: linear-gradient(135deg, #ff4d00, #ff8a00, #ff0040);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
         
-        .text-glow {
-            text-shadow: 0 0 10px rgba(220, 38, 38, 0.5), 0 0 20px rgba(220, 38, 38, 0.3), 0 0 30px rgba(220, 38, 38, 0.2);
+        .glow-effect {
+            box-shadow: 0 0 20px rgba(255, 77, 0, 0.3);
+        }
+        
+        .pulse-glow {
+            animation: pulse-glow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes pulse-glow {
+            from { box-shadow: 0 0 20px rgba(255, 77, 0, 0.3); }
+            to { box-shadow: 0 0 30px rgba(255, 77, 0, 0.6); }
         }
         
         .floating {
-            animation: float 6s ease-in-out infinite;
+            animation: floating 3s ease-in-out infinite;
         }
         
-        .pulse-slow {
-            animation: pulse 3s ease-in-out infinite;
-        }
-        
-        .slide-in {
-            animation: slideIn 1s ease-out forwards;
-        }
-        
-        @keyframes float {
+        @keyframes floating {
             0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
+            50% { transform: translateY(-10px); }
         }
         
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+        .chat-bubble-user {
+            background: linear-gradient(135deg, #ff4d00, #ff8a00);
+            border-radius: 20px 20px 5px 20px;
+        }
+        
+        .chat-bubble-ai {
+            background: linear-gradient(135deg, #2d1b69, #4c1d95);
+            border-radius: 20px 20px 20px 5px;
+        }
+        
+        .nav-blur {
+            backdrop-filter: blur(10px);
+            background: rgba(0, 0, 0, 0.8);
         }
         
         .card-hover {
@@ -52,313 +67,351 @@
         }
         
         .card-hover:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(220, 38, 38, 0.2);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(255, 77, 0, 0.2);
         }
         
-        .nav-blur {
-            backdrop-filter: blur(10px);
-            background: rgba(12, 12, 12, 0.9);
+        .btn-gradient {
+            background: linear-gradient(135deg, #ff4d00, #ff8a00);
+            transition: all 0.3s ease;
         }
         
-        .section {
-            min-height: 100vh;
-            padding: 5rem 0;
+        .btn-gradient:hover {
+            background: linear-gradient(135deg, #ff8a00, #ff4d00);
+            transform: scale(1.05);
         }
         
-        .typing-animation {
-            overflow: hidden;
-            border-right: 2px solid #dc2626;
-            white-space: nowrap;
-            animation: typing 4s steps(40, end), blink-caret 0.75s step-end infinite;
-        }
-        
-        @keyframes typing {
-            from { width: 0; }
-            to { width: 100%; }
-        }
-        
-        @keyframes blink-caret {
-            from, to { border-color: transparent; }
-            50% { border-color: #dc2626; }
-        }
-        
-        .parallax-bg {
-            background-attachment: fixed;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: cover;
-        }
-        
-        .glass-effect {
-            background: rgba(12, 12, 12, 0.7);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(220, 38, 38, 0.2);
-        }
-        
-        .chat-container {
-            height: 500px;
-            overflow-y: auto;
-        }
-        
-        .message {
-            animation: messageSlide 0.5s ease-out;
-        }
-        
-        @keyframes messageSlide {
-            from {
-                opacity: 0;
-                transform: translateX(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
+        .section-bg {
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 50%, #2d1b69 100%);
         }
     </style>
 </head>
 <body class="bg-black text-white">
     <!-- Navigation -->
-    <nav class="fixed w-full z-50 nav-blur border-b border-red-900" id="navbar">
+    <nav class="fixed w-full z-50 nav-blur shadow-lg">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
                 <div class="flex items-center">
-                    <img src="https://cdn1.genspark.ai/user-upload-image/gpt_image_generated/2cb56500-100e-4ba3-a75d-e5c85744490f" alt="Dr.X Logo" class="h-10 w-10 rounded-lg mystical-glow">
-                    <span class="mr-3 text-xl font-bold text-glow">Dr.X</span>
+                    <div class="flex-shrink-0">
+                        <a href="#home" class="text-white text-xl font-bold flex items-center">
+                            <img src="https://cdn1.genspark.ai/user-upload-image/gpt_image_generated/e0f8aad7-058d-48db-8441-017105a8ca21" alt="Dr X Logo" class="h-10 w-10 ml-3 rounded-lg glow-effect">
+                            <span class="gradient-text">Dr X</span>
+                        </a>
+                    </div>
                 </div>
                 <div class="hidden md:block">
-                    <div class="flex items-center space-x-4 space-x-reverse">
-                        <a href="#home" class="nav-link text-white hover:text-red-400 px-3 py-2 transition-colors">الرئيسية</a>
-                        <a href="#about" class="nav-link text-white hover:text-red-400 px-3 py-2 transition-colors">من نحن</a>
-                        <a href="#services" class="nav-link text-white hover:text-red-400 px-3 py-2 transition-colors">الخدمات</a>
-                        <a href="#portfolio" class="nav-link text-white hover:text-red-400 px-3 py-2 transition-colors">أعمالنا</a>
-                        <a href="#analytics" class="nav-link text-white hover:text-red-400 px-3 py-2 transition-colors">التحليلات</a>
-                        <a href="#contact" class="nav-link text-white hover:text-red-400 px-3 py-2 transition-colors">اتصل بنا</a>
-                        <a href="#chat" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-full font-medium transition-all mystical-glow">
-                            <i class="fas fa-comments ml-2"></i>دردش مع د. إكس
+                    <div class="ml-10 flex items-baseline space-x-4 space-x-reverse">
+                        <a href="#home" class="text-white hover:text-orange-400 px-3 py-2 rounded-md text-sm font-medium transition-colors">الرئيسية</a>
+                        <a href="#about" class="text-white hover:text-orange-400 px-3 py-2 rounded-md text-sm font-medium transition-colors">من نحن</a>
+                        <a href="#services" class="text-white hover:text-orange-400 px-3 py-2 rounded-md text-sm font-medium transition-colors">الخدمات</a>
+                        <a href="#portfolio" class="text-white hover:text-orange-400 px-3 py-2 rounded-md text-sm font-medium transition-colors">أعمالنا</a>
+                        <a href="#analytics" class="text-white hover:text-orange-400 px-3 py-2 rounded-md text-sm font-medium transition-colors">التحليلات</a>
+                        <a href="#contact" class="text-white hover:text-orange-400 px-3 py-2 rounded-md text-sm font-medium transition-colors">اتصل بنا</a>
+                        <a href="#chat" class="btn-gradient text-white px-4 py-2 rounded-full text-sm font-medium flex items-center">
+                            دردش مع د. إكس <i class="fas fa-comment mr-2"></i>
                         </a>
                     </div>
                 </div>
                 <div class="md:hidden">
-                    <button id="mobile-menu-btn" class="text-white hover:text-red-400">
+                    <button onclick="toggleMobileMenu()" class="text-white hover:text-orange-400">
                         <i class="fas fa-bars text-xl"></i>
                     </button>
                 </div>
             </div>
         </div>
-        
         <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden glass-effect">
-            <div class="px-2 pt-2 pb-3 space-y-1">
-                <a href="#home" class="block text-white hover:text-red-400 px-3 py-2">الرئيسية</a>
-                <a href="#about" class="block text-white hover:text-red-400 px-3 py-2">من نحن</a>
-                <a href="#services" class="block text-white hover:text-red-400 px-3 py-2">الخدمات</a>
-                <a href="#portfolio" class="block text-white hover:text-red-400 px-3 py-2">أعمالنا</a>
-                <a href="#analytics" class="block text-white hover:text-red-400 px-3 py-2">التحليلات</a>
-                <a href="#contact" class="block text-white hover:text-red-400 px-3 py-2">اتصل بنا</a>
-                <a href="#chat" class="block bg-red-600 text-white px-3 py-2 rounded">دردش مع د. إكس</a>
+        <div id="mobile-menu" class="hidden md:hidden nav-blur">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#home" class="text-white hover:text-orange-400 block px-3 py-2 rounded-md text-base font-medium">الرئيسية</a>
+                <a href="#about" class="text-white hover:text-orange-400 block px-3 py-2 rounded-md text-base font-medium">من نحن</a>
+                <a href="#services" class="text-white hover:text-orange-400 block px-3 py-2 rounded-md text-base font-medium">الخدمات</a>
+                <a href="#portfolio" class="text-white hover:text-orange-400 block px-3 py-2 rounded-md text-base font-medium">أعمالنا</a>
+                <a href="#analytics" class="text-white hover:text-orange-400 block px-3 py-2 rounded-md text-base font-medium">التحليلات</a>
+                <a href="#contact" class="text-white hover:text-orange-400 block px-3 py-2 rounded-md text-base font-medium">اتصل بنا</a>
+                <a href="#chat" class="btn-gradient text-white block px-3 py-2 rounded-md text-base font-medium text-center">دردش مع د. إكس</a>
             </div>
         </div>
     </nav>
 
     <!-- Home Section -->
-    <section id="home" class="section gradient-bg flex items-center justify-center relative overflow-hidden">
-        <div class="absolute inset-0 opacity-10">
-            <div class="floating absolute top-20 left-20 w-4 h-4 bg-red-600 rounded-full"></div>
-            <div class="floating absolute top-40 right-32 w-6 h-6 bg-red-500 rounded-full" style="animation-delay: -2s;"></div>
-            <div class="floating absolute bottom-32 left-40 w-3 h-3 bg-red-700 rounded-full" style="animation-delay: -4s;"></div>
-        </div>
-        
-        <div class="relative z-10 text-center px-4 max-w-4xl mx-auto">
+    <section id="home" class="gradient-bg min-h-screen flex flex-col items-center justify-center p-4 pt-16">
+        <div class="relative z-10 text-center px-4 max-w-4xl mx-auto py-20">
             <div class="mb-8 floating">
-                <i class="fas fa-brain text-8xl text-red-500 text-glow"></i>
+                <img src="https://cdn1.genspark.ai/user-upload-image/gpt_image_generated/e0f8aad7-058d-48db-8441-017105a8ca21" alt="Dr X Logo" class="h-24 w-24 mx-auto rounded-lg pulse-glow">
             </div>
-            <h1 class="text-5xl md:text-7xl font-bold mb-6 text-glow slide-in">Dr.X - مساعد الذكاء الاصطناعي</h1>
-            <p class="text-xl md:text-2xl mb-8 opacity-90 slide-in" style="animation-delay: 0.5s;">
+            <h1 class="text-5xl md:text-7xl font-bold mb-6 leading-tight gradient-text">Dr X - مساعد الذكاء الاصطناعي</h1>
+            <p class="text-xl md:text-2xl mb-8 leading-relaxed opacity-90">
                 مساعدك الذكي المتطور - مدعوم بأحدث تقنيات الذكاء الاصطناعي
             </p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center slide-in" style="animation-delay: 1s;">
-                <a href="#chat" class="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-full text-lg font-semibold mystical-glow transition-all">
-                    <i class="fas fa-comments ml-2"></i>دردش مع د. إكس
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="#chat" class="btn-gradient text-white px-8 py-3 rounded-full text-lg font-semibold flex items-center justify-center">
+                    دردش مع د. إكس <i class="fas fa-comment mr-2"></i>
                 </a>
-                <a href="#services" class="border-2 border-red-600 text-red-400 hover:bg-red-600 hover:text-white px-8 py-4 rounded-full text-lg font-semibold transition-all">
+                <a href="#services" class="border-2 border-orange-400 text-orange-400 px-8 py-3 rounded-full text-lg font-semibold hover:bg-orange-400 hover:text-black transition-colors bg-transparent">
                     استكشف خدماتنا
                 </a>
+            </div>
+        </div>
+
+        <!-- Features Section -->
+        <section class="py-20 w-full section-bg">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl font-bold text-white mb-4">لماذا تختار Dr X؟</h2>
+                    <div class="w-24 h-1 bg-gradient-to-r from-orange-400 to-red-500 mx-auto mb-8"></div>
+                    <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                        نقدم حلولاً تقنية مبتكرة وموثوقة لمساعدتك على تحقيق أهدافك
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div class="bg-gray-800 p-8 rounded-2xl shadow-lg text-center border border-gray-700 hover:border-orange-500 transition-all card-hover">
+                        <div class="w-16 h-16 bg-gradient-to-r from-orange-400 to-red-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                            <i class="fas fa-lightbulb text-white text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-4">حلول مبتكرة</h3>
+                        <p class="text-gray-400">نقدم أحدث التقنيات والحلول الإبداعية لمواجهة تحدياتك.</p>
+                    </div>
+
+                    <div class="bg-gray-800 p-8 rounded-2xl shadow-lg text-center border border-gray-700 hover:border-green-500 transition-all card-hover">
+                        <div class="w-16 h-16 bg-gradient-to-r from-green-400 to-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                            <i class="fas fa-code text-white text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-4">جودة لا تضاهى</h3>
+                        <p class="text-gray-400">نلتزم بأعلى معايير الجودة في كل مشروع نقوم به.</p>
+                    </div>
+
+                    <div class="bg-gray-800 p-8 rounded-2xl shadow-lg text-center border border-gray-700 hover:border-purple-500 transition-all card-hover">
+                        <div class="w-16 h-16 bg-gradient-to-r from-purple-400 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                            <i class="fas fa-mobile-alt text-white text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-4">دعم متواصل</h3>
+                        <p class="text-gray-400">فريقنا متاح لتقديم الدعم والمساعدة على مدار الساعة.</p>
+                    </div>
+
+                    <div class="bg-gray-800 p-8 rounded-2xl shadow-lg text-center border border-gray-700 hover:border-blue-500 transition-all card-hover">
+                        <div class="w-16 h-16 bg-gradient-to-r from-blue-400 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                            <i class="fas fa-cloud text-white text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-4">خبرة واسعة</h3>
+                        <p class="text-gray-400">سنوات من الخبرة في مجال الذكاء الاصطناعي والتكنولوجيا.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-20 w-full section-bg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4">خدماتنا الرئيسية</h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-orange-400 to-red-500 mx-auto mb-8"></div>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    نقدم مجموعة واسعة من الخدمات التقنية المتطورة
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-gray-800 p-8 rounded-2xl shadow-lg text-center hover:shadow-xl transition-shadow card-hover">
+                    <i class="fas fa-code text-6xl text-orange-400 mb-6"></i>
+                    <h3 class="text-2xl font-bold mb-4">تطوير الويب</h3>
+                    <p class="text-gray-300 mb-6">بناء مواقع وتطبيقات ويب متجاوبة وعالية الأداء.</p>
+                    <a href="#contact" class="text-orange-400 hover:underline font-semibold">
+                        اعرف المزيد
+                    </a>
+                </div>
+
+                <div class="bg-gray-800 p-8 rounded-2xl shadow-lg text-center hover:shadow-xl transition-shadow card-hover">
+                    <i class="fas fa-mobile-alt text-6xl text-green-400 mb-6"></i>
+                    <h3 class="text-2xl font-bold mb-4">تطبيقات الجوال</h3>
+                    <p class="text-gray-300 mb-6">تطوير تطبيقات iOS و Android بتجربة مستخدم فريدة.</p>
+                    <a href="#contact" class="text-green-400 hover:underline font-semibold">
+                        اعرف المزيد
+                    </a>
+                </div>
+
+                <div class="bg-gray-800 p-8 rounded-2xl shadow-lg text-center hover:shadow-xl transition-shadow card-hover">
+                    <i class="fas fa-brain text-6xl text-purple-400 mb-6"></i>
+                    <h3 class="text-2xl font-bold mb-4">الذكاء الاصطناعي</h3>
+                    <p class="text-gray-300 mb-6">
+                        حلول ذكاء اصطناعي متقدمة لتحليل البيانات وأتمتة المهام.
+                    </p>
+                    <a href="#contact" class="text-purple-400 hover:underline font-semibold">
+                        اعرف المزيد
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chat Section -->
+    <section id="chat" class="gradient-bg min-h-screen flex flex-col items-center justify-center p-4 pt-16">
+        <!-- AI Status -->
+        <div class="absolute top-20 right-4 bg-green-600/20 border border-green-600/50 rounded-full px-4 py-2 text-sm flex items-center gap-2">
+            <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+            <span>Dr X متصل</span>
+        </div>
+
+        <div class="flex flex-col flex-1 max-w-4xl mx-auto w-full my-4 bg-gray-800/90 backdrop-blur-lg border border-gray-700 shadow-2xl rounded-2xl overflow-hidden">
+            <div class="p-6 pb-4 bg-gradient-to-r from-gray-900 to-gray-800">
+                <div class="text-center text-4xl font-bold gradient-text flex items-center justify-center mb-2">
+                    <img src="https://cdn1.genspark.ai/user-upload-image/gpt_image_generated/e0f8aad7-058d-48db-8441-017105a8ca21" alt="Dr X" class="h-8 w-8 ml-3 rounded glow-effect">
+                    Dr X - مساعد الذكاء الاصطناعي
+                </div>
+                <p class="text-center text-gray-300">مساعدك الذكي المتطور - مدعوم بأحدث تقنيات الذكاء الاصطناعي</p>
+
+                <!-- Model Selector -->
+                <div class="bg-black/30 backdrop-blur-md border border-white/20 rounded-xl p-4 mt-6">
+                    <h3 class="text-lg font-semibold mb-3 flex items-center">
+                        <i class="fas fa-brain mr-2"></i>
+                        اختر نموذج الذكاء الاصطناعي:
+                    </h3>
+                    <div class="flex flex-wrap justify-center gap-2">
+                        <button class="btn-gradient flex items-center gap-2 px-4 py-2 rounded-lg text-white font-medium">
+                            <i class="fas fa-search"></i>
+                            DeepSeek R1
+                        </button>
+                        <button class="bg-white/10 border border-white/20 text-white hover:bg-white/20 flex items-center gap-2 px-4 py-2 rounded-lg transition-all">
+                            <i class="fas fa-smile"></i>
+                            Hugging Face
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Feature Panel -->
+                <div class="bg-black/30 backdrop-blur-lg border border-white/10 rounded-xl p-5 mt-6">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+                        <div>
+                            <i class="fas fa-bolt text-2xl text-yellow-400 mb-2"></i>
+                            <p class="text-sm text-gray-300">استجابة فورية</p>
+                        </div>
+                        <div>
+                            <i class="fas fa-language text-2xl text-blue-400 mb-2"></i>
+                            <p class="text-sm text-gray-300">دعم متعدد اللغات</p>
+                        </div>
+                        <div>
+                            <i class="fas fa-shield-alt text-2xl text-green-400 mb-2"></i>
+                            <p class="text-sm text-gray-300">آمن ومحمي</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Messages Area -->
+            <div class="flex-1 overflow-hidden p-6" style="max-height: 400px; overflow-y: auto;">
+                <div id="chat-messages" class="space-y-4">
+                    <!-- Welcome Message -->
+                    <div class="flex items-start gap-3 justify-start">
+                        <div class="bg-gradient-to-r from-orange-500 to-red-600 rounded-full p-2 flex-shrink-0">
+                            <i class="fas fa-robot text-white"></i>
+                        </div>
+                        <div class="chat-bubble-ai p-4 max-w-xs text-white">
+                            <p class="font-semibold mb-1">Dr X</p>
+                            <p>مرحباً! أنا Dr X، مساعدك الذكي المتطور. كيف يمكنني مساعدتك اليوم؟</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Input Area -->
+            <div class="p-6 border-t border-gray-700 bg-gray-900/50">
+                <div class="bg-white/10 rounded-full p-2 flex items-center gap-3 border border-white/20 backdrop-blur-md">
+                    <input type="text" id="chat-input" placeholder="اكتب رسالتك هنا..." class="flex-1 bg-transparent outline-none text-white placeholder-gray-400 px-4 py-2 border-none">
+                    <button onclick="sendMessage()" class="btn-gradient text-white w-12 h-12 rounded-full flex items-center justify-center hover:scale-105 transition-transform">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+
+                <!-- Quick Buttons -->
+                <div class="flex flex-wrap gap-2 mt-4 justify-center">
+                    <button onclick="quickMessage('ما هي أحدث تقنيات الذكاء الاصطناعي؟')" class="bg-white/10 border border-white/20 text-white hover:bg-white/20 text-sm px-3 py-2 rounded-full transition-all">
+                        تقنيات الذكاء الاصطناعي
+                    </button>
+                    <button onclick="quickMessage('اشرح لي البرمجة بطريقة بسيطة')" class="bg-white/10 border border-white/20 text-white hover:bg-white/20 text-sm px-3 py-2 rounded-full transition-all">
+                        تعلم البرمجة
+                    </button>
+                    <button onclick="quickMessage('ما هي أفضل النصائح للنجاح؟')" class="bg-white/10 border border-white/20 text-white hover:bg-white/20 text-sm px-3 py-2 rounded-full transition-all">
+                        نصائح النجاح
+                    </button>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- About Section -->
-    <section id="about" class="section bg-gray-900 relative">
+    <section id="about" class="section-bg py-20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
-                <h2 class="text-4xl md:text-6xl font-bold text-glow mb-4">من نحن؟</h2>
-                <div class="w-24 h-1 bg-red-600 mx-auto mb-8"></div>
-                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
-                    نحن رواد في مجال الذكاء الاصطناعي، نقدم حلولاً مبتكرة وحديثة لعالم متطور
-                </p>
+                <h2 class="text-4xl font-bold mb-4">من نحن؟</h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-orange-400 to-red-500 mx-auto mb-8"></div>
             </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="glass-effect p-8 rounded-2xl card-hover text-center">
-                    <i class="fas fa-rocket text-5xl text-red-500 mb-6"></i>
-                    <h3 class="text-2xl font-bold mb-4">رؤيتنا</h3>
-                    <p class="text-gray-300">أن نكون الرواد في تقديم حلول الذكاء الاصطناعي المبتكرة التي تحدث فرقاً حقيقياً في حياة الناس</p>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h3 class="text-2xl font-bold mb-6 gradient-text">نحن روّاد الذكاء الاصطناعي</h3>
+                    <p class="text-gray-300 mb-6 leading-relaxed">
+                        في Dr X، نؤمن بقوة التكنولوجيا في تغيير العالم. نحن فريق من المطورين والمهندسين المتخصصين في الذكاء الاصطناعي، نسعى لتقديم حلول مبتكرة تساعد الأفراد والشركات على تحقيق أهدافهم.
+                    </p>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="text-center">
+                            <div class="text-3xl font-bold gradient-text mb-2">500+</div>
+                            <div class="text-gray-400">مشروع مكتمل</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold gradient-text mb-2">100+</div>
+                            <div class="text-gray-400">عميل راضٍ</div>
+                        </div>
+                    </div>
                 </div>
-                
-                <div class="glass-effect p-8 rounded-2xl card-hover text-center">
-                    <i class="fas fa-bullseye text-5xl text-red-500 mb-6"></i>
-                    <h3 class="text-2xl font-bold mb-4">مهمتنا</h3>
-                    <p class="text-gray-300">نسعى لتطوير تقنيات ذكية تساعد الأفراد والشركات على تحقيق أهدافهم بكفاءة عالية</p>
-                </div>
-                
-                <div class="glass-effect p-8 rounded-2xl card-hover text-center">
-                    <i class="fas fa-gem text-5xl text-red-500 mb-6"></i>
-                    <h3 class="text-2xl font-bold mb-4">قيمنا</h3>
-                    <p class="text-gray-300">الإبداع، الجودة، الشفافية، والالتزام بتقديم أفضل الخدمات لعملائنا</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Services Section -->
-    <section id="services" class="section gradient-bg">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl md:text-6xl font-bold text-glow mb-4">خدماتنا</h2>
-                <div class="w-24 h-1 bg-red-600 mx-auto mb-8"></div>
-                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
-                    نقدم مجموعة شاملة من الخدمات التقنية المتطورة
-                </p>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="glass-effect p-8 rounded-2xl card-hover">
-                    <i class="fas fa-code text-5xl text-red-500 mb-6"></i>
-                    <h3 class="text-2xl font-bold mb-4">تطوير الويب</h3>
-                    <p class="text-gray-300 mb-6">مواقع وتطبيقات ويب متقدمة بأحدث التقنيات</p>
-                    <ul class="text-sm text-gray-400 space-y-2">
-                        <li><i class="fas fa-check text-red-500 ml-2"></i>React & Next.js</li>
-                        <li><i class="fas fa-check text-red-500 ml-2"></i>Node.js & Express</li>
-                        <li><i class="fas fa-check text-red-500 ml-2"></i>تصميم متجاوب</li>
-                    </ul>
-                </div>
-                
-                <div class="glass-effect p-8 rounded-2xl card-hover">
-                    <i class="fas fa-mobile-alt text-5xl text-red-500 mb-6"></i>
-                    <h3 class="text-2xl font-bold mb-4">تطبيقات الجوال</h3>
-                    <p class="text-gray-300 mb-6">تطبيقات iOS و Android بأداء عالي</p>
-                    <ul class="text-sm text-gray-400 space-y-2">
-                        <li><i class="fas fa-check text-red-500 ml-2"></i>Flutter & React Native</li>
-                        <li><i class="fas fa-check text-red-500 ml-2"></i>تطبيقات أصلية</li>
-                        <li><i class="fas fa-check text-red-500 ml-2"></i>تجربة مستخدم متميزة</li>
-                    </ul>
-                </div>
-                
-                <div class="glass-effect p-8 rounded-2xl card-hover">
-                    <i class="fas fa-brain text-5xl text-red-500 mb-6"></i>
-                    <h3 class="text-2xl font-bold mb-4">الذكاء الاصطناعي</h3>
-                    <p class="text-gray-300 mb-6">حلول ذكية للتحليل والأتمتة</p>
-                    <ul class="text-sm text-gray-400 space-y-2">
-                        <li><i class="fas fa-check text-red-500 ml-2"></i>معالجة اللغة الطبيعية</li>
-                        <li><i class="fas fa-check text-red-500 ml-2"></i>رؤية الحاسوب</li>
-                        <li><i class="fas fa-check text-red-500 ml-2"></i>التعلم الآلي</li>
-                    </ul>
-                </div>
-                
-                <div class="glass-effect p-8 rounded-2xl card-hover">
-                    <i class="fas fa-cloud text-5xl text-red-500 mb-6"></i>
-                    <h3 class="text-2xl font-bold mb-4">الحوسبة السحابية</h3>
-                    <p class="text-gray-300 mb-6">خدمات سحابية آمنة وقابلة للتطوير</p>
-                    <ul class="text-sm text-gray-400 space-y-2">
-                        <li><i class="fas fa-check text-red-500 ml-2"></i>AWS & Azure</li>
-                        <li><i class="fas fa-check text-red-500 ml-2"></i>Docker & Kubernetes</li>
-                        <li><i class="fas fa-check text-red-500 ml-2"></i>CI/CD</li>
-                    </ul>
-                </div>
-                
-                <div class="glass-effect p-8 rounded-2xl card-hover">
-                    <i class="fas fa-shield-alt text-5xl text-red-500 mb-6"></i>
-                    <h3 class="text-2xl font-bold mb-4">الأمن السيبراني</h3>
-                    <p class="text-gray-300 mb-6">حماية شاملة لأنظمتك الرقمية</p>
-                    <ul class="text-sm text-gray-400 space-y-2">
-                        <li><i class="fas fa-check text-red-500 ml-2"></i>اختبار الاختراق</li>
-                        <li><i class="fas fa-check text-red-500 ml-2"></i>تشفير البيانات</li>
-                        <li><i class="fas fa-check text-red-500 ml-2"></i>مراقبة الأمان</li>
-                    </ul>
-                </div>
-                
-                <div class="glass-effect p-8 rounded-2xl card-hover">
-                    <i class="fas fa-chart-line text-5xl text-red-500 mb-6"></i>
-                    <h3 class="text-2xl font-bold mb-4">تحليل البيانات</h3>
-                    <p class="text-gray-300 mb-6">استخراج رؤى قيمة من بياناتك</p>
-                    <ul class="text-sm text-gray-400 space-y-2">
-                        <li><i class="fas fa-check text-red-500 ml-2"></i>لوحات تحكم تفاعلية</li>
-                        <li><i class="fas fa-check text-red-500 ml-2"></i>التحليل التنبؤي</li>
-                        <li><i class="fas fa-check text-red-500 ml-2"></i>تقارير مخصصة</li>
-                    </ul>
+                <div class="text-center">
+                    <img src="https://cdn1.genspark.ai/user-upload-image/gpt_image_generated/e0f8aad7-058d-48db-8441-017105a8ca21" alt="Dr X Team" class="w-64 h-64 mx-auto rounded-lg pulse-glow">
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Portfolio Section -->
-    <section id="portfolio" class="section bg-gray-900">
+    <section id="portfolio" class="py-20 gradient-bg">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
-                <h2 class="text-4xl md:text-6xl font-bold text-glow mb-4">أعمالنا</h2>
-                <div class="w-24 h-1 bg-red-600 mx-auto mb-8"></div>
+                <h2 class="text-4xl font-bold mb-4">أعمالنا</h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-orange-400 to-red-500 mx-auto mb-8"></div>
                 <p class="text-xl text-gray-300 max-w-3xl mx-auto">
-                    مشاريع متميزة حققت نجاحاً باهراً
+                    مجموعة مختارة من أفضل مشاريعنا التي تعكس خبرتنا وإبداعنا
                 </p>
             </div>
-            
+
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="glass-effect rounded-2xl overflow-hidden card-hover">
-                    <div class="h-48 bg-gradient-to-br from-red-600 to-red-800 flex items-center justify-center">
-                        <i class="fas fa-shopping-cart text-6xl text-white"></i>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold mb-2">منصة التجارة الإلكترونية</h3>
-                        <p class="text-gray-300 text-sm mb-4">منصة تجارة إلكترونية متكاملة مع نظام دفع آمن</p>
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            <span class="bg-red-600 text-white px-2 py-1 rounded text-xs">React</span>
-                            <span class="bg-red-600 text-white px-2 py-1 rounded text-xs">Node.js</span>
-                            <span class="bg-red-600 text-white px-2 py-1 rounded text-xs">MongoDB</span>
-                        </div>
-                        <button class="text-red-400 hover:text-red-300 font-semibold">عرض التفاصيل <i class="fas fa-arrow-left mr-2"></i></button>
+                <div class="bg-gray-800 p-6 rounded-2xl card-hover">
+                    <i class="fas fa-globe text-4xl gradient-text mb-4"></i>
+                    <h3 class="text-xl font-bold mb-3">منصة التجارة الإلكترونية</h3>
+                    <p class="text-gray-300 mb-4">منصة تجارة إلكترونية متكاملة مع نظام دفع آمن وإدارة المخزون</p>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="bg-blue-600 text-white px-2 py-1 rounded text-sm">React</span>
+                        <span class="bg-green-600 text-white px-2 py-1 rounded text-sm">Node.js</span>
+                        <span class="bg-yellow-600 text-white px-2 py-1 rounded text-sm">MongoDB</span>
                     </div>
                 </div>
-                
-                <div class="glass-effect rounded-2xl overflow-hidden card-hover">
-                    <div class="h-48 bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center">
-                        <i class="fas fa-tasks text-6xl text-white"></i>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold mb-2">تطبيق إدارة المهام</h3>
-                        <p class="text-gray-300 text-sm mb-4">تطبيق ذكي لإدارة المهام والمشاريع</p>
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            <span class="bg-blue-600 text-white px-2 py-1 rounded text-xs">Flutter</span>
-                            <span class="bg-blue-600 text-white px-2 py-1 rounded text-xs">Firebase</span>
-                            <span class="bg-blue-600 text-white px-2 py-1 rounded text-xs">Dart</span>
-                        </div>
-                        <button class="text-blue-400 hover:text-blue-300 font-semibold">عرض التفاصيل <i class="fas fa-arrow-left mr-2"></i></button>
+
+                <div class="bg-gray-800 p-6 rounded-2xl card-hover">
+                    <i class="fas fa-mobile-alt text-4xl gradient-text mb-4"></i>
+                    <h3 class="text-xl font-bold mb-3">تطبيق إدارة المهام</h3>
+                    <p class="text-gray-300 mb-4">تطبيق ذكي لإدارة المهام والمشاريع مع إشعارات فورية</p>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="bg-blue-600 text-white px-2 py-1 rounded text-sm">Flutter</span>
+                        <span class="bg-orange-600 text-white px-2 py-1 rounded text-sm">Firebase</span>
+                        <span class="bg-purple-600 text-white px-2 py-1 rounded text-sm">Dart</span>
                     </div>
                 </div>
-                
-                <div class="glass-effect rounded-2xl overflow-hidden card-hover">
-                    <div class="h-48 bg-gradient-to-br from-green-600 to-green-800 flex items-center justify-center">
-                        <i class="fas fa-robot text-6xl text-white"></i>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold mb-2">مساعد ذكي للأعمال</h3>
-                        <p class="text-gray-300 text-sm mb-4">نظام ذكي لأتمتة العمليات التجارية</p>
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            <span class="bg-green-600 text-white px-2 py-1 rounded text-xs">Python</span>
-                            <span class="bg-green-600 text-white px-2 py-1 rounded text-xs">TensorFlow</span>
-                            <span class="bg-green-600 text-white px-2 py-1 rounded text-xs">NLP</span>
-                        </div>
-                        <button class="text-green-400 hover:text-green-300 font-semibold">عرض التفاصيل <i class="fas fa-arrow-left mr-2"></i></button>
+
+                <div class="bg-gray-800 p-6 rounded-2xl card-hover">
+                    <i class="fas fa-brain text-4xl gradient-text mb-4"></i>
+                    <h3 class="text-xl font-bold mb-3">نظام الذكاء الاصطناعي</h3>
+                    <p class="text-gray-300 mb-4">نظام ذكي لتحليل البيانات والتنبؤ بالاتجاهات المستقبلية</p>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="bg-red-600 text-white px-2 py-1 rounded text-sm">Python</span>
+                        <span class="bg-green-600 text-white px-2 py-1 rounded text-sm">TensorFlow</span>
+                        <span class="bg-blue-600 text-white px-2 py-1 rounded text-sm">Docker</span>
                     </div>
                 </div>
             </div>
@@ -366,236 +419,200 @@
     </section>
 
     <!-- Analytics Section -->
-    <section id="analytics" class="section gradient-bg">
+    <section id="analytics" class="section-bg py-20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
-                <h2 class="text-4xl md:text-6xl font-bold text-glow mb-4">التحليلات</h2>
-                <div class="w-24 h-1 bg-red-600 mx-auto mb-8"></div>
-                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
-                    إحصائيات وتحليلات شاملة لأداء خدماتنا
-                </p>
+                <h2 class="text-4xl font-bold mb-4">التحليلات</h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-orange-400 to-red-500 mx-auto mb-8"></div>
             </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-                <div class="glass-effect p-6 rounded-2xl text-center card-hover">
-                    <i class="fas fa-users text-4xl text-red-500 mb-4"></i>
-                    <h3 class="text-3xl font-bold text-red-400" id="totalUsers">0</h3>
-                    <p class="text-gray-300">إجمالي المستخدمين</p>
-                </div>
-                
-                <div class="glass-effect p-6 rounded-2xl text-center card-hover">
-                    <i class="fas fa-eye text-4xl text-blue-500 mb-4"></i>
-                    <h3 class="text-3xl font-bold text-blue-400" id="pageViews">0</h3>
-                    <p class="text-gray-300">مشاهدات الصفحة</p>
-                </div>
-                
-                <div class="glass-effect p-6 rounded-2xl text-center card-hover">
-                    <i class="fas fa-clock text-4xl text-green-500 mb-4"></i>
-                    <h3 class="text-3xl font-bold text-green-400" id="avgTime">0:00</h3>
-                    <p class="text-gray-300">متوسط وقت الجلسة</p>
-                </div>
-                
-                <div class="glass-effect p-6 rounded-2xl text-center card-hover">
-                    <i class="fas fa-percentage text-4xl text-purple-500 mb-4"></i>
-                    <h3 class="text-3xl font-bold text-purple-400" id="conversionRate">0%</h3>
-                    <p class="text-gray-300">معدل التحويل</p>
-                </div>
-            </div>
-            
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <div class="glass-effect p-6 rounded-2xl">
-                    <h3 class="text-xl font-bold mb-4 text-center">الزوار الشهريين</h3>
-                    <canvas id="visitorsChart" style="height: 300px;"></canvas>
-                </div>
-                
-                <div class="glass-effect p-6 rounded-2xl">
-                    <h3 class="text-xl font-bold mb-4 text-center">مصادر الزيارات</h3>
-                    <canvas id="sourcesChart" style="height: 300px;"></canvas>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- Chat Section -->
-    <section id="chat" class="section bg-gray-900">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-8">
-                <h2 class="text-4xl md:text-6xl font-bold text-glow mb-4">دردش مع Dr.X</h2>
-                <div class="w-24 h-1 bg-red-600 mx-auto mb-8"></div>
-                <p class="text-xl text-gray-300">
-                    تحدث مع مساعدك الذكي واحصل على إجابات فورية
-                </p>
-            </div>
-            
-            <div class="glass-effect rounded-2xl overflow-hidden">
-                <div class="bg-red-600 p-4 flex items-center">
-                    <img src="https://cdn1.genspark.ai/user-upload-image/gpt_image_generated/2cb56500-100e-4ba3-a75d-e5c85744490f" alt="Dr.X" class="w-10 h-10 rounded-full ml-3">
-                    <div>
-                        <h3 class="font-bold">Dr.X</h3>
-                        <p class="text-sm opacity-90">متصل الآن</p>
-                    </div>
-                    <div class="mr-auto">
-                        <span class="bg-green-500 w-3 h-3 rounded-full inline-block pulse-slow"></span>
-                    </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+                <div class="bg-gray-800 p-6 rounded-2xl text-center card-hover">
+                    <i class="fas fa-users text-4xl text-blue-400 mb-4"></i>
+                    <div class="text-3xl font-bold gradient-text mb-2">25,847</div>
+                    <div class="text-gray-400">إجمالي المستخدمين</div>
                 </div>
-                
-                <div class="chat-container p-4 space-y-4" id="chatContainer">
-                    <div class="message flex items-start">
-                        <img src="https://cdn1.genspark.ai/user-upload-image/gpt_image_generated/2cb56500-100e-4ba3-a75d-e5c85744490f" alt="Dr.X" class="w-8 h-8 rounded-full ml-3">
-                        <div class="glass-effect p-3 rounded-2xl max-w-xs">
-                            <p>مرحباً! أنا Dr.X، مساعدك الذكي. كيف يمكنني مساعدتك اليوم؟</p>
-                        </div>
-                    </div>
+
+                <div class="bg-gray-800 p-6 rounded-2xl text-center card-hover">
+                    <i class="fas fa-eye text-4xl text-green-400 mb-4"></i>
+                    <div class="text-3xl font-bold gradient-text mb-2">185,692</div>
+                    <div class="text-gray-400">مشاهدات الصفحة</div>
                 </div>
-                
-                <div class="p-4 border-t border-gray-700">
-                    <div class="flex items-center space-x-4 space-x-reverse">
-                        <input type="text" id="chatInput" placeholder="اكتب رسالتك هنا..." class="flex-1 bg-gray-800 border border-gray-600 rounded-full px-4 py-2 focus:outline-none focus:border-red-500">
-                        <button id="sendBtn" class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-full transition-colors">
-                            <i class="fas fa-paper-plane"></i>
-                        </button>
-                    </div>
+
+                <div class="bg-gray-800 p-6 rounded-2xl text-center card-hover">
+                    <i class="fas fa-clock text-4xl text-purple-400 mb-4"></i>
+                    <div class="text-3xl font-bold gradient-text mb-2">4:32</div>
+                    <div class="text-gray-400">متوسط الوقت</div>
+                </div>
+
+                <div class="bg-gray-800 p-6 rounded-2xl text-center card-hover">
+                    <i class="fas fa-percent text-4xl text-orange-400 mb-4"></i>
+                    <div class="text-3xl font-bold gradient-text mb-2">35%</div>
+                    <div class="text-gray-400">معدل الارتداد</div>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Contact Section -->
-    <section id="contact" class="section gradient-bg">
+    <section id="contact" class="gradient-bg py-20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
-                <h2 class="text-4xl md:text-6xl font-bold text-glow mb-4">تواصل معنا</h2>
-                <div class="w-24 h-1 bg-red-600 mx-auto mb-8"></div>
+                <h2 class="text-4xl font-bold mb-4">تواصل معنا</h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-orange-400 to-red-500 mx-auto mb-8"></div>
                 <p class="text-xl text-gray-300 max-w-3xl mx-auto">
-                    نحن هنا لمساعدتك وتحقيق رؤيتك التقنية
+                    نحن هنا لمساعدتك في تحقيق أهدافك التقنية
                 </p>
             </div>
-            
+
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
-                <div class="space-y-8">
-                    <div class="glass-effect p-6 rounded-2xl card-hover">
-                        <div class="flex items-center">
-                            <i class="fas fa-envelope text-3xl text-red-500 ml-4"></i>
+                <div>
+                    <h3 class="text-2xl font-bold mb-6 gradient-text">معلومات التواصل</h3>
+                    <div class="space-y-6">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 bg-gradient-to-r from-orange-400 to-red-500 rounded-full flex items-center justify-center">
+                                <i class="fas fa-envelope text-white"></i>
+                            </div>
                             <div>
-                                <h3 class="text-xl font-bold">البريد الإلكتروني</h3>
-                                <p class="text-gray-300">info@drx-ai.com</p>
+                                <div class="font-semibold">البريد الإلكتروني</div>
+                                <div class="text-gray-300">balqees0alalawi@gmail.com</div>
                             </div>
                         </div>
-                    </div>
-                    
-                    <div class="glass-effect p-6 rounded-2xl card-hover">
-                        <div class="flex items-center">
-                            <i class="fas fa-phone text-3xl text-red-500 ml-4"></i>
+
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 bg-gradient-to-r from-orange-400 to-red-500 rounded-full flex items-center justify-center">
+                                <i class="fab fa-github text-white"></i>
+                            </div>
                             <div>
-                                <h3 class="text-xl font-bold">رقم الهاتف</h3>
-                                <p class="text-gray-300">+966 XX XXX XXXX</p>
+                                <div class="font-semibold">GitHub</div>
+                                <a href="https://github.com/wolfomani" class="text-orange-400 hover:underline">https://github.com/wolfomani</a>
                             </div>
                         </div>
-                    </div>
-                    
-                    <div class="glass-effect p-6 rounded-2xl card-hover">
-                        <div class="flex items-center">
-                            <i class="fas fa-map-marker-alt text-3xl text-red-500 ml-4"></i>
+
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 bg-gradient-to-r from-orange-400 to-red-500 rounded-full flex items-center justify-center">
+                                <i class="fab fa-discord text-white"></i>
+                            </div>
                             <div>
-                                <h3 class="text-xl font-bold">العنوان</h3>
-                                <p class="text-gray-300">الرياض، المملكة العربية السعودية</p>
+                                <div class="font-semibold">Discord</div>
+                                <div class="text-gray-300">@abdulaziz-x7r1g</div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 bg-gradient-to-r from-orange-400 to-red-500 rounded-full flex items-center justify-center">
+                                <i class="fas fa-external-link-alt text-white"></i>
+                            </div>
+                            <div>
+                                <div class="font-semibold">التطبيق</div>
+                                <a href="https://hamkamai.github.io/3weep.app" class="text-orange-400 hover:underline">https://hamkamai.github.io/3weep.app</a>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 bg-gradient-to-r from-orange-400 to-red-500 rounded-full flex items-center justify-center">
+                                <i class="fas fa-globe text-white"></i>
+                            </div>
+                            <div>
+                                <div class="font-semibold">الموقع</div>
+                                <a href="https://36drx.vercel.app" class="text-orange-400 hover:underline">https://36drx.vercel.app</a>
                             </div>
                         </div>
                     </div>
                 </div>
-                
-                <form id="contactForm" class="glass-effect p-8 rounded-2xl">
-                    <div class="space-y-6">
+
+                <div class="bg-gray-800/50 backdrop-blur-lg p-8 rounded-2xl">
+                    <h3 class="text-2xl font-bold mb-6">أرسل رسالة</h3>
+                    <form class="space-y-6">
                         <div>
                             <label class="block text-sm font-medium mb-2">الاسم</label>
-                            <input type="text" class="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 focus:outline-none focus:border-red-500">
+                            <input type="text" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-orange-400 focus:border-transparent text-white">
                         </div>
-                        
                         <div>
                             <label class="block text-sm font-medium mb-2">البريد الإلكتروني</label>
-                            <input type="email" class="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 focus:outline-none focus:border-red-500">
+                            <input type="email" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-orange-400 focus:border-transparent text-white">
                         </div>
-                        
-                        <div>
-                            <label class="block text-sm font-medium mb-2">الموضوع</label>
-                            <select class="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 focus:outline-none focus:border-red-500">
-                                <option>استشارة تقنية</option>
-                                <option>طلب عرض سعر</option>
-                                <option>دعم فني</option>
-                                <option>أخرى</option>
-                            </select>
-                        </div>
-                        
                         <div>
                             <label class="block text-sm font-medium mb-2">الرسالة</label>
-                            <textarea rows="4" class="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 focus:outline-none focus:border-red-500"></textarea>
+                            <textarea rows="5" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-orange-400 focus:border-transparent text-white"></textarea>
                         </div>
-                        
-                        <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-lg font-semibold transition-colors mystical-glow">
-                            <i class="fas fa-paper-plane ml-2"></i>إرسال الرسالة
+                        <button type="submit" class="w-full btn-gradient text-white py-3 rounded-lg font-semibold">
+                            إرسال الرسالة
                         </button>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="bg-black py-12 border-t border-red-900">
+    <footer class="bg-gray-900 text-white py-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <div class="col-span-2">
+                <div class="col-span-1 md:col-span-2">
                     <div class="flex items-center mb-4">
-                        <img src="https://cdn1.genspark.ai/user-upload-image/gpt_image_generated/e0f8aad7-058d-48db-8441-017105a8ca21" alt="Dr.X Logo" class="h-12 w-auto ml-3">
+                        <img src="https://cdn1.genspark.ai/user-upload-image/gpt_image_generated/e0f8aad7-058d-48db-8441-017105a8ca21" alt="Dr X Logo" class="h-8 w-8 ml-3 rounded glow-effect">
+                        <h3 class="text-2xl font-bold gradient-text">Dr X</h3>
                     </div>
                     <p class="text-gray-300 mb-6 leading-relaxed">
                         نحن رواد في مجال الذكاء الاصطناعي، نقدم حلولاً مبتكرة تساعد الشركات على تحقيق أهدافها وتطوير أعمالها.
                     </p>
                     <div class="flex space-x-4 space-x-reverse">
-                        <a href="#" class="text-gray-400 hover:text-red-400 transition-colors">
-                            <i class="fab fa-facebook text-2xl"></i>
+                        <a href="https://github.com/wolfomani" class="text-gray-300 hover:text-orange-400 transition-colors">
+                            <i class="fab fa-github text-2xl"></i>
                         </a>
-                        <a href="#" class="text-gray-400 hover:text-red-400 transition-colors">
-                            <i class="fab fa-twitter text-2xl"></i>
+                        <a href="https://hamkamai.github.io/3weep.app" class="text-gray-300 hover:text-orange-400 transition-colors">
+                            <i class="fas fa-external-link-alt text-2xl"></i>
                         </a>
-                        <a href="#" class="text-gray-400 hover:text-red-400 transition-colors">
-                            <i class="fab fa-linkedin text-2xl"></i>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-red-400 transition-colors">
-                            <i class="fab fa-instagram text-2xl"></i>
+                        <a href="https://36drx.vercel.app" class="text-gray-300 hover:text-orange-400 transition-colors">
+                            <i class="fas fa-globe text-2xl"></i>
                         </a>
                     </div>
                 </div>
-                
+
                 <div>
-                    <h4 class="text-lg font-bold mb-4 text-red-400">الخدمات</h4>
+                    <h4 class="text-lg font-semibold mb-4">الخدمات</h4>
                     <ul class="space-y-2">
-                        <li><a href="#services" class="text-gray-300 hover:text-red-400 transition-colors">تطوير الويب</a></li>
-                        <li><a href="#services" class="text-gray-300 hover:text-red-400 transition-colors">تطبيقات الجوال</a></li>
-                        <li><a href="#services" class="text-gray-300 hover:text-red-400 transition-colors">الذكاء الاصطناعي</a></li>
-                        <li><a href="#services" class="text-gray-300 hover:text-red-400 transition-colors">التحليلات</a></li>
+                        <li><a href="#services" class="text-gray-300 hover:text-orange-400 transition-colors">تطوير الويب</a></li>
+                        <li><a href="#services" class="text-gray-300 hover:text-orange-400 transition-colors">تطبيقات الجوال</a></li>
+                        <li><a href="#services" class="text-gray-300 hover:text-orange-400 transition-colors">الذكاء الاصطناعي</a></li>
+                        <li><a href="#analytics" class="text-gray-300 hover:text-orange-400 transition-colors">التحليلات</a></li>
                     </ul>
                 </div>
-                
+
                 <div>
-                    <h4 class="text-lg font-bold mb-4 text-red-400">روابط سريعة</h4>
-                    <ul class="space-y-2">
-                        <li><a href="#home" class="text-gray-300 hover:text-red-400 transition-colors">الرئيسية</a></li>
-                        <li><a href="#about" class="text-gray-300 hover:text-red-400 transition-colors">من نحن</a></li>
-                        <li><a href="#portfolio" class="text-gray-300 hover:text-red-400 transition-colors">أعمالنا</a></li>
-                        <li><a href="#contact" class="text-gray-300 hover:text-red-400 transition-colors">اتصل بنا</a></li>
+                    <h4 class="text-lg font-semibold mb-4">تواصل معنا</h4>
+                    <ul class="space-y-2 text-gray-300">
+                        <li class="flex items-center">
+                            <i class="fas fa-envelope ml-2"></i>
+                            balqees0alalawi@gmail.com
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fab fa-discord ml-2"></i>
+                            @abdulaziz-x7r1g
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-map-marker-alt ml-2"></i>
+                            المملكة العربية السعودية
+                        </li>
                     </ul>
                 </div>
             </div>
-            
-            <div class="border-t border-gray-800 mt-8 pt-8 text-center">
-                <p class="text-gray-400">&copy; 2025 Dr.X. جميع الحقوق محفوظة لعبدالعزيز الحمداني.</p>
+
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center">
+                <p class="text-gray-300">&copy; 2025 Dr X. جميع الحقوق محفوظة لعبدالعزيز الحمداني.</p>
             </div>
         </div>
     </footer>
 
     <script>
-        // Smooth scrolling
+        // Mobile Menu Toggle
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('hidden');
+        }
+
+        // Smooth Scrolling
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -609,194 +626,77 @@
             });
         });
 
-        // Mobile menu toggle
-        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-        
-        mobileMenuBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
-
-        // Chat functionality
-        const chatInput = document.getElementById('chatInput');
-        const sendBtn = document.getElementById('sendBtn');
-        const chatContainer = document.getElementById('chatContainer');
-
-        const responses = [
-            'شكراً لتواصلك معي! كيف يمكنني مساعدتك؟',
-            'هذا سؤال رائع! دعني أفكر في الإجابة...',
-            'يمكنني مساعدتك في تطوير حلول تقنية مبتكرة.',
-            'هل تحتاج لمزيد من المعلومات حول خدماتنا؟',
-            'أنا هنا لمساعدتك في أي استفسار تقني.'
-        ];
-
-        function addMessage(text, isUser = false) {
-            const messageDiv = document.createElement('div');
-            messageDiv.className = 'message flex items-start' + (isUser ? ' justify-end' : '');
-            
-            if (isUser) {
-                messageDiv.innerHTML = `
-                    <div class="bg-red-600 p-3 rounded-2xl max-w-xs ml-3">
-                        <p>${text}</p>
-                    </div>
-                    <div class="w-8 h-8 bg-red-600 rounded-full flex items-center justify-center">
-                        <i class="fas fa-user text-white text-sm"></i>
-                    </div>
-                `;
-            } else {
-                messageDiv.innerHTML = `
-                    <img src="https://cdn1.genspark.ai/user-upload-image/gpt_image_generated/2cb56500-100e-4ba3-a75d-e5c85744490f" alt="Dr.X" class="w-8 h-8 rounded-full ml-3">
-                    <div class="glass-effect p-3 rounded-2xl max-w-xs">
-                        <p>${text}</p>
-                    </div>
-                `;
-            }
-            
-            chatContainer.appendChild(messageDiv);
-            chatContainer.scrollTop = chatContainer.scrollHeight;
-        }
-
+        // Chat Functionality
         function sendMessage() {
-            const message = chatInput.value.trim();
+            const input = document.getElementById('chat-input');
+            const message = input.value.trim();
             if (message) {
-                addMessage(message, true);
-                chatInput.value = '';
-                
+                addMessage(message, 'user');
+                input.value = '';
                 setTimeout(() => {
-                    const randomResponse = responses[Math.floor(Math.random() * responses.length)];
-                    addMessage(randomResponse);
+                    addMessage(getAIResponse(message), 'ai');
                 }, 1000);
             }
         }
 
-        sendBtn.addEventListener('click', sendMessage);
-        chatInput.addEventListener('keypress', (e) => {
+        function quickMessage(message) {
+            addMessage(message, 'user');
+            setTimeout(() => {
+                addMessage(getAIResponse(message), 'ai');
+            }, 1000);
+        }
+
+        function addMessage(message, sender) {
+            const messagesContainer = document.getElementById('chat-messages');
+            const messageDiv = document.createElement('div');
+            
+            if (sender === 'user') {
+                messageDiv.className = 'flex items-start gap-3 justify-end';
+                messageDiv.innerHTML = `
+                    <div class="chat-bubble-user p-4 max-w-xs text-white">
+                        <p class="font-semibold mb-1">أنت</p>
+                        <p>${message}</p>
+                    </div>
+                    <div class="bg-gradient-to-r from-blue-500 to-purple-500 rounded-full p-2 flex-shrink-0">
+                        <i class="fas fa-user text-white"></i>
+                    </div>
+                `;
+            } else {
+                messageDiv.className = 'flex items-start gap-3 justify-start';
+                messageDiv.innerHTML = `
+                    <div class="bg-gradient-to-r from-orange-500 to-red-600 rounded-full p-2 flex-shrink-0">
+                        <i class="fas fa-robot text-white"></i>
+                    </div>
+                    <div class="chat-bubble-ai p-4 max-w-xs text-white">
+                        <p class="font-semibold mb-1">Dr X</p>
+                        <p>${message}</p>
+                    </div>
+                `;
+            }
+            
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function getAIResponse(message) {
+            const responses = [
+                "شكراً لك على سؤالك! أنا هنا لمساعدتك في أي استفسار تقني.",
+                "هذا سؤال ممتاز! دعني أساعدك في العثور على الحل المناسب.",
+                "أقدر اهتمامك بالتكنولوجيا. سأقوم بتزويدك بأفضل الإجابات.",
+                "رائع! هذا المجال من تخصصي. دعني أشاركك المعلومات المفيدة.",
+                "أحب هذا النوع من الأسئلة! سأقدم لك إجابة شاملة ومفيدة."
+            ];
+            return responses[Math.floor(Math.random() * responses.length)];
+        }
+
+        // Enter key for chat
+        document.getElementById('chat-input').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
                 sendMessage();
             }
         });
 
-        // Contact form
-        document.getElementById('contactForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            alert('تم إرسال رسالتك بنجاح! سنتواصل معك قريباً.');
-        });
-
-        // Counter animation
-        function animateCounters() {
-            const counters = [
-                { id: 'totalUsers', target: 25847 },
-                { id: 'pageViews', target: 185692 },
-                { id: 'avgTime', target: 432, format: 'time' },
-                { id: 'conversionRate', target: 8.5, format: 'percent' }
-            ];
-
-            counters.forEach(counter => {
-                const element = document.getElementById(counter.id);
-                let current = 0;
-                const increment = counter.target / 100;
-                
-                const timer = setInterval(() => {
-                    current += increment;
-                    if (current >= counter.target) {
-                        current = counter.target;
-                        clearInterval(timer);
-                    }
-                    
-                    if (counter.format === 'time') {
-                        const minutes = Math.floor(current / 60);
-                        const seconds = Math.floor(current % 60);
-                        element.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
-                    } else if (counter.format === 'percent') {
-                        element.textContent = `${current.toFixed(1)}%`;
-                    } else {
-                        element.textContent = Math.floor(current).toLocaleString();
-                    }
-                }, 50);
-            });
-        }
-
-        // Charts
-        function initCharts() {
-            // Visitors Chart
-            const visitorsCtx = document.getElementById('visitorsChart').getContext('2d');
-            new Chart(visitorsCtx, {
-                type: 'line',
-                data: {
-                    labels: ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو'],
-                    datasets: [{
-                        label: 'الزوار',
-                        data: [12000, 19000, 15000, 25000, 22000, 30000],
-                        borderColor: '#dc2626',
-                        backgroundColor: 'rgba(220, 38, 38, 0.1)',
-                        tension: 0.4,
-                        fill: true
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            labels: {
-                                color: '#ffffff'
-                            }
-                        }
-                    },
-                    scales: {
-                        x: {
-                            ticks: {
-                                color: '#ffffff'
-                            },
-                            grid: {
-                                color: 'rgba(255, 255, 255, 0.1)'
-                            }
-                        },
-                        y: {
-                            ticks: {
-                                color: '#ffffff'
-                            },
-                            grid: {
-                                color: 'rgba(255, 255, 255, 0.1)'
-                            }
-                        }
-                    }
-                }
-            });
-
-            // Sources Chart
-            const sourcesCtx = document.getElementById('sourcesChart').getContext('2d');
-            new Chart(sourcesCtx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['البحث المباشر', 'وسائل التواصل', 'البريد الإلكتروني', 'الإحالات'],
-                    datasets: [{
-                        data: [40, 25, 20, 15],
-                        backgroundColor: [
-                            '#dc2626',
-                            '#2563eb',
-                            '#16a34a',
-                            '#ca8a04'
-                        ]
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'bottom',
-                            labels: {
-                                color: '#ffffff',
-                                padding: 20
-                            }
-                        }
-                    }
-                }
-            });
-        }
-
-        // Intersection Observer for animations
+        // Scroll animations
         const observerOptions = {
             threshold: 0.1,
             rootMargin: '0px 0px -50px 0px'
@@ -805,32 +705,17 @@
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    if (entry.target.id === 'analytics') {
-                        animateCounters();
-                        initCharts();
-                    }
-                    entry.target.classList.add('slide-in');
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
                 }
             });
         }, observerOptions);
 
-        document.querySelectorAll('section').forEach(section => {
-            observer.observe(section);
-        });
-
-        // Navbar background on scroll
-        window.addEventListener('scroll', () => {
-            const navbar = document.getElementById('navbar');
-            if (window.scrollY > 100) {
-                navbar.classList.add('bg-opacity-95');
-            } else {
-                navbar.classList.remove('bg-opacity-95');
-            }
-        });
-
-        // Initialize animations on load
-        window.addEventListener('load', () => {
-            document.body.classList.add('loaded');
+        document.querySelectorAll('.card-hover').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
         });
     </script>
 </body>
