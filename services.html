@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dr X - خدماتنا المتكاملة</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <style>
+        body { 
+            font-family: 'Cairo', sans-serif; 
+        }
+        .gradient-bg { 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+        }
+        .glass-effect { 
+            backdrop-filter: blur(16px) saturate(180%); 
+            background-color: rgba(17, 25, 40, 0.75); 
+            border: 1px solid rgba(255, 255, 255, 0.125); 
+        }
+        .animate-float { 
+            animation: float 6s ease-in-out infinite; 
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+        .service-card {
+            transition: all 0.3s ease;
+        }
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        .icon-glow {
+            filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.5));
+        }
+        .bg-pattern {
+            background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.15) 1px, transparent 0);
+            background-size: 20px 20px;
+        }
+        .text-gradient {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(59, 130, 246, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 scroll-smooth" x-data="{ 
+    activeService: 'web', 
+    showModal: false,
+    selectedService: null,
+    isLoading: false
+}">
+    <!-- شريط التنقل -->
+    <nav class="fixed w-full z-50 glass-effect" x-data="{ isOpen: false }">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <h1 class="text-white text-2xl font-bold">
+                            <i class="fas fa-brain text-blue-400 ml-2"></i>
+                            Dr X
+                        </h1>
+                    </div>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4 space-x-reverse">
+                        <a href="#home" class="text-white hover:text-blue-300 px-3 py-2 rounded-md text-sm font-medium transition-colors">الرئيسية</a>
+                        <a href="#about" class="text-white hover:text-blue-300 px-3 py-2 rounded-md text-sm font-medium transition-colors">من نحن</a>
+                        <a href="#services" class="text-blue-300 px-3 py-2 rounded-md text-sm font-medium">الخدمات</a>
+                        <a href="#portfolio" class="text-white hover:text-blue-300 px-3 py-2 rounded-md text-sm font-medium transition-colors">أعمالنا</a>
+                        <a href="#contact" class="text-white hover:text-blue-300 px-3 py-2 rounded-md text-sm font-medium transition-colors">اتصل بنا</a>
+                        <a href="#chat" class="bg-red-600 text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-red-700 transition-colors pulse-animation">
+                            دردش مع د. إكس <i class="fas fa-comment mr-2"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="md:hidden">
+                    <button @click="isOpen = !isOpen" class="text-white hover:text-blue-300 focus:outline-none">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div x-show="isOpen" x-transition class="md:hidden glass-effect">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#home" class="text-white hover:text-blue-300 block px-3 py-2 rounded-md text-base font-medium">الرئيسية</a>
+                <a href="#about" class="text-white hover:text-blue-300 block px-3 py-2 rounded-md text-base font-medium">من نحن</a>
+                <a href="#services" class="text-blue-300 block px-3 py-2 rounded-md text-base font-medium">الخدمات</a>
+                <a href="#portfolio" class="text-white hover:text-blue-300 block px-3 py-2 rounded-md text-base font-medium">أعمالنا</a>
+                <a href="#contact" class="text-white hover:text-blue-300 block px-3 py-2 rounded-md text-base font-medium">اتصل بنا</a>
+                <a href="#chat" class="bg-red-600 text-white block px-3 py-2 rounded-md text-base font-medium text-center">
+                    دردش مع د. إكس
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- قسم البطل -->
+    <section id="services" class="gradient-bg min-h-screen flex items-center justify-center relative overflow-hidden bg-pattern">
+        <div class="absolute inset-0 opacity-20">
+            <div class="absolute top-10 left-10 animate-float">
+                <i class="fas fa-code text-white text-6xl"></i>
+            </div>
+            <div class="absolute bottom-20 right-20 animate-float" style="animation-delay: -2s;">
+                <i class="fas fa-mobile-alt text-white text-4xl"></i>
+            </div>
+            <div class="absolute top-1/3 right-10 animate-float" style="animation-delay: -4s;">
+                <i class="fas fa-chart-line text-white text-5xl"></i>
+            </div>
+        </div>
+        <div class="relative z-10 text-center text-white px-4">
+            <h1 class="text-5xl md:text-7xl font-bold mb-6 animate-pulse">خدماتنا المتكاملة</h1>
+            <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">حلول ذكية ومبتكرة تلبي جميع احتياجاتك الرقمية مع تقنيات الذكاء الاصطناعي المتطورة</p>
+            <div class="flex flex-wrap justify-center gap-4 mt-8">
+                <span class="bg-white bg-opacity-20 px-4 py-2 rounded-full text-sm">تطوير الويب</span>
+                <span class="bg-white bg-opacity-20 px-4 py-2 rounded-full text-sm">تطبيقات الجوال</span>
+                <span class="bg-white bg-opacity-20 px-4 py-2 rounded-full text-sm">الذكاء الاصطناعي</span>
+                <span class="bg-white bg-opacity-20 px-4 py-2 rounded-full text-sm">التحليلات</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- قسم فلترة الخدمات -->
+    <section class="py-12 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-wrap justify-center gap-4 mb-12">
+                <button @click="activeService = 'all'" 
+                        :class="activeService === 'all' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'"
+                        class="px-6 py-3 rounded-full font-medium transition-all">
+                    جميع الخدمات
+                </button>
+                <button @click="activeService = 'web'" 
+                        :class="activeService === 'web' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'"
+                        class="px-6 py-3 rounded-full font-medium transition-all">
+                    تطوير الويب
+                </button>
+                <button @click="activeService = 'mobile'" 
+                        :class="activeService === 'mobile' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'"
+                        class="px-6 py-3 rounded-full font-medium transition-all">
+                    تطبيقات الجوال
+                </button>
+                <button @click="activeService = 'ai'" 
+                        :class="activeService === 'ai' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'"
+                        class="px-6 py-3 rounded-full font-medium transition-all">
+                    الذكاء الاصطناعي
+                </button>
+                <button @click="activeService = 'cloud'" 
+                        :class="activeService === 'cloud' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'"
+                        class="px-6 py-3 rounded-full font-medium transition-all">
+                    الحلول السحابية
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- خدمات تطوير الويب -->
+    <section x-show="activeService === 'all' || activeService === 'web'" x-transition class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 mb-4">
+                    <i class="fas fa-code text-blue-600 ml-4 icon-glow"></i>
+                    تطوير الويب المتقدم
+                </h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">نبني مواقع ويب وتطبيقات متطورة تجمع بين التصميم الجذاب والأداء المتفوق</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+                <div class="service-card bg-white p-8 rounded-2xl shadow-lg">
+                    <div class="text-center">
+                        <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
+                            <i class="fas fa-laptop-code text-blue-600 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-4">مواقع متجاوبة</h3>
+                        <p class="text-gray-600 mb-6">مواقع تعمل بكفاءة على جميع الأجهزة مع تصميم متجاوب وسريع</p>
+                        <ul class="text-sm text-gray-500 space-y-2 text-right">
+                            <li><i class="fas fa-check text-green-500 ml-2"></i>تصميم متجاوب 100%</li>
+                            <li><i class="fas fa-check text-green-500 ml-2"></i>سرعة تحميل فائقة</li>
+                            <li><i class="fas fa-check text-green-500 ml-2"></i>تحسين محركات البحث</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="service-card bg-white p-8 rounded-2xl shadow-lg">
+                    <div class="text-center">
+                        <div class="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
+                            <i class="fas fa-shopping-cart text-green-600 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-4">متاجر إلكترونية</h3>
+                        <p class="text-gray-600 mb-6">منصات تجارة إلكترونية متكاملة مع نظم دفع آمنة</p>
+                        <ul class="text-sm text-gray-500 space-y-2 text-right">
+                            <li><i class="fas fa-check text-green-500 ml-2"></i>بوابات دفع متعددة</li>
+                            <li><i class="fas fa-check text-green-500 ml-2"></i>إدارة المخزون</li>
+                            <li><i class="fas fa-check text-green-500 ml-2"></i>تتبع الطلبات</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="service-card bg-white p-8 rounded-2xl shadow-lg">
+                    <div class="text-center">
+                        <div class="bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
+                            <i class="fas fa-cogs text-purple-600 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-4">تطبيقات ويب مخصصة</h3>
+                        <p class="text-gray-600 mb-6">حلول مخصصة تلبي احتياجات عملك الخاصة</p>
+                        <ul class="text-sm text-gray-500 space-y-2 text-right">
+                            <li><i class="fas fa-check text-green-500 ml-2"></i>تطوير مخصص</li>
+                            <li><i class="fas fa-check text-green-500 ml-2"></i>تكامل مع الأنظمة</li>
+                            <li><i class="fas fa-check text-green-500 ml-2"></i>أمان متقدم</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center">
+                <button @click="selectedService = 'web'; showModal = true" 
+                        class="bg-blue-600 text-white px-8 py-4 rounded-full font-semibold hover:bg-blue-700 transition-all text-lg shadow-lg">
+                    <i class="fas fa-rocket ml-2"></i>
+                    ابدأ مشروع الويب الآن
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- خدمات تطبيقات الجوال -->
+    <section x-show="activeService === 'all' || activeService === 'mobile'" x-transition class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 mb-4">
+                    <i class="fas fa-mobile-alt text-green-600 ml-4 icon-glow"></i>
+                    تطبيقات الجوال الذكية
+                </h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">تطبيقات جوال متطورة لنظامي iOS و Android مع تجربة مستخدم استثنائية</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-16">
+                <div>
+                    <h3 class="text-3xl font-bold text-gray-900 mb-6">تطبيقات أصلية وهجينة</h3>
+                    <div class="space-y-6">
+                        <div class="flex items-start space-x-4 space-x-reverse">
+                            <div class="flex-shrink-0">
+                                <div class="bg-blue-100 w-12 h-12 rounded-full flex items-center justify-center">
+                                    <i class="fab fa-apple text-blue-600 text-xl"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-semibold text-gray-900">تطبيقات iOS</h4>
+                                <p class="text-gray-600">تطبيقات أصلية لأجهزة iPhone و iPad بأعلى معايير الجودة</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start space-x-4 space-x-reverse">
+                            <div class="flex-shrink-0">
+                                <div class="bg-green-100 w-12 h-12 rounded-full flex items-center justify-center">
+                                    <i class="fab fa-android text-green-600 text-xl"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-semibold text-gray-900">تطبيقات Android</h4>
+                                <p class="text-gray-600">تطبيقات محسنة لنظام Android مع أداء متفوق</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start space-x-4 space-x-reverse">
+                            <div class="flex-shrink-0">
+                                <div class="bg-purple-100 w-12 h-12 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-sync-alt text-purple-600 text-xl"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-semibold text-gray-900">تطبيقات هجينة</h4>
+                                <p class="text-gray-600">حلول فعالة من حيث التكلفة تعمل على المنصتين</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-6">
+                    <div class="service-card bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-2xl text-center">
+                        <i class="fas fa-users text-blue-600 text-3xl mb-4"></i>
+                        <h4 class="font-semibold text-gray-900 mb-2">تطبيقات اجتماعية</h4>
+                        <p class="text-sm text-gray-600">منصات تفاعلية ومجتمعات رقمية</p>
+                    </div>
+
+                    <div class="service-card bg-gradient-to-br from-green-50 to-green-100 p-6 rounded-2xl text-center">
+                        <i class="fas fa-gamepad text-green-600 text-3xl mb-4"></i>
+                        <h4 class="font-semibold text-gray-900 mb-2">تطبيقات الألعاب</h4>
+                        <p class="text-sm text-gray-600">ألعاب تفاعلية وممتعة</p>
+                    </div>
+
+                    <div class="service-card bg-gradient-to-br from-purple-50 to-purple-100 p-6 rounded-2xl text-center">
+                        <i class="fas fa-briefcase text-purple-600 text-3xl mb-4"></i>
+                        <h4 class="font-semibold text-gray-900 mb-2">تطبيقات أعمال</h4>
+                        <p class="text-sm text-gray-600">حلول مؤسسية متقدمة</p>
+                    </div>
+
+                    <div class="service-card bg-gradient-to-br from-red-50 to-red-100 p-6 rounded-2xl text-center">
+                        <i class="fas fa-heart text-red-600 text-3xl mb-4"></i>
+                        <h4 class="font-semibold text-gray-900 mb-2">تطبيقات صحية</h4>
+                        <p class="text-sm text-gray-600">تطبيقات اللياقة والصحة</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center">
+                <button @click="selectedService = 'mobile'; showModal = true" 
+                        class="bg-green-600 text-white px-8 py-4 rounded-full font-semibold hover:bg-green-700 transition-all text-lg shadow-lg">
+                    <i class="fas fa-mobile-alt ml-2"></i>
+                    ابدأ تطبيق الجوال الآن
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- خدمات الذكاء الاصطناعي -->
+    <section x-show="activeService === 'all' || activeService === 'ai'" x-transition class="py-20 bg-gray-900 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4">
+                    <i class="fas fa-brain text-blue-400 ml-4 icon-glow"></i>
+                    حلول الذكاء الاصطناعي
+                </h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">تقنيات ذكاء اصطناعي متطورة لتحسين أعمالك وأتمتة العمليات</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+                <div class="service-card bg-gray-800 p-6 rounded-2xl text-center border border-gray-700">
+                    <i class="fas fa-robot text-blue-400 text-4xl mb-4"></i>
+                    <h3 class="text-lg font-semibold mb-3">روبوتات الدردشة</h3>
+                    <p class="text-gray-400 text-sm">مساعدين أذكياء للتفاعل مع العملاء</p>
+                </div>
+
+                <div class="service-card bg-gray-800 p-6 rounded-2xl text-center border border-gray-700">
+                    <i class="fas fa-eye text-green-400 text-4xl mb-4"></i>
+                    <h3 class="text-lg font-semibold mb-3">رؤية الحاسوب</h3>
+                    <p class="text-gray-400 text-sm">تحليل وفهم الصور والفيديوهات</p>
+                </div>
+
+                <div class="service-card bg-gray-800 p-6 rounded-2xl text-center border border-gray-700">
+                    <i class="fas fa-language text-purple-400 text-4xl mb-4"></i>
+                    <h3 class="text-lg font-semibold mb-3">معالجة اللغة</h3>
+                    <p class="text-gray-400 text-sm">فهم وتحليل النصوص والمحتوى</p>
+                </div>
+
+                <div class="service-card bg-gray-800 p-6 rounded-2xl text-center border border-gray-700">
+                    <i class="fas fa-chart-line text-red-400 text-4xl mb-4"></i>
+                    <h3 class="text-lg font-semibold mb-3">التعلم الآلي</h3>
+                    <p class="text-gray-400 text-sm">نماذج ذكية للتنبؤ والتحليل</p>
+                </div>
+            </div>
+
+            <div class="bg-gradient-to-r from-blue-600 to-purple-600 rounded-3xl p-8 mb-12">
+                <div class="text-center">
+                    <h3 class="text-2xl font-bold mb-4">Dr X - مساعدك الذكي</h3>
+                    <p class="text-lg mb-6">تجربة دردشة متطورة مع ذكاء اصطناعي متقدم باستخدام أحدث التقنيات</p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                        <div class="bg-white bg-opacity-20 p-4 rounded-xl">
+                            <i class="fas fa-comments text-white text-2xl mb-2"></i>
+                            <h4 class="font-semibold">محادثات طبيعية</h4>
+                        </div>
+                        <div class="bg-white bg-opacity-20 p-4 rounded-xl">
+                            <i class="fas fa-lightbulb text-white text-2xl mb-2"></i>
+                            <h4 class="font-semibold">حلول ذكية</h4>
+                        </div>
+                        <div class="bg-white bg-opacity-20 p-4 rounded-xl">
+                            <i class="fas fa-clock text-white text-2xl mb-2"></i>
+                            <h4 class="font-semibold">متاح 24/7</h4>
+                        </div>
+                    </div>
+                    <a href="#chat" class="bg-white text-blue-600 px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition-all inline-block">
+                        جرب Dr X الآن
+                    </a>
+                </div>
+            </div>
+
+            <div class="text-center">
+                <button @click="selectedService = 'ai'; showModal = true" 
+                        class="bg-blue-600 text-white px-8 py-4 rounded-full font-semibold hover:bg-blue-700 transition-all text-lg shadow-lg">
+                    <i class="fas fa-brain ml-2"></i>
+                    استكشف حلول الذكاء الاصطناعي
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- خدمات الحلول السحابية -->
+    <section x-show="activeService === 'all' || activeService === 'cloud'" x-transition class="py-20 bg-gradient-to-br from-blue-50 to-indigo-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 mb-4">
+                    <i class="fas fa-cloud text-blue-600 ml-4 icon-glow"></i>
+                    الحلول السحابية المتقدمة
+                </h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">بنية تحتية سحابية قابلة للتطوير مع أمان وموثوقية عاليين</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+                <div class="service-card bg-white p-8 rounded-2xl shadow-lg border-t-4 border-blue-500">
+                    <div class="text-center">
+                        <i class="fas fa-server text-blue-600 text-4xl mb-4"></i>
+                        <h3 class="text-xl font-semibold mb-4">خوادم سحابية</h3>
+                        <p class="text-gray-600 mb-4">خوادم عالية الأداء مع إمكانية التطوير الفوري</p>
+                        <div class="space-y-2 text-sm text-gray-500">
+                            <div><i class="fas fa-check text-green-500 ml-2"></i>أداء عالي ومستقر</div>
+                            <div><i class="fas fa-check text-green-500 ml-2"></i>نسخ احتياطية تلقائية</div>
+                            <div><i class="fas fa-check text-green-500 ml-2"></i>مراقبة مستمرة</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="service-card bg-white p-8 rounded-2xl shadow-lg border-t-4 border-green-500">
+                    <div class="text-center">
+                        <i class="fas fa-database text-green-600 text-4xl mb-4"></i>
+                        <h3 class="text-xl font-semibold mb-4">قواعد البيانات</h3>
+                        <p class="text-gray-600 mb-4">إدارة وحماية بياناتك مع إمكانية الوصول السريع</p>
+                        <div class="space-y-2 text-sm text-gray-500">
+                            <div><i class="fas fa-check text-green-500 ml-2"></i>حماية متقدمة</div>
+                            <div><i class="fas fa-check text-green-500 ml-2"></i>استرداد سريع</div>
+                            <div><i class="fas fa-check text-green-500 ml-2"></i>تحليلات فورية</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="service-card bg-white p-8 rounded-2xl shadow-lg border-t-4 border-purple-500">
+                    <div class="text-center">
+                        <i class="fas fa-shield-alt text-purple-600 text-4xl mb-4"></i>
+                        <h3 class="text-xl font-semibold mb-4">الأمان السيبراني</h3>
+                        <p class="text-gray-600 mb-4">حماية شاملة ضد التهديدات الإلكترونية</p>
+                        <div class="space-y-2 text-sm text-gray-500">
+                            <div><i class="fas fa-check text-green-500 ml-2"></i>تشفير متقدم</div>
+                            <div><i class="fas fa-check text-green-500 ml-2"></i>رصد التهديدات</div>
+                            <div><i class="fas fa-check text-green-500 ml-2"></i>استجابة سريعة</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-xl p-8 mb-12">
+                <div class="text-center mb-8">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">مزايا الحلول السحابية</h3>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="text-center">
+                        <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-expand-arrows-alt text-blue-600 text-2xl"></i>
+                        </div>
+                        <h4 class="font-semibold text-gray-900 mb-2">قابلية التطوير</h4>
+                        <p class="text-sm text-gray-600">توسع مع نمو عملك</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-dollar-sign text-green-600 text-2xl"></i>
+                        </div>
+                        <h4 class="font-semibold text-gray-900 mb-2">توفير التكلفة</h4>
+                        <p class="text-sm text-gray-600">ادفع مقابل ما تستخدم فقط</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-globe text-purple-600 text-2xl"></i>
+                        </div>
+                        <h4 class="font-semibold text-gray-900 mb-2">وصول عالمي</h4>
+                        <p class="text-sm text-gray-600">خدماتك متاحة في كل مكان</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="bg-red-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-lock text-red-600 text-2xl"></i>
+                        </div>
+                        <h4 class="font-semibold text-gray-900 mb-2">أمان عالي</h4>
+                        <p class="text-sm text-gray-600">حماية بمعايير عالمية</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center">
+                <button @click="selectedService = 'cloud'; showModal = true" 
+                        class="bg-blue-600 text-white px-8 py-4 rounded-full font-semibold hover:bg-blue-700 transition-all text-lg shadow-lg">
+                    <i class="fas fa-cloud ml-2"></i>
+                    احصل على حل سحابي مخصص
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- قسم الإحصائيات -->
+    <section class="py-20 bg-gray-900 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4">إنجازاتنا بالأرقام</h2>
+                <p class="text-xl text-gray-300">نفخر بثقة عملائنا ونجاح مشاريعنا</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="text-center">
+                    <div class="text-5xl font-bold text-blue-400 mb-2">500+</div>
+                    <div class="text-gray-300">مشروع مكتمل</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-5xl font-bold text-green-400 mb-2">250+</div>
+                    <div class="text-gray-300">عميل راضي</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-5xl font-bold text-purple-400 mb-2">5+</div>
+                    <div class="text-gray-300">سنوات خبرة</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-5xl font-bold text-red-400 mb-2">24/7</div>
+                    <div class="text-gray-300">دعم مستمر</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- قسم الشهادات -->
+    <section class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 mb-4">ماذا يقول عملاؤنا</h2>
+                <p class="text-xl text-gray-600">شهادات حقيقية من عملائنا السعداء</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-gray-50 p-8 rounded-2xl">
+                    <div class="flex items-center mb-4">
+                        <div class="flex text-yellow-400">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-6">"خدمة استثنائية وتطوير احترافي. فريق Dr X تجاوز توقعاتنا في تطوير متجرنا الإلكتروني."</p>
+                    <div class="flex items-center">
+                        <div class="bg-blue-100 w-12 h-12 rounded-full flex items-center justify-center ml-4">
+                            <i class="fas fa-user text-blue-600"></i>
+                        </div>
+                        <div>
+                            <div class="font-semibold text-gray-900">أحمد محمد</div>
+                            <div class="text-sm text-gray-500">مدير شركة تجارية</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-50 p-8 rounded-2xl">
+                    <div class="flex items-center mb-4">
+                        <div class="flex text-yellow-400">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-6">"تطبيق الجوال الذي طوروه لنا أحدث نقلة نوعية في خدماتنا. فريق محترف ومتعاون."</p>
+                    <div class="flex items-center">
+                        <div class="bg-green-100 w-12 h-12 rounded-full flex items-center justify-center ml-4">
+                            <i class="fas fa-user text-green-600"></i>
+                        </div>
+                        <div>
+                            <div class="font-semibold text-gray-900">سارة أحمد</div>
+                            <div class="text-sm text-gray-500">مؤسسة مشروع تقني</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-50 p-8 rounded-2xl">
+                    <div class="flex items-center mb-4">
+                        <div class="flex text-yellow-400">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-6">"حلول الذكاء الاصطناعي التي قدموها عززت من كفاءة أعمالنا بشكل كبير. ننصح بهم بقوة."</p>
+                    <div class="flex items-center">
+                        <div class="bg-purple-100 w-12 h-12 rounded-full flex items-center justify-center ml-4">
+                            <i class="fas fa-user text-purple-600"></i>
+                        </div>
+                        <div>
+                            <div class="font-semibold text-gray-900">خالد العلي</div>
+                            <div class="text-sm text-gray-500">مدير تقنية المعلومات</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- نموذج الاتصال السريع -->
+    <div x-show="showModal" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 z-50 overflow-y-auto" style="display: none;">
+        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" @click="showModal = false"></div>
+            
+            <div class="inline-block align-bottom bg-white rounded-lg text-right overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="sm:flex sm:items-start">
+                        <div class="w-full">
+                            <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">
+                                <i class="fas fa-paper-plane text-blue-600 ml-2"></i>
+                                اطلب خدمة <span x-text="selectedService === 'web' ? 'تطوير الويب' : selectedService === 'mobile' ? 'تطبيقات الجوال' : selectedService === 'ai' ? 'الذكاء الاصطناعي' : 'الحلول السحابية'"></span>
+                            </h3>
+                            
+                            <form @submit.prevent="isLoading = true; setTimeout(() => { isLoading = false; showModal = false; alert('تم إرسال طلبك بنجاح! سنتواصل معك قريباً.'); }, 2000)">
+                                <div class="space-y-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">الاسم الكامل</label>
+                                        <input type="text" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    </div>
+                                    
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">البريد الإلكتروني</label>
+                                        <input type="email" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    </div>
+                                    
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">رقم الهاتف</label>
+                                        <input type="tel" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    </div>
+                                    
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">تفاصيل المشروع</label>
+                                        <textarea rows="4" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="اشرح لنا متطلبات مشروعك..."></textarea>
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-6 flex justify-between">
+                                    <button type="button" @click="showModal = false" class="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400 transition-colors">
+                                        إلغاء
+                                    </button>
+                                    <button type="submit" :disabled="isLoading" class="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition-colors disabled:opacity-50">
+                                        <span x-show="!isLoading">إرسال الطلب</span>
+                                        <span x-show="isLoading" class="flex items-center">
+                                            <i class="fas fa-spinner fa-spin ml-2"></i>
+                                            جاري الإرسال...
+                                        </span>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- تذييل الصفحة -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">
+                        <i class="fas fa-brain text-blue-400 ml-2"></i>
+                        Dr X
+                    </h3>
+                    <p class="text-gray-300 mb-4">شريكك في التحول الرقمي مع أحدث تقنيات الذكاء الاصطناعي</p>
+                    <div class="flex space-x-4 space-x-reverse">
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <i class="fab fa-twitter text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <i class="fab fa-linkedin text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <i class="fab fa-github text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">خدماتنا</h4>
+                    <ul class="space-y-2 text-gray-300">
+                        <li><a href="#" class="hover:text-white transition-colors">تطوير الويب</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">تطبيقات الجوال</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">الذكاء الاصطناعي</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">الحلول السحابية</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">الشركة</h4>
+                    <ul class="space-y-2 text-gray-300">
+                        <li><a href="#" class="hover:text-white transition-colors">من نحن</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">أعمالنا</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">فريق العمل</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">المدونة</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">تواصل معنا</h4>
+                    <ul class="space-y-2 text-gray-300">
+                        <li class="flex items-center">
+                            <i class="fas fa-envelope ml-2"></i>
+                            info@drx.com
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-phone ml-2"></i>
+                            +966 50 123 4567
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-map-marker-alt ml-2"></i>
+                            الرياض، المملكة العربية السعودية
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2025 Dr X. جميع الحقوق محفوظة لعبدالعزيز الحمداني.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // تحسين الأداء والتفاعل
+        document.addEventListener('DOMContentLoaded', function() {
+            // تأثير التمرير السلس
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+
+            // تأثير ظهور العناصر عند التمرير
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+
+            // تطبيق المراقب على جميع البطاقات
+            document.querySelectorAll('.service-card').forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+                card.style.transition = 'all 0.6s ease';
+                observer.observe(card);
+            });
+        });
+    </script>
+</body>
+</html>
+    <script id="html_badge_script1">
+        window.__genspark_remove_badge_link = "https://www.genspark.ai/api/html_badge/" +
+            "remove_badge?token=To%2FBnjzloZ3UfQdcSaYfDr9a%2BJfgl0gUEpr7ZE09vL6otmg70nv6FpiWoNymp68JYFrCE3I07Z1V8GdstsqE6xS%2FWI5khGy%2BrEWqDpi1ODz1ncjllspXl4du3ay4JS0yV3RZ2I2L4sCQaqXFPWebdyH%2FcbgdD6dHLPmxhFa7GZo4CxkVai38Dzf1yyviyHEBySe8dQEysi2bdzyfEsRaUv%2BaP89zt0%2Bo9p5O9fcFikU7jWbuPNMh9T6kn%2FO8B%2Bc0i6rFO1OAJoMcbLy5gobtf79hJSueMXNifC8nSxaivOi3qQfkbeCx7V2v8NgJFOFl7Oc19Y4JV8QnRLiSmOHjfk5N7i4VrrmGZi66SAqF0LiKBgUGJHjLyIiA%2BRh7DZLtV1W2Q9vnHMuG8Cl7RrF0GLc7JGhi2uK9j4%2FndslAI6jjm9qi5ChXrJrB2QviKJsgUkgiK1jwlSgSSzVuH3QLweTY11osTJo0UAMV%2BAMprPYDvXGB1rsI2ifxAZE5GpppBrNc4GFjZUaVXn%2BCLwwWWQ%3D%3D";
+        window.__genspark_locale = "en-US";
+        window.__genspark_token = "To/BnjzloZ3UfQdcSaYfDr9a+Jfgl0gUEpr7ZE09vL6otmg70nv6FpiWoNymp68JYFrCE3I07Z1V8GdstsqE6xS/WI5khGy+rEWqDpi1ODz1ncjllspXl4du3ay4JS0yV3RZ2I2L4sCQaqXFPWebdyH/cbgdD6dHLPmxhFa7GZo4CxkVai38Dzf1yyviyHEBySe8dQEysi2bdzyfEsRaUv+aP89zt0+o9p5O9fcFikU7jWbuPNMh9T6kn/O8B+c0i6rFO1OAJoMcbLy5gobtf79hJSueMXNifC8nSxaivOi3qQfkbeCx7V2v8NgJFOFl7Oc19Y4JV8QnRLiSmOHjfk5N7i4VrrmGZi66SAqF0LiKBgUGJHjLyIiA+Rh7DZLtV1W2Q9vnHMuG8Cl7RrF0GLc7JGhi2uK9j4/ndslAI6jjm9qi5ChXrJrB2QviKJsgUkgiK1jwlSgSSzVuH3QLweTY11osTJo0UAMV+AMprPYDvXGB1rsI2ifxAZE5GpppBrNc4GFjZUaVXn+CLwwWWQ==";
+    </script>
+    
+        <script id="html_badge_script2" src="https://www.genspark.ai/html_badge.js"></script>
+        
+    <script id="html_notice_dialog_script" src="https://www.genspark.ai/notice_dialog.js"></script>
+    
