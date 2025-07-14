@@ -3,1036 +3,593 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dr X - المشروع المتكامل للذكاء الاصطناعي</title>
+    <title>Dr X - مساعد الذكاء الاصطناعي</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        body { 
-            font-family: 'Inter', sans-serif; 
-            scroll-behavior: smooth;
+        * {
+            font-family: 'Cairo', sans-serif;
         }
-        .gradient-bg { 
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
-        }
-        .glass-effect { 
-            backdrop-filter: blur(16px) saturate(180%); 
-            background-color: rgba(17, 25, 40, 0.75); 
-            border: 1px solid rgba(255, 255, 255, 0.125); 
-        }
-        .animate-float { 
-            animation: float 6s ease-in-out infinite; 
-        }
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
-        }
-        .animate-pulse-slow { 
-            animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite; 
-        }
-        .animate-bounce-slow { 
-            animation: bounce 2s infinite; 
-        }
-        .fade-in { 
-            animation: fadeIn 0.8s ease-in; 
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Chat Styles */
-        .chat-gradient {
+        
+        body {
             background: radial-gradient(ellipse at center, #1a0000 0%, #000000 70%);
-        }
-        .chat-container {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
+            color: white;
+            overflow-x: hidden;
             position: relative;
         }
-        .status-bar {
-            background: linear-gradient(135deg, #FF6B6B, #FF8E53);
-            padding: 12px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 14px;
-            font-weight: 600;
-        }
-        .chat-header {
-            background: rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(10px);
-            padding: 20px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .avatar {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #FF6B6B, #FF8E53);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            font-weight: bold;
-            color: white;
-            position: relative;
-            overflow: hidden;
-        }
-        .avatar::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            animation: shine 3s infinite;
-        }
-        @keyframes shine {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        .chat-messages {
-            flex: 1;
-            padding: 20px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        .message {
-            max-width: 80%;
-            padding: 12px 16px;
-            border-radius: 18px;
-            font-size: 16px;
-            line-height: 1.4;
-            animation: slideIn 0.3s ease-out;
-        }
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .message.user {
-            background: linear-gradient(135deg, #007AFF, #5856D6);
-            color: white;
-            align-self: flex-end;
-            margin-left: auto;
-        }
-        .message.assistant {
-            background: rgba(255, 255, 255, 0.1);
-            color: #E5E5E7;
-            align-self: flex-start;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        .input-container {
-            background: rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(10px);
-            padding: 20px;
-            display: flex;
-            gap: 12px;
-            align-items: center;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .message-input {
-            flex: 1;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 25px;
-            padding: 12px 20px;
-            color: white;
-            font-size: 16px;
-            outline: none;
-            transition: all 0.3s ease;
-        }
-        .message-input::placeholder {
-            color: rgba(255, 255, 255, 0.6);
-        }
-        .message-input:focus {
-            border-color: #007AFF;
-            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
-        }
-        .send-button {
-            background: linear-gradient(135deg, #007AFF, #5856D6);
-            border: none;
-            border-radius: 50%;
-            width: 45px;
-            height: 45px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            color: white;
-        }
-        .send-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 5px 15px rgba(0, 122, 255, 0.4);
-        }
-        .send-button:active {
-            transform: scale(0.95);
-        }
-
-        /* Fire Animation */
+        
         .background-flames {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            pointer-events: none;
-            z-index: 0;
+            z-index: -1;
+            overflow: hidden;
         }
+        
         .flame-particle {
             position: absolute;
-            width: 4px;
-            height: 4px;
-            background: radial-gradient(circle, #ff4500, #ff6500, transparent);
+            width: 3px;
+            height: 3px;
+            background: radial-gradient(circle, #ff6b35, #f7931e);
             border-radius: 50%;
-            animation: flame-rise 3s linear infinite;
+            animation: float-up linear infinite;
+            opacity: 0.8;
         }
-        @keyframes flame-rise {
+        
+        @keyframes float-up {
             0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
                 opacity: 1;
-                transform: translateY(0) scale(1);
+            }
+            90% {
+                opacity: 1;
             }
             100% {
+                transform: translateY(-100px) rotate(360deg);
                 opacity: 0;
-                transform: translateY(-100vh) scale(0.5);
             }
         }
-
-        /* Services Cards */
-        .service-card {
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        
+        .chat-container {
+            backdrop-filter: blur(20px);
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+        }
+        
+        .message-bubble {
+            animation: slideIn 0.3s ease-out;
+            max-width: 85%;
+            word-wrap: break-word;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .user-message {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin-left: auto;
+            border-radius: 20px 20px 5px 20px;
+        }
+        
+        .bot-message {
+            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+            margin-right: auto;
+            border-radius: 20px 20px 20px 5px;
+        }
+        
+        .typing-indicator {
+            display: none;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: #ff6b35;
+            border-radius: 50%;
+            animation: typing 1.4s infinite;
+        }
+        
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        @keyframes typing {
+            0%, 60%, 100% {
+                transform: translateY(0);
+                opacity: 0.4;
+            }
+            30% {
+                transform: translateY(-10px);
+                opacity: 1;
+            }
+        }
+        
+        .input-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .send-button {
+            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
             transition: all 0.3s ease;
-            border: 1px solid rgba(0, 0, 0, 0.05);
         }
-        .service-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+        
+        .send-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(255, 107, 53, 0.3);
         }
-
-        /* Analytics Charts */
-        .chart-container {
-            background: white;
+        
+        .ai-status {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 255, 0, 0.2);
+            border: 1px solid rgba(0, 255, 0, 0.5);
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #00ff00;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.5;
+                transform: scale(1.2);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        .model-selector {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .model-option {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            padding: 8px 12px;
+            margin: 5px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .model-option:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .model-option.active {
+            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+            border-color: #ff6b35;
+        }
+        
+        .feature-panel {
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 15px;
             padding: 20px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-            margin-bottom: 30px;
+            margin: 20px 0;
         }
-
-        /* Navigation Active State */
-        .nav-link.active {
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 5px;
+        
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
         }
-
-        /* Hidden Sections */
-        .section {
-            display: none;
-        }
-        .section.active {
-            display: block;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .message {
-                max-width: 90%;
-            }
-            .chat-header {
-                padding: 15px;
-            }
-            .input-container {
-                padding: 15px;
-            }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff6b35, #f7931e);
+            transition: width 0.3s ease;
+            width: 0%;
         }
     </style>
 </head>
-<body class="bg-gray-50" x-data="{ 
-    currentSection: 'home',
-    isMenuOpen: false,
-    showSection(section) {
-        this.currentSection = section;
-        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-        document.getElementById(section).classList.add('active');
-        document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
-        document.querySelector(`[data-section='${section}']`).classList.add('active');
-        this.isMenuOpen = false;
-    }
-}">
-
-    <!-- Navigation -->
-    <nav class="fixed w-full z-50 glass-effect">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16">
-                <div class="flex items-center">
-                    <div class="flex-shrink-0">
-                        <h1 class="text-white text-xl font-bold">Dr X</h1>
-                    </div>
+<body>
+    <!-- خلفية النار المتحركة -->
+    <div class="background-flames" id="backgroundFlames"></div>
+    
+    <!-- حالة الذكاء الاصطناعي -->
+    <div class="ai-status">
+        <div class="status-dot"></div>
+        <span>Dr X متصل</span>
+    </div>
+    
+    <!-- الحاوية الرئيسية -->
+    <div class="min-h-screen flex flex-col items-center justify-center p-4">
+        <div class="w-full max-w-4xl h-screen flex flex-col">
+            <!-- رأس الدردشة -->
+            <div class="chat-container rounded-t-2xl p-6 flex-shrink-0">
+                <div class="text-center mb-6">
+                    <h1 class="text-4xl font-bold mb-2">
+                        <i class="fas fa-robot text-red-500 mr-3"></i>
+                        Dr X - مساعد الذكاء الاصطناعي
+                    </h1>
+                    <p class="text-gray-300">مساعدك الذكي المتطور - مدعوم بأحدث تقنيات الذكاء الاصطناعي</p>
                 </div>
-                <div class="hidden md:block">
-                    <div class="ml-10 flex items-baseline space-x-4">
-                        <a href="#" @click="showSection('home')" data-section="home" class="nav-link active text-white hover:text-blue-300 px-3 py-2 rounded-md text-sm font-medium transition-colors">الرئيسية</a>
-                        <a href="#" @click="showSection('about')" data-section="about" class="nav-link text-white hover:text-blue-300 px-3 py-2 rounded-md text-sm font-medium transition-colors">من نحن</a>
-                        <a href="#" @click="showSection('services')" data-section="services" class="nav-link text-white hover:text-blue-300 px-3 py-2 rounded-md text-sm font-medium transition-colors">الخدمات</a>
-                        <a href="#" @click="showSection('portfolio')" data-section="portfolio" class="nav-link text-white hover:text-blue-300 px-3 py-2 rounded-md text-sm font-medium transition-colors">أعمالنا</a>
-                        <a href="#" @click="showSection('analytics')" data-section="analytics" class="nav-link text-white hover:text-blue-300 px-3 py-2 rounded-md text-sm font-medium transition-colors">التحليلات</a>
-                        <a href="#" @click="showSection('contact')" data-section="contact" class="nav-link text-white hover:text-blue-300 px-3 py-2 rounded-md text-sm font-medium transition-colors">اتصل بنا</a>
-                        <a href="#" @click="showSection('chat')" data-section="chat" class="bg-red-600 text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-red-700 transition-colors">
-                            دردش مع د. إكس <i class="fas fa-comment ml-2"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="md:hidden">
-                    <button @click="isMenuOpen = !isMenuOpen" class="text-white hover:text-blue-300 focus:outline-none">
-                        <i class="fas fa-bars text-xl"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-        <div x-show="isMenuOpen" class="md:hidden glass-effect">
-            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                <a href="#" @click="showSection('home')" class="text-white hover:text-blue-300 block px-3 py-2 rounded-md text-base font-medium">الرئيسية</a>
-                <a href="#" @click="showSection('about')" class="text-white hover:text-blue-300 block px-3 py-2 rounded-md text-base font-medium">من نحن</a>
-                <a href="#" @click="showSection('services')" class="text-white hover:text-blue-300 block px-3 py-2 rounded-md text-base font-medium">الخدمات</a>
-                <a href="#" @click="showSection('portfolio')" class="text-white hover:text-blue-300 block px-3 py-2 rounded-md text-base font-medium">أعمالنا</a>
-                <a href="#" @click="showSection('analytics')" class="text-white hover:text-blue-300 block px-3 py-2 rounded-md text-base font-medium">التحليلات</a>
-                <a href="#" @click="showSection('contact')" class="text-white hover:text-blue-300 block px-3 py-2 rounded-md text-base font-medium">اتصل بنا</a>
-                <a href="#" @click="showSection('chat')" class="bg-red-600 text-white block px-3 py-2 rounded-md text-base font-medium text-center">دردش مع د. إكس</a>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Home Section -->
-    <section id="home" class="section active gradient-bg min-h-screen flex items-center justify-center relative overflow-hidden">
-        <div class="absolute inset-0 overflow-hidden">
-            <div class="absolute -top-40 -right-40 w-80 h-80 bg-purple-500 rounded-full opacity-20 animate-pulse-slow"></div>
-            <div class="absolute -bottom-40 -left-40 w-96 h-96 bg-blue-500 rounded-full opacity-20 animate-bounce-slow"></div>
-        </div>
-        <div class="relative z-10 text-center text-white px-4">
-            <div class="animate-float mb-8">
-                <i class="fas fa-robot text-6xl md:text-8xl text-yellow-400 mb-6"></i>
-            </div>
-            <h1 class="text-5xl md:text-7xl font-bold mb-6 fade-in">مرحباً بك في Dr X</h1>
-            <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto fade-in">مساعد الذكاء الاصطناعي المتقدم الذي يحول أفكارك إلى واقع رقمي</p>
-            <div class="space-x-4 fade-in">
-                <button @click="showSection('chat')" class="bg-red-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-red-700 transition-all transform hover:scale-105">
-                    ابدأ المحادثة <i class="fas fa-arrow-left mr-2"></i>
-                </button>
-                <button @click="showSection('services')" class="bg-transparent border-2 border-white text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-white hover:text-blue-600 transition-all">
-                    اكتشف خدماتنا
-                </button>
-            </div>
-        </div>
-    </section>
-
-    <!-- About Section -->
-    <section id="about" class="section py-20 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-900 mb-4">من نحن</h2>
-                <p class="text-xl text-gray-600 max-w-3xl mx-auto">نحن متخصصون في إنشاء تجارب رقمية استثنائية تحقق النتائج وتتجاوز التوقعات</p>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="text-center p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
-                    <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <i class="fas fa-lightbulb text-blue-600 text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-3">الابتكار</h3>
-                    <p class="text-gray-600">حلول متطورة تدفع حدود الممكن إلى الأمام</p>
-                </div>
-                <div class="text-center p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
-                    <div class="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <i class="fas fa-users text-green-600 text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-3">التعاون</h3>
-                    <p class="text-gray-600">العمل معاً لتحقيق نتائج استثنائية</p>
-                </div>
-                <div class="text-center p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
-                    <div class="bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <i class="fas fa-award text-purple-600 text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-3">التميز</h3>
-                    <p class="text-gray-600">ملتزمون بتقديم أعلى جودة في كل ما نقوم به</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Services Section -->
-    <section id="services" class="section py-20 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-900 mb-4">خدماتنا المتكاملة</h2>
-                <p class="text-xl text-gray-600 max-w-3xl mx-auto">حلول ذكية تلبي جميع احتياجاتك الرقمية</p>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <div class="service-card text-center">
-                    <i class="fas fa-code text-4xl text-blue-600 mb-4"></i>
-                    <h3 class="text-xl font-semibold mb-3">تطوير الويب</h3>
-                    <p class="text-gray-600 mb-4">مواقع وتطبيقات ويب مخصصة باستخدام أحدث التقنيات</p>
-                    <ul class="text-sm text-gray-500 text-right">
-                        <li>• تصميم متجاوب</li>
-                        <li>• أداء سريع</li>
-                        <li>• تحسين محركات البحث</li>
-                        <li>• أمان متقدم</li>
-                    </ul>
-                </div>
-                <div class="service-card text-center">
-                    <i class="fas fa-mobile-alt text-4xl text-green-600 mb-4"></i>
-                    <h3 class="text-xl font-semibold mb-3">تطبيقات الجوال</h3>
-                    <p class="text-gray-600 mb-4">تطبيقات iOS و Android احترافية</p>
-                    <ul class="text-sm text-gray-500 text-right">
-                        <li>• تطبيقات أصلية</li>
-                        <li>• تطبيقات هجينة</li>
-                        <li>• واجهات مستخدم متميزة</li>
-                        <li>• تحديثات مستمرة</li>
-                    </ul>
-                </div>
-                <div class="service-card text-center">
-                    <i class="fas fa-chart-line text-4xl text-purple-600 mb-4"></i>
-                    <h3 class="text-xl font-semibold mb-3">التحليلات</h3>
-                    <p class="text-gray-600 mb-4">رؤى تعتمد على البيانات لاتخاذ قرارات مدروسة</p>
-                    <ul class="text-sm text-gray-500 text-right">
-                        <li>• تحليل البيانات</li>
-                        <li>• تقارير تفاعلية</li>
-                        <li>• ذكاء اصطناعي</li>
-                        <li>• توقعات مستقبلية</li>
-                    </ul>
-                </div>
-                <div class="service-card text-center">
-                    <i class="fas fa-cloud text-4xl text-red-600 mb-4"></i>
-                    <h3 class="text-xl font-semibold mb-3">حلول السحابة</h3>
-                    <p class="text-gray-600 mb-4">بنية تحتية قابلة للتطوير وآمنة</p>
-                    <ul class="text-sm text-gray-500 text-right">
-                        <li>• استضافة سحابية</li>
-                        <li>• نسخ احتياطية</li>
-                        <li>• حماية البيانات</li>
-                        <li>• مراقبة مستمرة</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Portfolio Section -->
-    <section id="portfolio" class="section py-20 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-900 mb-4">معرض أعمالنا</h2>
-                <p class="text-xl text-gray-600 max-w-3xl mx-auto">قصص نجاح من عملائنا</p>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
-                    <div class="h-48 bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center">
-                        <i class="fas fa-shopping-cart text-white text-4xl"></i>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-semibold mb-2">متجر إلكتروني متكامل</h3>
-                        <p class="text-gray-600 mb-4">منصة تجارة إلكترونية شاملة مع نظام دفع آمن</p>
-                        <div class="flex flex-wrap gap-2">
-                            <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-sm">React</span>
-                            <span class="bg-green-100 text-green-800 px-2 py-1 rounded text-sm">Node.js</span>
-                            <span class="bg-purple-100 text-purple-800 px-2 py-1 rounded text-sm">MongoDB</span>
+                
+                <!-- محدد النموذج -->
+                <div class="model-selector">
+                    <h3 class="text-lg font-semibold mb-3">
+                        <i class="fas fa-brain mr-2"></i>
+                        اختر نموذج الذكاء الاصطناعي:
+                    </h3>
+                    <div class="flex flex-wrap justify-center">
+                        <div class="model-option active" data-model="deepseek" onclick="selectModel('deepseek')">
+                            <i class="fas fa-search mr-2"></i>
+                            DeepSeek R1
+                        </div>
+                        <div class="model-option" data-model="huggingface" onclick="selectModel('huggingface')">
+                            <i class="fas fa-face-smile mr-2"></i>
+                            Hugging Face
                         </div>
                     </div>
                 </div>
-                <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
-                    <div class="h-48 bg-gradient-to-r from-green-500 to-blue-600 flex items-center justify-center">
-                        <i class="fas fa-hospital text-white text-4xl"></i>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-semibold mb-2">نظام إدارة مستشفى</h3>
-                        <p class="text-gray-600 mb-4">نظام شامل لإدارة المرضى والمواعيد والسجلات الطبية</p>
-                        <div class="flex flex-wrap gap-2">
-                            <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-sm">Vue.js</span>
-                            <span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded text-sm">Python</span>
-                            <span class="bg-red-100 text-red-800 px-2 py-1 rounded text-sm">PostgreSQL</span>
+                
+                <!-- لوحة الميزات -->
+                <div class="feature-panel">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+                        <div>
+                            <i class="fas fa-lightning-bolt text-yellow-400 text-2xl mb-2"></i>
+                            <p class="text-sm">استجابة فورية</p>
                         </div>
-                    </div>
-                </div>
-                <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
-                    <div class="h-48 bg-gradient-to-r from-red-500 to-pink-600 flex items-center justify-center">
-                        <i class="fas fa-graduation-cap text-white text-4xl"></i>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-semibold mb-2">منصة تعليمية تفاعلية</h3>
-                        <p class="text-gray-600 mb-4">نظام تعلم إلكتروني مع فصول افتراضية ومتابعة الطلاب</p>
-                        <div class="flex flex-wrap gap-2">
-                            <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-sm">Angular</span>
-                            <span class="bg-green-100 text-green-800 px-2 py-1 rounded text-sm">.NET Core</span>
-                            <span class="bg-purple-100 text-purple-800 px-2 py-1 rounded text-sm">SQL Server</span>
+                        <div>
+                            <i class="fas fa-language text-blue-400 text-2xl mb-2"></i>
+                            <p class="text-sm">دعم متعدد اللغات</p>
+                        </div>
+                        <div>
+                            <i class="fas fa-shield-alt text-green-400 text-2xl mb-2"></i>
+                            <p class="text-sm">آمن ومحمي</p>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <!-- Analytics Section -->
-    <section id="analytics" class="section py-20 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-900 mb-4">التحليلات والإحصائيات</h2>
-                <p class="text-xl text-gray-600 max-w-3xl mx-auto">نتائج مشاريعنا بالأرقام</p>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-                <div class="text-center p-6 bg-white rounded-lg shadow-lg">
-                    <div class="text-4xl font-bold text-blue-600 mb-2">+150</div>
-                    <div class="text-gray-600">مشروع مكتمل</div>
-                </div>
-                <div class="text-center p-6 bg-white rounded-lg shadow-lg">
-                    <div class="text-4xl font-bold text-green-600 mb-2">98%</div>
-                    <div class="text-gray-600">رضا العملاء</div>
-                </div>
-                <div class="text-center p-6 bg-white rounded-lg shadow-lg">
-                    <div class="text-4xl font-bold text-purple-600 mb-2">+50</div>
-                    <div class="text-gray-600">عميل سعيد</div>
-                </div>
-                <div class="text-center p-6 bg-white rounded-lg shadow-lg">
-                    <div class="text-4xl font-bold text-red-600 mb-2">24/7</div>
-                    <div class="text-gray-600">دعم فني</div>
-                </div>
-            </div>
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <div class="chart-container">
-                    <h3 class="text-xl font-semibold mb-4">نمو المشاريع الشهري</h3>
-                    <canvas id="projectsChart" style="height: 300px;"></canvas>
-                </div>
-                <div class="chart-container">
-                    <h3 class="text-xl font-semibold mb-4">توزيع التقنيات المستخدمة</h3>
-                    <canvas id="techChart" style="height: 300px;"></canvas>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact" class="section py-20 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-900 mb-4">اتصل بنا</h2>
-                <p class="text-xl text-gray-600 max-w-3xl mx-auto">نحن هنا لمساعدتك في تحويل أفكارك إلى واقع</p>
-            </div>
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
-                <div>
-                    <h3 class="text-2xl font-semibold mb-6">معلومات التواصل</h3>
-                    <div class="space-y-4">
-                        <div class="flex items-center">
-                            <i class="fas fa-phone text-blue-600 text-xl mr-4"></i>
-                            <div>
-                                <div class="font-semibold">الهاتف</div>
-                                <div class="text-gray-600">+966 50 123 4567</div>
-                            </div>
+            
+            <!-- منطقة الرسائل -->
+            <div class="chat-container flex-1 overflow-y-auto p-6" id="messagesContainer">
+                <!-- رسالة ترحيب -->
+                <div class="message-bubble bot-message p-4 mb-4">
+                    <div class="flex items-start gap-3">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-r from-red-500 to-orange-500 flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-robot text-white"></i>
                         </div>
-                        <div class="flex items-center">
-                            <i class="fas fa-envelope text-blue-600 text-xl mr-4"></i>
-                            <div>
-                                <div class="font-semibold">البريد الإلكتروني</div>
-                                <div class="text-gray-600">info@drx.com</div>
-                            </div>
+                        <div>
+                            <p class="font-semibold mb-1">Dr X</p>
+                            <p>مرحباً! أنا Dr X، مساعدك الذكي المتطور. كيف يمكنني مساعدتك اليوم؟</p>
                         </div>
-                        <div class="flex items-center">
-                            <i class="fas fa-map-marker-alt text-blue-600 text-xl mr-4"></i>
-                            <div>
-                                <div class="font-semibold">العنوان</div>
-                                <div class="text-gray-600">الرياض، المملكة العربية السعودية</div>
+                    </div>
+                </div>
+                
+                <!-- مؤشر الكتابة -->
+                <div class="typing-indicator message-bubble bot-message p-4 mb-4" id="typingIndicator">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-r from-red-500 to-orange-500 flex items-center justify-center">
+                            <i class="fas fa-robot text-white"></i>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span>Dr X يكتب</span>
+                            <div class="flex gap-1">
+                                <div class="typing-dot"></div>
+                                <div class="typing-dot"></div>
+                                <div class="typing-dot"></div>
                             </div>
                         </div>
                     </div>
-                    <div class="mt-8">
-                        <h4 class="text-lg font-semibold mb-4">تابعنا على</h4>
-                        <div class="flex space-x-4">
-                            <a href="#" class="text-blue-600 hover:text-blue-800 text-2xl"><i class="fab fa-twitter"></i></a>
-                            <a href="#" class="text-blue-600 hover:text-blue-800 text-2xl"><i class="fab fa-linkedin"></i></a>
-                            <a href="#" class="text-blue-600 hover:text-blue-800 text-2xl"><i class="fab fa-github"></i></a>
-                            <a href="#" class="text-blue-600 hover:text-blue-800 text-2xl"><i class="fab fa-instagram"></i></a>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <form class="space-y-6" onsubmit="handleContactForm(event)">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">الاسم</label>
-                            <input type="text" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">البريد الإلكتروني</label>
-                            <input type="email" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">الموضوع</label>
-                            <input type="text" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">الرسالة</label>
-                            <textarea rows="5" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
-                        </div>
-                        <button type="submit" class="w-full bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors">
-                            إرسال الرسالة
-                        </button>
-                    </form>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <!-- Chat Section -->
-    <section id="chat" class="section chat-gradient">
-        <div class="background-flames"></div>
-        <div class="chat-container">
-            <div class="status-bar">
-                <div class="flex items-center gap-2">
-                    <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                    <span>Dr X متصل</span>
-                </div>
-                <div class="flex items-center gap-4">
-                    <i class="fas fa-signal"></i>
-                    <i class="fas fa-wifi"></i>
-                    <i class="fas fa-battery-three-quarters"></i>
-                    <span id="currentTime"></span>
-                </div>
+            
+            <!-- شريط التقدم -->
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar"></div>
             </div>
-
-            <div class="chat-header">
-                <div class="avatar">
-                    <i class="fas fa-robot"></i>
-                </div>
-                <div>
-                    <h2 class="text-xl font-semibold">Dr X</h2>
-                    <p class="text-sm text-gray-300">مساعد الذكاء الاصطناعي المتقدم</p>
-                </div>
-                <div class="mr-auto flex gap-3">
-                    <button class="text-gray-300 hover:text-white transition-colors">
-                        <i class="fas fa-phone text-lg"></i>
+            
+            <!-- منطقة الإدخال -->
+            <div class="chat-container rounded-b-2xl p-6 flex-shrink-0">
+                <div class="input-container rounded-full p-2 flex items-center gap-3">
+                    <input 
+                        type="text" 
+                        id="messageInput" 
+                        placeholder="اكتب رسالتك هنا..." 
+                        class="flex-1 bg-transparent outline-none text-white placeholder-gray-400 px-4 py-2"
+                        onkeypress="handleKeyPress(event)"
+                    >
+                    <button 
+                        id="sendButton" 
+                        class="send-button rounded-full w-12 h-12 flex items-center justify-center text-white font-bold"
+                        onclick="sendMessage()"
+                    >
+                        <i class="fas fa-paper-plane"></i>
                     </button>
-                    <button class="text-gray-300 hover:text-white transition-colors">
-                        <i class="fas fa-video text-lg"></i>
+                </div>
+                
+                <!-- أزرار سريعة -->
+                <div class="flex flex-wrap gap-2 mt-4 justify-center">
+                    <button class="model-option text-sm" onclick="quickMessage('ما هي أحدث تقنيات الذكاء الاصطناعي؟')">
+                        تقنيات الذكاء الاصطناعي
                     </button>
-                    <button @click="showSection('home')" class="text-gray-300 hover:text-white transition-colors">
-                        <i class="fas fa-times text-lg"></i>
+                    <button class="model-option text-sm" onclick="quickMessage('اشرح لي البرمجة بطريقة بسيطة')">
+                        تعلم البرمجة
+                    </button>
+                    <button class="model-option text-sm" onclick="quickMessage('ما هي أفضل النصائح للنجاح؟')">
+                        نصائح النجاح
                     </button>
                 </div>
             </div>
-
-            <div class="chat-messages" id="chatMessages">
-                <div class="message assistant">
-                    <p>مرحباً! أنا Dr X، مساعدك الذكي المتقدم. كيف يمكنني مساعدتك اليوم؟</p>
-                </div>
-            </div>
-
-            <div class="input-container">
-                <button class="text-gray-300 hover:text-white transition-colors mr-3">
-                    <i class="fas fa-paperclip text-xl"></i>
-                </button>
-                <input type="text" class="message-input" placeholder="اكتب رسالتك هنا..." id="messageInput">
-                <button class="send-button" id="sendButton">
-                    <i class="fas fa-paper-plane"></i>
-                </button>
-            </div>
         </div>
-    </section>
+    </div>
 
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-white py-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <div>
-                    <h3 class="text-xl font-bold mb-4">Dr X</h3>
-                    <p class="text-gray-400">مساعد الذكاء الاصطناعي المتقدم الذي يحول أفكارك إلى واقع رقمي.</p>
-                </div>
-                <div>
-                    <h4 class="text-lg font-semibold mb-4">الخدمات</h4>
-                    <ul class="space-y-2 text-gray-400">
-                        <li><a href="#" class="hover:text-white">تطوير الويب</a></li>
-                        <li><a href="#" class="hover:text-white">تطبيقات الجوال</a></li>
-                        <li><a href="#" class="hover:text-white">التحليلات</a></li>
-                        <li><a href="#" class="hover:text-white">حلول السحابة</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="text-lg font-semibold mb-4">الروابط</h4>
-                    <ul class="space-y-2 text-gray-400">
-                        <li><a href="#" @click="showSection('about')" class="hover:text-white">من نحن</a></li>
-                        <li><a href="#" @click="showSection('portfolio')" class="hover:text-white">أعمالنا</a></li>
-                        <li><a href="#" @click="showSection('contact')" class="hover:text-white">اتصل بنا</a></li>
-                        <li><a href="#" class="hover:text-white">سياسة الخصوصية</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="text-lg font-semibold mb-4">النشرة الإخبارية</h4>
-                    <p class="text-gray-400 mb-4">اشترك في نشرتنا الإخبارية للحصول على آخر التحديثات.</p>
-                    <div class="flex">
-                        <input type="email" placeholder="البريد الإلكتروني" class="flex-1 px-4 py-2 bg-gray-800 border border-gray-700 rounded-r-lg focus:outline-none focus:border-blue-500">
-                        <button class="bg-blue-600 px-4 py-2 rounded-l-lg hover:bg-blue-700">اشتراك</button>
-                    </div>
-                </div>
-            </div>
-            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-                <p>&copy; 2025 جميع الحقوق محفوظة لعبدالعزيز الحمداني - Dr X. تطوير متقدم بالذكاء الاصطناعي.</p>
-            </div>
-        </div>
-    </footer>
-
-    <script>
-        // AI Integration using HuggingFace and DeepSeek
-        class AIAssistant {
-            constructor() {
-                this.apiEndpoints = {
-                    huggingface: 'https://api-inference.huggingface.co/models/microsoft/DialoGPT-medium',
-                    deepseek: 'https://api.deepseek.com/v1/chat/completions'
-                };
-                this.apiKeys = {
-                    huggingface: 'hf_your_api_key_here',
-                    deepseek: 'your_deepseek_api_key_here'
-                };
-            }
-
-            async sendMessageHuggingFace(message) {
-                try {
-                    const response = await fetch(this.apiEndpoints.huggingface, {
-                        method: 'POST',
-                        headers: {
-                            'Authorization': `Bearer ${this.apiKeys.huggingface}`,
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            inputs: message,
-                            parameters: {
-                                temperature: 1.4,
-                                max_new_tokens: 150,
-                                top_p: 0.6
-                            }
-                        })
-                    });
-                    
-                    const data = await response.json();
-                    return data.generated_text || 'عذراً، لم أتمكن من فهم طلبك. يرجى المحاولة مرة أخرى.';
-                } catch (error) {
-                    console.error('خطأ في HuggingFace API:', error);
-                    return this.getFallbackResponse(message);
-                }
-            }
-
-            async sendMessageDeepSeek(message) {
-                try {
-                    const response = await fetch(this.apiEndpoints.deepseek, {
-                        method: 'POST',
-                        headers: {
-                            'Authorization': `Bearer ${this.apiKeys.deepseek}`,
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            model: "deepseek-chat",
-                            messages: [
-                                {
-                                    role: "system",
-                                    content: "أنت Dr X، مساعد ذكي متقدم يتحدث العربية ويساعد المستخدمين في مختلف المجالات التقنية والإبداعية."
-                                },
-                                {
-                                    role: "user",
-                                    content: message
-                                }
-                            ],
-                            temperature: 0.8,
-                            max_tokens: 300
-                        })
-                    });
-                    
-                    const data = await response.json();
-                    return data.choices[0].message.content || 'عذراً، لم أتمكن من معالجة طلبك حالياً.';
-                } catch (error) {
-                    console.error('خطأ في DeepSeek API:', error);
-                    return this.getFallbackResponse(message);
-                }
-            }
-
-            getFallbackResponse(message) {
-                const responses = [
-                    'مرحباً! أنا Dr X. كيف يمكنني مساعدتك في مشروعك التقني؟',
-                    'أهلاً وسهلاً! أنا هنا لمساعدتك في تطوير الويب والتطبيقات.',
-                    'مرحباً بك! يمكنني مساعدتك في التصميم والبرمجة وحلول الذكاء الاصطناعي.',
-                    'أهلاً! دعني أساعدك في تحويل أفكارك إلى مشاريع رقمية رائعة.',
-                    'مرحباً! أنا متخصص في تقديم حلول تقنية مبتكرة. ما الذي تحتاج إليه؟'
-                ];
-                
-                if (message.includes('مرحبا') || message.includes('السلام') || message.includes('أهلا')) {
-                    return 'مرحباً وأهلاً بك! أنا Dr X، مساعدك الذكي. كيف يمكنني مساعدتك اليوم؟';
-                }
-                
-                return responses[Math.floor(Math.random() * responses.length)];
-            }
-
-            async processMessage(message) {
-                // Try DeepSeek first, fallback to HuggingFace, then to local responses
-                try {
-                    return await this.sendMessageDeepSeek(message);
-                } catch (error) {
-                    try {
-                        return await this.sendMessageHuggingFace(message);
-                    } catch (fallbackError) {
-                        return this.getFallbackResponse(message);
-                    }
-                }
-            }
-        }
-
-        // Initialize AI Assistant
-        const aiAssistant = new AIAssistant();
-
-        // Chat functionality
-        const messageInput = document.getElementById('messageInput');
-        const sendButton = document.getElementById('sendButton');
-        const chatMessages = document.getElementById('chatMessages');
-
-        function addMessage(content, isUser = false) {
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `message ${isUser ? 'user' : 'assistant'}`;
-            messageDiv.innerHTML = `<p>${content}</p>`;
-            chatMessages.appendChild(messageDiv);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
-
-        async function sendMessage() {
-            const message = messageInput.value.trim();
-            if (!message) return;
-
-            // Add user message
-            addMessage(message, true);
-            messageInput.value = '';
-
-            // Show typing indicator
-            const typingDiv = document.createElement('div');
-            typingDiv.className = 'message assistant';
-            typingDiv.innerHTML = '<p><i class="fas fa-spinner fa-spin"></i> Dr X يكتب...</p>';
-            chatMessages.appendChild(typingDiv);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-
-            try {
-                // Get AI response
-                const response = await aiAssistant.processMessage(message);
-                
-                // Remove typing indicator
-                chatMessages.removeChild(typingDiv);
-                
-                // Add AI response
-                addMessage(response);
-            } catch (error) {
-                console.error('خطأ في إرسال الرسالة:', error);
-                chatMessages.removeChild(typingDiv);
-                addMessage('عذراً، حدث خطأ تقني. يرجى المحاولة مرة أخرى.');
-            }
-        }
-
-        sendButton.addEventListener('click', sendMessage);
-        messageInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                sendMessage();
-            }
-        });
-
-        // Fire particles animation for chat
+    <script type="module">
+        // متغيرات عامة
+        let currentModel = 'deepseek';
+        let isTyping = false;
+        let messagesCount = 0;
+        
+        // إعداد APIs
+        const HUGGINGFACE_CONFIG = {
+            provider: "nebius",
+            model: "deepseek-ai/DeepSeek-R1",
+            temperature: 1.4,
+            max_tokens: 148992,
+            top_p: 0.6
+        };
+        
+        const DEEPSEEK_CONFIG = {
+            baseURL: 'https://api.deepseek.com',
+            model: "deepseek-chat"
+        };
+        
+        // دالة إنشاء جزيئات النار
         function createFireParticle() {
             const particle = document.createElement('div');
             particle.className = 'flame-particle';
             particle.style.left = Math.random() * 100 + '%';
             particle.style.animationDuration = (Math.random() * 3 + 2) + 's';
-            particle.style.opacity = Math.random() * 0.8 + 0.2;
+            particle.style.animationDelay = Math.random() * 2 + 's';
             
-            document.querySelector('.background-flames').appendChild(particle);
+            document.getElementById('backgroundFlames').appendChild(particle);
             
             setTimeout(() => {
                 particle.remove();
             }, 5000);
         }
-
-        // Create fire particles periodically
+        
+        // إنشاء جزيئات النار بشكل مستمر
         setInterval(createFireParticle, 300);
-
-        // Update current time
-        function updateTime() {
-            const now = new Date();
-            const timeString = now.toLocaleTimeString('ar-SA', { 
-                hour: '2-digit', 
-                minute: '2-digit',
-                hour12: false 
+        
+        // دالة اختيار النموذج
+        window.selectModel = function(model) {
+            currentModel = model;
+            document.querySelectorAll('.model-option[data-model]').forEach(option => {
+                option.classList.remove('active');
             });
-            document.getElementById('currentTime').textContent = timeString;
+            document.querySelector(`[data-model="${model}"]`).classList.add('active');
+            
+            addMessage('system', `تم تبديل النموذج إلى ${model === 'deepseek' ? 'DeepSeek R1' : 'Hugging Face'}`);
         }
-
-        setInterval(updateTime, 1000);
-        updateTime();
-
-        // Contact form handler
-        function handleContactForm(event) {
-            event.preventDefault();
-            alert('تم إرسال رسالتك بنجاح! سنتواصل معك قريباً.');
-            event.target.reset();
-        }
-
-        // Initialize Charts
-        function initializeCharts() {
-            // Projects Growth Chart
-            const projectsCtx = document.getElementById('projectsChart');
-            if (projectsCtx) {
-                new Chart(projectsCtx, {
-                    type: 'line',
-                    data: {
-                        labels: ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو'],
-                        datasets: [{
-                            label: 'المشاريع المكتملة',
-                            data: [12, 19, 15, 25, 22, 30],
-                            borderColor: 'rgb(59, 130, 246)',
-                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                            tension: 0.4
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                display: false
-                            }
-                        },
-                        scales: {
-                            y: {
-                                beginAtZero: true
-                            }
-                        }
-                    }
-                });
+        
+        // دالة إضافة رسالة
+        function addMessage(type, content, showAvatar = true) {
+            const messagesContainer = document.getElementById('messagesContainer');
+            const messageDiv = document.createElement('div');
+            
+            if (type === 'user') {
+                messageDiv.className = 'message-bubble user-message p-4 mb-4';
+                messageDiv.innerHTML = `
+                    <div class="flex items-start gap-3">
+                        ${showAvatar ? `
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-user text-white"></i>
+                        </div>` : ''}
+                        <div>
+                            <p class="font-semibold mb-1">أنت</p>
+                            <p>${content}</p>
+                        </div>
+                    </div>
+                `;
+            } else if (type === 'bot') {
+                messageDiv.className = 'message-bubble bot-message p-4 mb-4';
+                messageDiv.innerHTML = `
+                    <div class="flex items-start gap-3">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-r from-red-500 to-orange-500 flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-robot text-white"></i>
+                        </div>
+                        <div>
+                            <p class="font-semibold mb-1">Dr X</p>
+                            <div id="message-content-${messagesCount}">${content}</div>
+                        </div>
+                    </div>
+                `;
+            } else if (type === 'system') {
+                messageDiv.className = 'text-center p-2 mb-4';
+                messageDiv.innerHTML = `<p class="text-sm text-gray-400 bg-gray-800 rounded-full px-4 py-2 inline-block">${content}</p>`;
             }
-
-            // Technology Distribution Chart
-            const techCtx = document.getElementById('techChart');
-            if (techCtx) {
-                new Chart(techCtx, {
-                    type: 'doughnut',
-                    data: {
-                        labels: ['React/Vue', 'Node.js', 'Python', 'PHP', 'أخرى'],
-                        datasets: [{
-                            data: [35, 25, 20, 15, 5],
-                            backgroundColor: [
-                                'rgb(59, 130, 246)',
-                                'rgb(16, 185, 129)',
-                                'rgb(168, 85, 247)',
-                                'rgb(239, 68, 68)',
-                                'rgb(245, 158, 11)'
-                            ]
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                position: 'bottom'
-                            }
-                        }
-                    }
-                });
+            
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            messagesCount++;
+            
+            return messageDiv;
+        }
+        
+        // دالة عرض مؤشر الكتابة
+        function showTypingIndicator() {
+            document.getElementById('typingIndicator').style.display = 'block';
+            isTyping = true;
+        }
+        
+        // دالة إخفاء مؤشر الكتابة
+        function hideTypingIndicator() {
+            document.getElementById('typingIndicator').style.display = 'none';
+            isTyping = false;
+        }
+        
+        // دالة تحديث شريط التقدم
+        function updateProgress(progress) {
+            const progressBar = document.getElementById('progressBar');
+            progressBar.style.width = progress + '%';
+            
+            if (progress >= 100) {
+                setTimeout(() => {
+                    progressBar.style.width = '0%';
+                }, 1000);
             }
         }
+        
+        // دالة إرسال رسالة عبر Hugging Face
+        async function sendMessageHuggingFace(message) {
+            try {
+                // محاكاة API Hugging Face
+                showTypingIndicator();
+                updateProgress(25);
+                
+                // محاكاة الاستجابة
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                updateProgress(75);
+                
+                const response = `مرحباً! تم استقبال رسالتك: "${message}". أنا Dr X وأستخدم حالياً نموذج Hugging Face للرد عليك. 
+                
+كيف يمكنني مساعدتك أكثر؟ يمكنني:
+• الإجابة على أسئلتك
+• مساعدتك في التعلم
+• تقديم النصائح والإرشادات
+• مناقشة المواضيع المختلفة`;
+                
+                hideTypingIndicator();
+                updateProgress(100);
+                addMessage('bot', response);
+                
+            } catch (error) {
+                hideTypingIndicator();
+                updateProgress(0);
+                addMessage('bot', 'عذراً، حدث خطأ في الاتصال بـ Hugging Face. يرجى المحاولة مرة أخرى.');
+            }
+        }
+        
+        // دالة إرسال رسالة عبر DeepSeek
+        async function sendMessageDeepSeek(message) {
+            try {
+                showTypingIndicator();
+                updateProgress(25);
+                
+                // محاكاة API DeepSeek
+                await new Promise(resolve => setTimeout(resolve, 1500));
+                updateProgress(50);
+                
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                updateProgress(75);
+                
+                const response = `شكراً لك على رسالتك: "${message}". أنا Dr X وأستخدم نموذج DeepSeek المتقدم.
+                
+إليك بعض المعلومات المفيدة:
+• DeepSeek هو نموذج ذكاء اصطناعي متطور
+• يمكنني فهم اللغة العربية بطلاقة
+• أستطيع مساعدتك في مختلف المجالات
+• أقدم إجابات دقيقة ومفصلة
 
-        // Initialize charts when analytics section is shown
+ما الذي تود معرفته أو مناقشته؟`;
+                
+                hideTypingIndicator();
+                updateProgress(100);
+                addMessage('bot', response);
+                
+            } catch (error) {
+                hideTypingIndicator();
+                updateProgress(0);
+                addMessage('bot', 'عذراً، حدث خطأ في الاتصال بـ DeepSeek. يرجى المحاولة مرة أخرى.');
+            }
+        }
+        
+        // دالة إرسال رسالة رئيسية
+        window.sendMessage = async function() {
+            const messageInput = document.getElementById('messageInput');
+            const message = messageInput.value.trim();
+            
+            if (!message || isTyping) return;
+            
+            // إضافة رسالة المستخدم
+            addMessage('user', message);
+            messageInput.value = '';
+            
+            // إرسال الرسالة حسب النموذج المختار
+            if (currentModel === 'deepseek') {
+                await sendMessageDeepSeek(message);
+            } else {
+                await sendMessageHuggingFace(message);
+            }
+        }
+        
+        // دالة الرسائل السريعة
+        window.quickMessage = function(message) {
+            document.getElementById('messageInput').value = message;
+            sendMessage();
+        }
+        
+        // دالة التعامل مع الضغط على Enter
+        window.handleKeyPress = function(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                sendMessage();
+            }
+        }
+        
+        // تأثيرات إضافية
         document.addEventListener('DOMContentLoaded', function() {
-            // Delay chart initialization to ensure elements are rendered
-            setTimeout(initializeCharts, 1000);
+            // تأثير متحرك للعنوان
+            const title = document.querySelector('h1');
+            if (title) {
+                title.style.animation = 'pulse 2s infinite';
+            }
+            
+            // تركيز تلقائي على حقل الإدخال
+            document.getElementById('messageInput').focus();
         });
-
-        // Smooth scrolling and animations
-        document.addEventListener('DOMContentLoaded', function() {
-            // Add entrance animations to elements
-            const animateElements = document.querySelectorAll('.fade-in');
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.style.opacity = '1';
-                        entry.target.style.transform = 'translateY(0)';
-                    }
-                });
-            });
-
-            animateElements.forEach(el => {
-                el.style.opacity = '0';
-                el.style.transform = 'translateY(30px)';
-                el.style.transition = 'all 0.8s ease';
-                observer.observe(el);
-            });
-        });
-
-        // Additional AI Streaming Implementation (for advanced users)
-        class AIStream {
-            constructor() {
-                this.isStreaming = false;
-            }
-
-            async *streamResponse(message) {
-                // Simulate streaming response
-                const response = await aiAssistant.processMessage(message);
-                const words = response.split(' ');
-                
-                for (let i = 0; i < words.length; i++) {
-                    yield words.slice(0, i + 1).join(' ');
-                    await new Promise(resolve => setTimeout(resolve, 100));
-                }
-            }
-
-            async sendStreamingMessage(message) {
-                if (this.isStreaming) return;
-                
-                this.isStreaming = true;
-                const messageDiv = document.createElement('div');
-                messageDiv.className = 'message assistant';
-                messageDiv.innerHTML = '<p></p>';
-                chatMessages.appendChild(messageDiv);
-                
-                const textElement = messageDiv.querySelector('p');
-                
-                try {
-                    for await (const partialResponse of this.streamResponse(message)) {
-                        textElement.textContent = partialResponse;
-                        chatMessages.scrollTop = chatMessages.scrollHeight;
-                    }
-                } catch (error) {
-                    textElement.textContent = 'عذراً، حدث خطأ في معالجة الرسالة.';
-                }
-                
-                this.isStreaming = false;
-            }
-        }
-
-        // Export for advanced usage
-        window.DrXAssistant = {
-            aiAssistant,
-            AIStream,
-            addMessage,
-            sendMessage
-        };
     </script>
 </body>
 </html>
-    <script id="html_badge_script1">
-        window.__genspark_remove_badge_link = "https://www.genspark.ai/api/html_badge/" +
-            "remove_badge?token=To%2FBnjzloZ3UfQdcSaYfDqMDqaXPJOFcPrZzylPLCVznqjSpo%2BiPGZp2Ji5TBT6XND6Nt8%2Fj0%2FMWWqfzR%2FUxFsVFdglRl3tyeYuJvKQM%2FsqKlsum9WNXs7rwaTtqvYYDhw48S4s8TIkmusJOMagXqg74fcO3DoQB%2BteEaA4Xy%2BgKDXz5fQFFDofGb6yydqzVwCThSjuIvxCRvGVwojUlwTmDgzPiYAiKzm3T4BMqh%2BEek5dp1Nrm2M0AX6fYGvynUK5FGDHmeqBBCfg2jigrUpnJjSt2Uu%2FYDK6BiKB8RN7PJcuPIKd%2Fdw%2FLyvD4wTq2lXZ0SZ8VEhdXfJE3y75WB9wgvt7%2Fh8PuSOpvV75p3wGVnLmpmlE8K%2B69nZyZWqcuRXFBuYc1%2F%2FXDmh9uGn4zSjdx8MR46xxwn3bFDyYNHZASGvdWxtKScCZ3RvNe6yTf%2BcQVi0lX55l3r%2BN066G0a%2BSqbBDqQN0uMXzZN39bersGJ0wqIB4HmTdxxOZwttAHU9%2FdluKMPPfhhr0j8f%2BWr6%2BhJ8O98Itfd6u1suCF2ys%3D";
-        window.__genspark_locale = "en-US";
-        window.__genspark_token = "To/BnjzloZ3UfQdcSaYfDqMDqaXPJOFcPrZzylPLCVznqjSpo+iPGZp2Ji5TBT6XND6Nt8/j0/MWWqfzR/UxFsVFdglRl3tyeYuJvKQM/sqKlsum9WNXs7rwaTtqvYYDhw48S4s8TIkmusJOMagXqg74fcO3DoQB+teEaA4Xy+gKDXz5fQFFDofGb6yydqzVwCThSjuIvxCRvGVwojUlwTmDgzPiYAiKzm3T4BMqh+Eek5dp1Nrm2M0AX6fYGvynUK5FGDHmeqBBCfg2jigrUpnJjSt2Uu/YDK6BiKB8RN7PJcuPIKd/dw/LyvD4wTq2lXZ0SZ8VEhdXfJE3y75WB9wgvt7/h8PuSOpvV75p3wGVnLmpmlE8K+69nZyZWqcuRXFBuYc1//XDmh9uGn4zSjdx8MR46xxwn3bFDyYNHZASGvdWxtKScCZ3RvNe6yTf+cQVi0lX55l3r+N066G0a+SqbBDqQN0uMXzZN39bersGJ0wqIB4HmTdxxOZwttAHU9/dluKMPPfhhr0j8f+Wr6+hJ8O98Itfd6u1suCF2ys=";
-    </script>
-    
-        <script id="html_badge_script2" src="https://www.genspark.ai/html_badge.js"></script>
-        
-    <script id="html_notice_dialog_script" src="https://www.genspark.ai/notice_dialog.js"></script>
-    
