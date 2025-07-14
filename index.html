@@ -3,592 +3,834 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dr X - مساعد الذكاء الاصطناعي</title>
+    <title>Dr.X - مساعد الذكاء الاصطناعي</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        * {
+        body {
             font-family: 'Cairo', sans-serif;
         }
         
-        body {
-            background: radial-gradient(ellipse at center, #1a0000 0%, #000000 70%);
-            color: white;
-            overflow-x: hidden;
-            position: relative;
+        .gradient-bg {
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a0a0a 25%, #2d1b1b 50%, #1a0a0a 75%, #0c0c0c 100%);
         }
         
-        .background-flames {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            overflow: hidden;
+        .mystical-glow {
+            box-shadow: 0 0 20px rgba(220, 38, 38, 0.3), inset 0 0 20px rgba(220, 38, 38, 0.1);
         }
         
-        .flame-particle {
-            position: absolute;
-            width: 3px;
-            height: 3px;
-            background: radial-gradient(circle, #ff6b35, #f7931e);
-            border-radius: 50%;
-            animation: float-up linear infinite;
-            opacity: 0.8;
+        .text-glow {
+            text-shadow: 0 0 10px rgba(220, 38, 38, 0.5), 0 0 20px rgba(220, 38, 38, 0.3), 0 0 30px rgba(220, 38, 38, 0.2);
         }
         
-        @keyframes float-up {
-            0% {
-                transform: translateY(100vh) rotate(0deg);
-                opacity: 0;
-            }
-            10% {
-                opacity: 1;
-            }
-            90% {
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-100px) rotate(360deg);
-                opacity: 0;
-            }
+        .floating {
+            animation: float 6s ease-in-out infinite;
         }
         
-        .chat-container {
-            backdrop-filter: blur(20px);
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+        .pulse-slow {
+            animation: pulse 3s ease-in-out infinite;
         }
         
-        .message-bubble {
-            animation: slideIn 0.3s ease-out;
-            max-width: 85%;
-            word-wrap: break-word;
+        .slide-in {
+            animation: slideIn 1s ease-out forwards;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
         }
         
         @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
-        .user-message {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            margin-left: auto;
-            border-radius: 20px 20px 5px 20px;
+        .card-hover {
+            transition: all 0.3s ease;
         }
         
-        .bot-message {
-            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
-            margin-right: auto;
-            border-radius: 20px 20px 20px 5px;
+        .card-hover:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(220, 38, 38, 0.2);
         }
         
-        .typing-indicator {
-            display: none;
-            align-items: center;
-            gap: 5px;
+        .nav-blur {
+            backdrop-filter: blur(10px);
+            background: rgba(12, 12, 12, 0.9);
         }
         
-        .typing-dot {
-            width: 8px;
-            height: 8px;
-            background: #ff6b35;
-            border-radius: 50%;
-            animation: typing 1.4s infinite;
+        .section {
+            min-height: 100vh;
+            padding: 5rem 0;
         }
         
-        .typing-dot:nth-child(2) {
-            animation-delay: 0.2s;
-        }
-        
-        .typing-dot:nth-child(3) {
-            animation-delay: 0.4s;
+        .typing-animation {
+            overflow: hidden;
+            border-right: 2px solid #dc2626;
+            white-space: nowrap;
+            animation: typing 4s steps(40, end), blink-caret 0.75s step-end infinite;
         }
         
         @keyframes typing {
-            0%, 60%, 100% {
-                transform: translateY(0);
-                opacity: 0.4;
-            }
-            30% {
-                transform: translateY(-10px);
-                opacity: 1;
-            }
+            from { width: 0; }
+            to { width: 100%; }
         }
         
-        .input-container {
-            background: rgba(255, 255, 255, 0.1);
+        @keyframes blink-caret {
+            from, to { border-color: transparent; }
+            50% { border-color: #dc2626; }
+        }
+        
+        .parallax-bg {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        
+        .glass-effect {
+            background: rgba(12, 12, 12, 0.7);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(220, 38, 38, 0.2);
         }
         
-        .send-button {
-            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
-            transition: all 0.3s ease;
+        .chat-container {
+            height: 500px;
+            overflow-y: auto;
         }
         
-        .send-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 10px 20px rgba(255, 107, 53, 0.3);
+        .message {
+            animation: messageSlide 0.5s ease-out;
         }
         
-        .ai-status {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: rgba(0, 255, 0, 0.2);
-            border: 1px solid rgba(0, 255, 0, 0.5);
-            border-radius: 20px;
-            padding: 8px 16px;
-            font-size: 12px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            background: #00ff00;
-            border-radius: 50%;
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0% {
+        @keyframes messageSlide {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
                 opacity: 1;
-                transform: scale(1);
+                transform: translateX(0);
             }
-            50% {
-                opacity: 0.5;
-                transform: scale(1.2);
-            }
-            100% {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-        
-        .model-selector {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
-            padding: 10px;
-            margin-bottom: 20px;
-        }
-        
-        .model-option {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 8px;
-            padding: 8px 12px;
-            margin: 5px;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        
-        .model-option:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: translateY(-2px);
-        }
-        
-        .model-option.active {
-            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
-            border-color: #ff6b35;
-        }
-        
-        .feature-panel {
-            background: rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            padding: 20px;
-            margin: 20px 0;
-        }
-        
-        .progress-bar {
-            width: 100%;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 2px;
-            overflow: hidden;
-        }
-        
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #ff6b35, #f7931e);
-            transition: width 0.3s ease;
-            width: 0%;
         }
     </style>
 </head>
-<body>
-    <!-- خلفية النار المتحركة -->
-    <div class="background-flames" id="backgroundFlames"></div>
-    
-    <!-- حالة الذكاء الاصطناعي -->
-    <div class="ai-status">
-        <div class="status-dot"></div>
-        <span>Dr X متصل</span>
-    </div>
-    
-    <!-- الحاوية الرئيسية -->
-    <div class="min-h-screen flex flex-col items-center justify-center p-4">
-        <div class="w-full max-w-4xl h-screen flex flex-col">
-            <!-- رأس الدردشة -->
-            <div class="chat-container rounded-t-2xl p-6 flex-shrink-0">
-                <div class="text-center mb-6">
-                    <h1 class="text-4xl font-bold mb-2">
-                        <i class="fas fa-robot text-red-500 mr-3"></i>
-                        Dr X - مساعد الذكاء الاصطناعي
-                    </h1>
-                    <p class="text-gray-300">مساعدك الذكي المتطور - مدعوم بأحدث تقنيات الذكاء الاصطناعي</p>
+<body class="bg-black text-white">
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 nav-blur border-b border-red-900" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <img src="https://cdn1.genspark.ai/user-upload-image/gpt_image_generated/2cb56500-100e-4ba3-a75d-e5c85744490f" alt="Dr.X Logo" class="h-10 w-10 rounded-lg mystical-glow">
+                    <span class="mr-3 text-xl font-bold text-glow">Dr.X</span>
                 </div>
-                
-                <!-- محدد النموذج -->
-                <div class="model-selector">
-                    <h3 class="text-lg font-semibold mb-3">
-                        <i class="fas fa-brain mr-2"></i>
-                        اختر نموذج الذكاء الاصطناعي:
-                    </h3>
-                    <div class="flex flex-wrap justify-center">
-                        <div class="model-option active" data-model="deepseek" onclick="selectModel('deepseek')">
-                            <i class="fas fa-search mr-2"></i>
-                            DeepSeek R1
-                        </div>
-                        <div class="model-option" data-model="huggingface" onclick="selectModel('huggingface')">
-                            <i class="fas fa-face-smile mr-2"></i>
-                            Hugging Face
-                        </div>
+                <div class="hidden md:block">
+                    <div class="flex items-center space-x-4 space-x-reverse">
+                        <a href="#home" class="nav-link text-white hover:text-red-400 px-3 py-2 transition-colors">الرئيسية</a>
+                        <a href="#about" class="nav-link text-white hover:text-red-400 px-3 py-2 transition-colors">من نحن</a>
+                        <a href="#services" class="nav-link text-white hover:text-red-400 px-3 py-2 transition-colors">الخدمات</a>
+                        <a href="#portfolio" class="nav-link text-white hover:text-red-400 px-3 py-2 transition-colors">أعمالنا</a>
+                        <a href="#analytics" class="nav-link text-white hover:text-red-400 px-3 py-2 transition-colors">التحليلات</a>
+                        <a href="#contact" class="nav-link text-white hover:text-red-400 px-3 py-2 transition-colors">اتصل بنا</a>
+                        <a href="#chat" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-full font-medium transition-all mystical-glow">
+                            <i class="fas fa-comments ml-2"></i>دردش مع د. إكس
+                        </a>
                     </div>
                 </div>
-                
-                <!-- لوحة الميزات -->
-                <div class="feature-panel">
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
-                        <div>
-                            <i class="fas fa-lightning-bolt text-yellow-400 text-2xl mb-2"></i>
-                            <p class="text-sm">استجابة فورية</p>
-                        </div>
-                        <div>
-                            <i class="fas fa-language text-blue-400 text-2xl mb-2"></i>
-                            <p class="text-sm">دعم متعدد اللغات</p>
-                        </div>
-                        <div>
-                            <i class="fas fa-shield-alt text-green-400 text-2xl mb-2"></i>
-                            <p class="text-sm">آمن ومحمي</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- منطقة الرسائل -->
-            <div class="chat-container flex-1 overflow-y-auto p-6" id="messagesContainer">
-                <!-- رسالة ترحيب -->
-                <div class="message-bubble bot-message p-4 mb-4">
-                    <div class="flex items-start gap-3">
-                        <div class="w-10 h-10 rounded-full bg-gradient-to-r from-red-500 to-orange-500 flex items-center justify-center flex-shrink-0">
-                            <i class="fas fa-robot text-white"></i>
-                        </div>
-                        <div>
-                            <p class="font-semibold mb-1">Dr X</p>
-                            <p>مرحباً! أنا Dr X، مساعدك الذكي المتطور. كيف يمكنني مساعدتك اليوم؟</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- مؤشر الكتابة -->
-                <div class="typing-indicator message-bubble bot-message p-4 mb-4" id="typingIndicator">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-full bg-gradient-to-r from-red-500 to-orange-500 flex items-center justify-center">
-                            <i class="fas fa-robot text-white"></i>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <span>Dr X يكتب</span>
-                            <div class="flex gap-1">
-                                <div class="typing-dot"></div>
-                                <div class="typing-dot"></div>
-                                <div class="typing-dot"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- شريط التقدم -->
-            <div class="progress-bar">
-                <div class="progress-fill" id="progressBar"></div>
-            </div>
-            
-            <!-- منطقة الإدخال -->
-            <div class="chat-container rounded-b-2xl p-6 flex-shrink-0">
-                <div class="input-container rounded-full p-2 flex items-center gap-3">
-                    <input 
-                        type="text" 
-                        id="messageInput" 
-                        placeholder="اكتب رسالتك هنا..." 
-                        class="flex-1 bg-transparent outline-none text-white placeholder-gray-400 px-4 py-2"
-                        onkeypress="handleKeyPress(event)"
-                    >
-                    <button 
-                        id="sendButton" 
-                        class="send-button rounded-full w-12 h-12 flex items-center justify-center text-white font-bold"
-                        onclick="sendMessage()"
-                    >
-                        <i class="fas fa-paper-plane"></i>
-                    </button>
-                </div>
-                
-                <!-- أزرار سريعة -->
-                <div class="flex flex-wrap gap-2 mt-4 justify-center">
-                    <button class="model-option text-sm" onclick="quickMessage('ما هي أحدث تقنيات الذكاء الاصطناعي؟')">
-                        تقنيات الذكاء الاصطناعي
-                    </button>
-                    <button class="model-option text-sm" onclick="quickMessage('اشرح لي البرمجة بطريقة بسيطة')">
-                        تعلم البرمجة
-                    </button>
-                    <button class="model-option text-sm" onclick="quickMessage('ما هي أفضل النصائح للنجاح؟')">
-                        نصائح النجاح
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" class="text-white hover:text-red-400">
+                        <i class="fas fa-bars text-xl"></i>
                     </button>
                 </div>
             </div>
         </div>
-    </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden glass-effect">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="#home" class="block text-white hover:text-red-400 px-3 py-2">الرئيسية</a>
+                <a href="#about" class="block text-white hover:text-red-400 px-3 py-2">من نحن</a>
+                <a href="#services" class="block text-white hover:text-red-400 px-3 py-2">الخدمات</a>
+                <a href="#portfolio" class="block text-white hover:text-red-400 px-3 py-2">أعمالنا</a>
+                <a href="#analytics" class="block text-white hover:text-red-400 px-3 py-2">التحليلات</a>
+                <a href="#contact" class="block text-white hover:text-red-400 px-3 py-2">اتصل بنا</a>
+                <a href="#chat" class="block bg-red-600 text-white px-3 py-2 rounded">دردش مع د. إكس</a>
+            </div>
+        </div>
+    </nav>
 
-    <script type="module">
-        // متغيرات عامة
-        let currentModel = 'deepseek';
-        let isTyping = false;
-        let messagesCount = 0;
+    <!-- Home Section -->
+    <section id="home" class="section gradient-bg flex items-center justify-center relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <div class="floating absolute top-20 left-20 w-4 h-4 bg-red-600 rounded-full"></div>
+            <div class="floating absolute top-40 right-32 w-6 h-6 bg-red-500 rounded-full" style="animation-delay: -2s;"></div>
+            <div class="floating absolute bottom-32 left-40 w-3 h-3 bg-red-700 rounded-full" style="animation-delay: -4s;"></div>
+        </div>
         
-        // إعداد APIs
-        const HUGGINGFACE_CONFIG = {
-            provider: "nebius",
-            model: "deepseek-ai/DeepSeek-R1",
-            temperature: 1.4,
-            max_tokens: 148992,
-            top_p: 0.6
-        };
-        
-        const DEEPSEEK_CONFIG = {
-            baseURL: 'https://api.deepseek.com',
-            model: "deepseek-chat"
-        };
-        
-        // دالة إنشاء جزيئات النار
-        function createFireParticle() {
-            const particle = document.createElement('div');
-            particle.className = 'flame-particle';
-            particle.style.left = Math.random() * 100 + '%';
-            particle.style.animationDuration = (Math.random() * 3 + 2) + 's';
-            particle.style.animationDelay = Math.random() * 2 + 's';
+        <div class="relative z-10 text-center px-4 max-w-4xl mx-auto">
+            <div class="mb-8 floating">
+                <i class="fas fa-brain text-8xl text-red-500 text-glow"></i>
+            </div>
+            <h1 class="text-5xl md:text-7xl font-bold mb-6 text-glow slide-in">Dr.X - مساعد الذكاء الاصطناعي</h1>
+            <p class="text-xl md:text-2xl mb-8 opacity-90 slide-in" style="animation-delay: 0.5s;">
+                مساعدك الذكي المتطور - مدعوم بأحدث تقنيات الذكاء الاصطناعي
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center slide-in" style="animation-delay: 1s;">
+                <a href="#chat" class="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-full text-lg font-semibold mystical-glow transition-all">
+                    <i class="fas fa-comments ml-2"></i>دردش مع د. إكس
+                </a>
+                <a href="#services" class="border-2 border-red-600 text-red-400 hover:bg-red-600 hover:text-white px-8 py-4 rounded-full text-lg font-semibold transition-all">
+                    استكشف خدماتنا
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="section bg-gray-900 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-6xl font-bold text-glow mb-4">من نحن؟</h2>
+                <div class="w-24 h-1 bg-red-600 mx-auto mb-8"></div>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    نحن رواد في مجال الذكاء الاصطناعي، نقدم حلولاً مبتكرة وحديثة لعالم متطور
+                </p>
+            </div>
             
-            document.getElementById('backgroundFlames').appendChild(particle);
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="glass-effect p-8 rounded-2xl card-hover text-center">
+                    <i class="fas fa-rocket text-5xl text-red-500 mb-6"></i>
+                    <h3 class="text-2xl font-bold mb-4">رؤيتنا</h3>
+                    <p class="text-gray-300">أن نكون الرواد في تقديم حلول الذكاء الاصطناعي المبتكرة التي تحدث فرقاً حقيقياً في حياة الناس</p>
+                </div>
+                
+                <div class="glass-effect p-8 rounded-2xl card-hover text-center">
+                    <i class="fas fa-bullseye text-5xl text-red-500 mb-6"></i>
+                    <h3 class="text-2xl font-bold mb-4">مهمتنا</h3>
+                    <p class="text-gray-300">نسعى لتطوير تقنيات ذكية تساعد الأفراد والشركات على تحقيق أهدافهم بكفاءة عالية</p>
+                </div>
+                
+                <div class="glass-effect p-8 rounded-2xl card-hover text-center">
+                    <i class="fas fa-gem text-5xl text-red-500 mb-6"></i>
+                    <h3 class="text-2xl font-bold mb-4">قيمنا</h3>
+                    <p class="text-gray-300">الإبداع، الجودة، الشفافية، والالتزام بتقديم أفضل الخدمات لعملائنا</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="section gradient-bg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-6xl font-bold text-glow mb-4">خدماتنا</h2>
+                <div class="w-24 h-1 bg-red-600 mx-auto mb-8"></div>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    نقدم مجموعة شاملة من الخدمات التقنية المتطورة
+                </p>
+            </div>
             
-            setTimeout(() => {
-                particle.remove();
-            }, 5000);
-        }
-        
-        // إنشاء جزيئات النار بشكل مستمر
-        setInterval(createFireParticle, 300);
-        
-        // دالة اختيار النموذج
-        window.selectModel = function(model) {
-            currentModel = model;
-            document.querySelectorAll('.model-option[data-model]').forEach(option => {
-                option.classList.remove('active');
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="glass-effect p-8 rounded-2xl card-hover">
+                    <i class="fas fa-code text-5xl text-red-500 mb-6"></i>
+                    <h3 class="text-2xl font-bold mb-4">تطوير الويب</h3>
+                    <p class="text-gray-300 mb-6">مواقع وتطبيقات ويب متقدمة بأحدث التقنيات</p>
+                    <ul class="text-sm text-gray-400 space-y-2">
+                        <li><i class="fas fa-check text-red-500 ml-2"></i>React & Next.js</li>
+                        <li><i class="fas fa-check text-red-500 ml-2"></i>Node.js & Express</li>
+                        <li><i class="fas fa-check text-red-500 ml-2"></i>تصميم متجاوب</li>
+                    </ul>
+                </div>
+                
+                <div class="glass-effect p-8 rounded-2xl card-hover">
+                    <i class="fas fa-mobile-alt text-5xl text-red-500 mb-6"></i>
+                    <h3 class="text-2xl font-bold mb-4">تطبيقات الجوال</h3>
+                    <p class="text-gray-300 mb-6">تطبيقات iOS و Android بأداء عالي</p>
+                    <ul class="text-sm text-gray-400 space-y-2">
+                        <li><i class="fas fa-check text-red-500 ml-2"></i>Flutter & React Native</li>
+                        <li><i class="fas fa-check text-red-500 ml-2"></i>تطبيقات أصلية</li>
+                        <li><i class="fas fa-check text-red-500 ml-2"></i>تجربة مستخدم متميزة</li>
+                    </ul>
+                </div>
+                
+                <div class="glass-effect p-8 rounded-2xl card-hover">
+                    <i class="fas fa-brain text-5xl text-red-500 mb-6"></i>
+                    <h3 class="text-2xl font-bold mb-4">الذكاء الاصطناعي</h3>
+                    <p class="text-gray-300 mb-6">حلول ذكية للتحليل والأتمتة</p>
+                    <ul class="text-sm text-gray-400 space-y-2">
+                        <li><i class="fas fa-check text-red-500 ml-2"></i>معالجة اللغة الطبيعية</li>
+                        <li><i class="fas fa-check text-red-500 ml-2"></i>رؤية الحاسوب</li>
+                        <li><i class="fas fa-check text-red-500 ml-2"></i>التعلم الآلي</li>
+                    </ul>
+                </div>
+                
+                <div class="glass-effect p-8 rounded-2xl card-hover">
+                    <i class="fas fa-cloud text-5xl text-red-500 mb-6"></i>
+                    <h3 class="text-2xl font-bold mb-4">الحوسبة السحابية</h3>
+                    <p class="text-gray-300 mb-6">خدمات سحابية آمنة وقابلة للتطوير</p>
+                    <ul class="text-sm text-gray-400 space-y-2">
+                        <li><i class="fas fa-check text-red-500 ml-2"></i>AWS & Azure</li>
+                        <li><i class="fas fa-check text-red-500 ml-2"></i>Docker & Kubernetes</li>
+                        <li><i class="fas fa-check text-red-500 ml-2"></i>CI/CD</li>
+                    </ul>
+                </div>
+                
+                <div class="glass-effect p-8 rounded-2xl card-hover">
+                    <i class="fas fa-shield-alt text-5xl text-red-500 mb-6"></i>
+                    <h3 class="text-2xl font-bold mb-4">الأمن السيبراني</h3>
+                    <p class="text-gray-300 mb-6">حماية شاملة لأنظمتك الرقمية</p>
+                    <ul class="text-sm text-gray-400 space-y-2">
+                        <li><i class="fas fa-check text-red-500 ml-2"></i>اختبار الاختراق</li>
+                        <li><i class="fas fa-check text-red-500 ml-2"></i>تشفير البيانات</li>
+                        <li><i class="fas fa-check text-red-500 ml-2"></i>مراقبة الأمان</li>
+                    </ul>
+                </div>
+                
+                <div class="glass-effect p-8 rounded-2xl card-hover">
+                    <i class="fas fa-chart-line text-5xl text-red-500 mb-6"></i>
+                    <h3 class="text-2xl font-bold mb-4">تحليل البيانات</h3>
+                    <p class="text-gray-300 mb-6">استخراج رؤى قيمة من بياناتك</p>
+                    <ul class="text-sm text-gray-400 space-y-2">
+                        <li><i class="fas fa-check text-red-500 ml-2"></i>لوحات تحكم تفاعلية</li>
+                        <li><i class="fas fa-check text-red-500 ml-2"></i>التحليل التنبؤي</li>
+                        <li><i class="fas fa-check text-red-500 ml-2"></i>تقارير مخصصة</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="section bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-6xl font-bold text-glow mb-4">أعمالنا</h2>
+                <div class="w-24 h-1 bg-red-600 mx-auto mb-8"></div>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    مشاريع متميزة حققت نجاحاً باهراً
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="glass-effect rounded-2xl overflow-hidden card-hover">
+                    <div class="h-48 bg-gradient-to-br from-red-600 to-red-800 flex items-center justify-center">
+                        <i class="fas fa-shopping-cart text-6xl text-white"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">منصة التجارة الإلكترونية</h3>
+                        <p class="text-gray-300 text-sm mb-4">منصة تجارة إلكترونية متكاملة مع نظام دفع آمن</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-red-600 text-white px-2 py-1 rounded text-xs">React</span>
+                            <span class="bg-red-600 text-white px-2 py-1 rounded text-xs">Node.js</span>
+                            <span class="bg-red-600 text-white px-2 py-1 rounded text-xs">MongoDB</span>
+                        </div>
+                        <button class="text-red-400 hover:text-red-300 font-semibold">عرض التفاصيل <i class="fas fa-arrow-left mr-2"></i></button>
+                    </div>
+                </div>
+                
+                <div class="glass-effect rounded-2xl overflow-hidden card-hover">
+                    <div class="h-48 bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center">
+                        <i class="fas fa-tasks text-6xl text-white"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">تطبيق إدارة المهام</h3>
+                        <p class="text-gray-300 text-sm mb-4">تطبيق ذكي لإدارة المهام والمشاريع</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-blue-600 text-white px-2 py-1 rounded text-xs">Flutter</span>
+                            <span class="bg-blue-600 text-white px-2 py-1 rounded text-xs">Firebase</span>
+                            <span class="bg-blue-600 text-white px-2 py-1 rounded text-xs">Dart</span>
+                        </div>
+                        <button class="text-blue-400 hover:text-blue-300 font-semibold">عرض التفاصيل <i class="fas fa-arrow-left mr-2"></i></button>
+                    </div>
+                </div>
+                
+                <div class="glass-effect rounded-2xl overflow-hidden card-hover">
+                    <div class="h-48 bg-gradient-to-br from-green-600 to-green-800 flex items-center justify-center">
+                        <i class="fas fa-robot text-6xl text-white"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">مساعد ذكي للأعمال</h3>
+                        <p class="text-gray-300 text-sm mb-4">نظام ذكي لأتمتة العمليات التجارية</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-green-600 text-white px-2 py-1 rounded text-xs">Python</span>
+                            <span class="bg-green-600 text-white px-2 py-1 rounded text-xs">TensorFlow</span>
+                            <span class="bg-green-600 text-white px-2 py-1 rounded text-xs">NLP</span>
+                        </div>
+                        <button class="text-green-400 hover:text-green-300 font-semibold">عرض التفاصيل <i class="fas fa-arrow-left mr-2"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Analytics Section -->
+    <section id="analytics" class="section gradient-bg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-6xl font-bold text-glow mb-4">التحليلات</h2>
+                <div class="w-24 h-1 bg-red-600 mx-auto mb-8"></div>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    إحصائيات وتحليلات شاملة لأداء خدماتنا
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                <div class="glass-effect p-6 rounded-2xl text-center card-hover">
+                    <i class="fas fa-users text-4xl text-red-500 mb-4"></i>
+                    <h3 class="text-3xl font-bold text-red-400" id="totalUsers">0</h3>
+                    <p class="text-gray-300">إجمالي المستخدمين</p>
+                </div>
+                
+                <div class="glass-effect p-6 rounded-2xl text-center card-hover">
+                    <i class="fas fa-eye text-4xl text-blue-500 mb-4"></i>
+                    <h3 class="text-3xl font-bold text-blue-400" id="pageViews">0</h3>
+                    <p class="text-gray-300">مشاهدات الصفحة</p>
+                </div>
+                
+                <div class="glass-effect p-6 rounded-2xl text-center card-hover">
+                    <i class="fas fa-clock text-4xl text-green-500 mb-4"></i>
+                    <h3 class="text-3xl font-bold text-green-400" id="avgTime">0:00</h3>
+                    <p class="text-gray-300">متوسط وقت الجلسة</p>
+                </div>
+                
+                <div class="glass-effect p-6 rounded-2xl text-center card-hover">
+                    <i class="fas fa-percentage text-4xl text-purple-500 mb-4"></i>
+                    <h3 class="text-3xl font-bold text-purple-400" id="conversionRate">0%</h3>
+                    <p class="text-gray-300">معدل التحويل</p>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="glass-effect p-6 rounded-2xl">
+                    <h3 class="text-xl font-bold mb-4 text-center">الزوار الشهريين</h3>
+                    <canvas id="visitorsChart" style="height: 300px;"></canvas>
+                </div>
+                
+                <div class="glass-effect p-6 rounded-2xl">
+                    <h3 class="text-xl font-bold mb-4 text-center">مصادر الزيارات</h3>
+                    <canvas id="sourcesChart" style="height: 300px;"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chat Section -->
+    <section id="chat" class="section bg-gray-900">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-8">
+                <h2 class="text-4xl md:text-6xl font-bold text-glow mb-4">دردش مع Dr.X</h2>
+                <div class="w-24 h-1 bg-red-600 mx-auto mb-8"></div>
+                <p class="text-xl text-gray-300">
+                    تحدث مع مساعدك الذكي واحصل على إجابات فورية
+                </p>
+            </div>
+            
+            <div class="glass-effect rounded-2xl overflow-hidden">
+                <div class="bg-red-600 p-4 flex items-center">
+                    <img src="https://cdn1.genspark.ai/user-upload-image/gpt_image_generated/2cb56500-100e-4ba3-a75d-e5c85744490f" alt="Dr.X" class="w-10 h-10 rounded-full ml-3">
+                    <div>
+                        <h3 class="font-bold">Dr.X</h3>
+                        <p class="text-sm opacity-90">متصل الآن</p>
+                    </div>
+                    <div class="mr-auto">
+                        <span class="bg-green-500 w-3 h-3 rounded-full inline-block pulse-slow"></span>
+                    </div>
+                </div>
+                
+                <div class="chat-container p-4 space-y-4" id="chatContainer">
+                    <div class="message flex items-start">
+                        <img src="https://cdn1.genspark.ai/user-upload-image/gpt_image_generated/2cb56500-100e-4ba3-a75d-e5c85744490f" alt="Dr.X" class="w-8 h-8 rounded-full ml-3">
+                        <div class="glass-effect p-3 rounded-2xl max-w-xs">
+                            <p>مرحباً! أنا Dr.X، مساعدك الذكي. كيف يمكنني مساعدتك اليوم؟</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="p-4 border-t border-gray-700">
+                    <div class="flex items-center space-x-4 space-x-reverse">
+                        <input type="text" id="chatInput" placeholder="اكتب رسالتك هنا..." class="flex-1 bg-gray-800 border border-gray-600 rounded-full px-4 py-2 focus:outline-none focus:border-red-500">
+                        <button id="sendBtn" class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-full transition-colors">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section gradient-bg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-6xl font-bold text-glow mb-4">تواصل معنا</h2>
+                <div class="w-24 h-1 bg-red-600 mx-auto mb-8"></div>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    نحن هنا لمساعدتك وتحقيق رؤيتك التقنية
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <div class="space-y-8">
+                    <div class="glass-effect p-6 rounded-2xl card-hover">
+                        <div class="flex items-center">
+                            <i class="fas fa-envelope text-3xl text-red-500 ml-4"></i>
+                            <div>
+                                <h3 class="text-xl font-bold">البريد الإلكتروني</h3>
+                                <p class="text-gray-300">info@drx-ai.com</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="glass-effect p-6 rounded-2xl card-hover">
+                        <div class="flex items-center">
+                            <i class="fas fa-phone text-3xl text-red-500 ml-4"></i>
+                            <div>
+                                <h3 class="text-xl font-bold">رقم الهاتف</h3>
+                                <p class="text-gray-300">+966 XX XXX XXXX</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="glass-effect p-6 rounded-2xl card-hover">
+                        <div class="flex items-center">
+                            <i class="fas fa-map-marker-alt text-3xl text-red-500 ml-4"></i>
+                            <div>
+                                <h3 class="text-xl font-bold">العنوان</h3>
+                                <p class="text-gray-300">الرياض، المملكة العربية السعودية</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <form id="contactForm" class="glass-effect p-8 rounded-2xl">
+                    <div class="space-y-6">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">الاسم</label>
+                            <input type="text" class="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 focus:outline-none focus:border-red-500">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium mb-2">البريد الإلكتروني</label>
+                            <input type="email" class="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 focus:outline-none focus:border-red-500">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium mb-2">الموضوع</label>
+                            <select class="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 focus:outline-none focus:border-red-500">
+                                <option>استشارة تقنية</option>
+                                <option>طلب عرض سعر</option>
+                                <option>دعم فني</option>
+                                <option>أخرى</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium mb-2">الرسالة</label>
+                            <textarea rows="4" class="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 focus:outline-none focus:border-red-500"></textarea>
+                        </div>
+                        
+                        <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-lg font-semibold transition-colors mystical-glow">
+                            <i class="fas fa-paper-plane ml-2"></i>إرسال الرسالة
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-black py-12 border-t border-red-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div class="col-span-2">
+                    <div class="flex items-center mb-4">
+                        <img src="https://cdn1.genspark.ai/user-upload-image/gpt_image_generated/e0f8aad7-058d-48db-8441-017105a8ca21" alt="Dr.X Logo" class="h-12 w-auto ml-3">
+                    </div>
+                    <p class="text-gray-300 mb-6 leading-relaxed">
+                        نحن رواد في مجال الذكاء الاصطناعي، نقدم حلولاً مبتكرة تساعد الشركات على تحقيق أهدافها وتطوير أعمالها.
+                    </p>
+                    <div class="flex space-x-4 space-x-reverse">
+                        <a href="#" class="text-gray-400 hover:text-red-400 transition-colors">
+                            <i class="fab fa-facebook text-2xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-red-400 transition-colors">
+                            <i class="fab fa-twitter text-2xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-red-400 transition-colors">
+                            <i class="fab fa-linkedin text-2xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-red-400 transition-colors">
+                            <i class="fab fa-instagram text-2xl"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-bold mb-4 text-red-400">الخدمات</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#services" class="text-gray-300 hover:text-red-400 transition-colors">تطوير الويب</a></li>
+                        <li><a href="#services" class="text-gray-300 hover:text-red-400 transition-colors">تطبيقات الجوال</a></li>
+                        <li><a href="#services" class="text-gray-300 hover:text-red-400 transition-colors">الذكاء الاصطناعي</a></li>
+                        <li><a href="#services" class="text-gray-300 hover:text-red-400 transition-colors">التحليلات</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-bold mb-4 text-red-400">روابط سريعة</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#home" class="text-gray-300 hover:text-red-400 transition-colors">الرئيسية</a></li>
+                        <li><a href="#about" class="text-gray-300 hover:text-red-400 transition-colors">من نحن</a></li>
+                        <li><a href="#portfolio" class="text-gray-300 hover:text-red-400 transition-colors">أعمالنا</a></li>
+                        <li><a href="#contact" class="text-gray-300 hover:text-red-400 transition-colors">اتصل بنا</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center">
+                <p class="text-gray-400">&copy; 2025 Dr.X. جميع الحقوق محفوظة لعبدالعزيز الحمداني.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
             });
-            document.querySelector(`[data-model="${model}"]`).classList.add('active');
-            
-            addMessage('system', `تم تبديل النموذج إلى ${model === 'deepseek' ? 'DeepSeek R1' : 'Hugging Face'}`);
-        }
+        });
+
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
         
-        // دالة إضافة رسالة
-        function addMessage(type, content, showAvatar = true) {
-            const messagesContainer = document.getElementById('messagesContainer');
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Chat functionality
+        const chatInput = document.getElementById('chatInput');
+        const sendBtn = document.getElementById('sendBtn');
+        const chatContainer = document.getElementById('chatContainer');
+
+        const responses = [
+            'شكراً لتواصلك معي! كيف يمكنني مساعدتك؟',
+            'هذا سؤال رائع! دعني أفكر في الإجابة...',
+            'يمكنني مساعدتك في تطوير حلول تقنية مبتكرة.',
+            'هل تحتاج لمزيد من المعلومات حول خدماتنا؟',
+            'أنا هنا لمساعدتك في أي استفسار تقني.'
+        ];
+
+        function addMessage(text, isUser = false) {
             const messageDiv = document.createElement('div');
+            messageDiv.className = 'message flex items-start' + (isUser ? ' justify-end' : '');
             
-            if (type === 'user') {
-                messageDiv.className = 'message-bubble user-message p-4 mb-4';
+            if (isUser) {
                 messageDiv.innerHTML = `
-                    <div class="flex items-start gap-3">
-                        ${showAvatar ? `
-                        <div class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center flex-shrink-0">
-                            <i class="fas fa-user text-white"></i>
-                        </div>` : ''}
-                        <div>
-                            <p class="font-semibold mb-1">أنت</p>
-                            <p>${content}</p>
-                        </div>
+                    <div class="bg-red-600 p-3 rounded-2xl max-w-xs ml-3">
+                        <p>${text}</p>
+                    </div>
+                    <div class="w-8 h-8 bg-red-600 rounded-full flex items-center justify-center">
+                        <i class="fas fa-user text-white text-sm"></i>
                     </div>
                 `;
-            } else if (type === 'bot') {
-                messageDiv.className = 'message-bubble bot-message p-4 mb-4';
+            } else {
                 messageDiv.innerHTML = `
-                    <div class="flex items-start gap-3">
-                        <div class="w-10 h-10 rounded-full bg-gradient-to-r from-red-500 to-orange-500 flex items-center justify-center flex-shrink-0">
-                            <i class="fas fa-robot text-white"></i>
-                        </div>
-                        <div>
-                            <p class="font-semibold mb-1">Dr X</p>
-                            <div id="message-content-${messagesCount}">${content}</div>
-                        </div>
+                    <img src="https://cdn1.genspark.ai/user-upload-image/gpt_image_generated/2cb56500-100e-4ba3-a75d-e5c85744490f" alt="Dr.X" class="w-8 h-8 rounded-full ml-3">
+                    <div class="glass-effect p-3 rounded-2xl max-w-xs">
+                        <p>${text}</p>
                     </div>
                 `;
-            } else if (type === 'system') {
-                messageDiv.className = 'text-center p-2 mb-4';
-                messageDiv.innerHTML = `<p class="text-sm text-gray-400 bg-gray-800 rounded-full px-4 py-2 inline-block">${content}</p>`;
             }
             
-            messagesContainer.appendChild(messageDiv);
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-            messagesCount++;
-            
-            return messageDiv;
+            chatContainer.appendChild(messageDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
         }
-        
-        // دالة عرض مؤشر الكتابة
-        function showTypingIndicator() {
-            document.getElementById('typingIndicator').style.display = 'block';
-            isTyping = true;
-        }
-        
-        // دالة إخفاء مؤشر الكتابة
-        function hideTypingIndicator() {
-            document.getElementById('typingIndicator').style.display = 'none';
-            isTyping = false;
-        }
-        
-        // دالة تحديث شريط التقدم
-        function updateProgress(progress) {
-            const progressBar = document.getElementById('progressBar');
-            progressBar.style.width = progress + '%';
-            
-            if (progress >= 100) {
+
+        function sendMessage() {
+            const message = chatInput.value.trim();
+            if (message) {
+                addMessage(message, true);
+                chatInput.value = '';
+                
                 setTimeout(() => {
-                    progressBar.style.width = '0%';
+                    const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                    addMessage(randomResponse);
                 }, 1000);
             }
         }
-        
-        // دالة إرسال رسالة عبر Hugging Face
-        async function sendMessageHuggingFace(message) {
-            try {
-                // محاكاة API Hugging Face
-                showTypingIndicator();
-                updateProgress(25);
-                
-                // محاكاة الاستجابة
-                await new Promise(resolve => setTimeout(resolve, 2000));
-                updateProgress(75);
-                
-                const response = `مرحباً! تم استقبال رسالتك: "${message}". أنا Dr X وأستخدم حالياً نموذج Hugging Face للرد عليك. 
-                
-كيف يمكنني مساعدتك أكثر؟ يمكنني:
-• الإجابة على أسئلتك
-• مساعدتك في التعلم
-• تقديم النصائح والإرشادات
-• مناقشة المواضيع المختلفة`;
-                
-                hideTypingIndicator();
-                updateProgress(100);
-                addMessage('bot', response);
-                
-            } catch (error) {
-                hideTypingIndicator();
-                updateProgress(0);
-                addMessage('bot', 'عذراً، حدث خطأ في الاتصال بـ Hugging Face. يرجى المحاولة مرة أخرى.');
-            }
-        }
-        
-        // دالة إرسال رسالة عبر DeepSeek
-        async function sendMessageDeepSeek(message) {
-            try {
-                showTypingIndicator();
-                updateProgress(25);
-                
-                // محاكاة API DeepSeek
-                await new Promise(resolve => setTimeout(resolve, 1500));
-                updateProgress(50);
-                
-                await new Promise(resolve => setTimeout(resolve, 1000));
-                updateProgress(75);
-                
-                const response = `شكراً لك على رسالتك: "${message}". أنا Dr X وأستخدم نموذج DeepSeek المتقدم.
-                
-إليك بعض المعلومات المفيدة:
-• DeepSeek هو نموذج ذكاء اصطناعي متطور
-• يمكنني فهم اللغة العربية بطلاقة
-• أستطيع مساعدتك في مختلف المجالات
-• أقدم إجابات دقيقة ومفصلة
 
-ما الذي تود معرفته أو مناقشته؟`;
-                
-                hideTypingIndicator();
-                updateProgress(100);
-                addMessage('bot', response);
-                
-            } catch (error) {
-                hideTypingIndicator();
-                updateProgress(0);
-                addMessage('bot', 'عذراً، حدث خطأ في الاتصال بـ DeepSeek. يرجى المحاولة مرة أخرى.');
-            }
-        }
-        
-        // دالة إرسال رسالة رئيسية
-        window.sendMessage = async function() {
-            const messageInput = document.getElementById('messageInput');
-            const message = messageInput.value.trim();
-            
-            if (!message || isTyping) return;
-            
-            // إضافة رسالة المستخدم
-            addMessage('user', message);
-            messageInput.value = '';
-            
-            // إرسال الرسالة حسب النموذج المختار
-            if (currentModel === 'deepseek') {
-                await sendMessageDeepSeek(message);
-            } else {
-                await sendMessageHuggingFace(message);
-            }
-        }
-        
-        // دالة الرسائل السريعة
-        window.quickMessage = function(message) {
-            document.getElementById('messageInput').value = message;
-            sendMessage();
-        }
-        
-        // دالة التعامل مع الضغط على Enter
-        window.handleKeyPress = function(event) {
-            if (event.key === 'Enter' && !event.shiftKey) {
-                event.preventDefault();
+        sendBtn.addEventListener('click', sendMessage);
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
                 sendMessage();
             }
+        });
+
+        // Contact form
+        document.getElementById('contactForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('تم إرسال رسالتك بنجاح! سنتواصل معك قريباً.');
+        });
+
+        // Counter animation
+        function animateCounters() {
+            const counters = [
+                { id: 'totalUsers', target: 25847 },
+                { id: 'pageViews', target: 185692 },
+                { id: 'avgTime', target: 432, format: 'time' },
+                { id: 'conversionRate', target: 8.5, format: 'percent' }
+            ];
+
+            counters.forEach(counter => {
+                const element = document.getElementById(counter.id);
+                let current = 0;
+                const increment = counter.target / 100;
+                
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= counter.target) {
+                        current = counter.target;
+                        clearInterval(timer);
+                    }
+                    
+                    if (counter.format === 'time') {
+                        const minutes = Math.floor(current / 60);
+                        const seconds = Math.floor(current % 60);
+                        element.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                    } else if (counter.format === 'percent') {
+                        element.textContent = `${current.toFixed(1)}%`;
+                    } else {
+                        element.textContent = Math.floor(current).toLocaleString();
+                    }
+                }, 50);
+            });
         }
-        
-        // تأثيرات إضافية
-        document.addEventListener('DOMContentLoaded', function() {
-            // تأثير متحرك للعنوان
-            const title = document.querySelector('h1');
-            if (title) {
-                title.style.animation = 'pulse 2s infinite';
+
+        // Charts
+        function initCharts() {
+            // Visitors Chart
+            const visitorsCtx = document.getElementById('visitorsChart').getContext('2d');
+            new Chart(visitorsCtx, {
+                type: 'line',
+                data: {
+                    labels: ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو'],
+                    datasets: [{
+                        label: 'الزوار',
+                        data: [12000, 19000, 15000, 25000, 22000, 30000],
+                        borderColor: '#dc2626',
+                        backgroundColor: 'rgba(220, 38, 38, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#ffffff'
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: {
+                                color: '#ffffff'
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            }
+                        },
+                        y: {
+                            ticks: {
+                                color: '#ffffff'
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Sources Chart
+            const sourcesCtx = document.getElementById('sourcesChart').getContext('2d');
+            new Chart(sourcesCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['البحث المباشر', 'وسائل التواصل', 'البريد الإلكتروني', 'الإحالات'],
+                    datasets: [{
+                        data: [40, 25, 20, 15],
+                        backgroundColor: [
+                            '#dc2626',
+                            '#2563eb',
+                            '#16a34a',
+                            '#ca8a04'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#ffffff',
+                                padding: 20
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    if (entry.target.id === 'analytics') {
+                        animateCounters();
+                        initCharts();
+                    }
+                    entry.target.classList.add('slide-in');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('section').forEach(section => {
+            observer.observe(section);
+        });
+
+        // Navbar background on scroll
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 100) {
+                navbar.classList.add('bg-opacity-95');
+            } else {
+                navbar.classList.remove('bg-opacity-95');
             }
-            
-            // تركيز تلقائي على حقل الإدخال
-            document.getElementById('messageInput').focus();
+        });
+
+        // Initialize animations on load
+        window.addEventListener('load', () => {
+            document.body.classList.add('loaded');
         });
     </script>
 </body>
