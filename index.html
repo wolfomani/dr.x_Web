@@ -1,99 +1,659 @@
+ادمج الاثنين اسم الصفحة learning.html
+
 <!DOCTYPE html>
-<html dir="rtl" lang="ar">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تعلم الذكاء الاصطناعي | عالم الذكاء الاصطناعي</title>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* تعريف الألوان باستخدام متغيرات CSS - يجب أن تكون متطابقة مع index.html */
         :root {
-            --dark-bg: #0a0a0a;
-            --card-bg: #121212;
-            --red-accent: #ff003c;
-            --text: #e0e0e0;
+            --yellow-50: #fefce8;
+            --yellow-100: #fef9c3;
+            --yellow-200: #fef08a;
+            --yellow-300: #fde047;
+            --yellow-400: #facc15;
+            --yellow-500: #eab308;
+            --yellow-600: #ca8a04;
+            --yellow-700: #a16207;
+            --yellow-800: #854d0e;
+            --yellow-900: #713f12;
+            
+            --dark-50: #f8fafc;
+            --dark-100: #f1f5f9;
+            --dark-200: #e2e8f0;
+            --dark-300: #cbd5e1;
+            --dark-400: #94a3b8;
+            --dark-500: #64748b;
+            --dark-600: #475569;
+            --dark-700: #334155;
+            --dark-800: #1e293b;
+            --dark-900: #0f172a;
+            
+            --orange-500: #f97316;
+            --orange-600: #ea580c;
+        }
+        
+        /* إعادة تعيين الأنماط الأساسية */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         body {
-            background: var(--dark-bg);
-            color: var(--text);
-            font-family: 'Tajawal', sans-serif;
+            background: linear-gradient(135deg, var(--dark-900), var(--dark-800));
+            color: var(--dark-50);
+            line-height: 1.8;
+            min-height: 100vh;
+            padding-bottom: 60px;
         }
         
-        .header {
-            background: linear-gradient(90deg, #1a1a1a 0%, #0d0d0d 100%);
-            border-bottom: 2px solid var(--red-accent);
-            padding: 1rem;
-            text-align: center;
+        /* Navigation (identical to index.html) */
+        nav {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1.2rem 5%;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            border-bottom: 1px solid var(--dark-700);
         }
         
-        .chat-container {
-            background: var(--card-bg);
-            border: 1px solid #333;
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--yellow-400);
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+        
+        .logo i {
+            color: var(--orange-500);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .nav-links a {
+            color: var(--dark-300);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            padding: 8px 16px;
             border-radius: 8px;
-            box-shadow: 0 0 15px rgba(255, 0, 60, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
         }
         
-        .response {
-            border-right: 3px solid var(--red-accent);
-            padding: 15px;
+        .nav-links a:hover {
+            color: var(--yellow-400);
+            background: rgba(234, 179, 8, 0.1);
         }
         
-        .btn-hacker {
-            background: #1a1a1a;
-            border: 1px solid var(--red-accent);
-            color: var(--text);
-            transition: all 0.3s;
+        .nav-links a.active {
+            color: var(--yellow-400);
+            background: rgba(234, 179, 8, 0.15);
         }
         
-        .btn-hacker:hover {
-            background: var(--red-accent);
-            box-shadow: 0 0 10px rgba(255, 0, 60, 0.5);
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: var(--yellow-400);
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        /* Main Content Styling for Learning Page */
+        .learning-content {
+            padding: 4rem 5%;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .learning-section {
+            background: rgba(30, 41, 59, 0.7);
+            border-radius: 16px;
+            padding: 3rem;
+            margin-bottom: 4rem;
+            border: 1px solid var(--dark-700);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+        }
+        .learning-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        .learning-section h2 {
+            font-size: 2.8rem;
+            color: var(--yellow-400);
+            margin-bottom: 1.5rem;
+            text-align: center;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .learning-section h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--orange-500);
+            border-radius: 2px;
+        }
+
+        .learning-section h3 {
+            font-size: 2rem;
+            color: var(--yellow-300);
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            border-right: 4px solid var(--yellow-500);
+            padding-right: 15px;
+        }
+        
+        .learning-section p, .learning-section ul {
+            color: var(--dark-200);
+            font-size: 1.1rem;
+            margin-bottom: 1.2rem;
+            line-height: 1.8;
+            text-align: justify;
+        }
+
+        .learning-section ul {
+            list-style: none;
+            padding-right: 20px;
+        }
+
+        .learning-section ul li {
+            position: relative;
+            margin-bottom: 0.8rem;
+        }
+
+        .learning-section ul li::before {
+            content: '\2022'; /* bullet point */
+            color: var(--orange-500);
+            font-weight: bold;
+            display: inline-block;
+            width: 1em;
+            margin-left: -1em;
+        }
+
+        /* Footer (identical to index.html) */
+        footer {
+            background: var(--dark-900);
+            padding: 4rem 5% 2rem;
+            border-top: 1px solid var(--dark-700);
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .footer-column h3 {
+            color: var(--yellow-400);
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--yellow-500);
+            border-radius: 2px;
+        }
+        
+        .footer-column p {
+            color: var(--dark-300);
+            margin-bottom: 1rem;
+        }
+
+        .footer-column p a {
+            color: var(--dark-300);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-column p a:hover {
+            color: var(--yellow-400);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 1.5rem;
+        }
+        
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: var(--dark-800);
+            color: var(--yellow-400);
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            background: var(--yellow-500);
+            color: var(--dark-900);
+            transform: translateY(-5px);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 3rem;
+            color: var(--dark-500);
+            border-top: 1px solid var(--dark-800);
+            margin-top: 3rem;
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive Design (identical to index.html) */
+        @media (max-width: 992px) {
+            .learning-content {
+                padding: 3rem 4%;
+            }
+            .learning-section {
+                padding: 2.5rem;
+            }
+            .learning-section h2 {
+                font-size: 2.4rem;
+            }
+            .learning-section h3 {
+                font-size: 1.8rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            .learning-section {
+                padding: 2rem;
+                margin-bottom: 3rem;
+            }
+            .learning-section h2 {
+                font-size: 2rem;
+            }
+            .learning-section h3 {
+                font-size: 1.5rem;
+            }
+            .learning-section p, .learning-section ul {
+                font-size: 1rem;
+            }
+            .footer-content {
+                grid-template-columns: 1fr; /* تكديس الأعمدة في الفوتر */
+                text-align: center;
+            }
+            .footer-column h3::after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            .social-links {
+                justify-content: center;
+            }
+        }
+
+        /* Animations for content reveal */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animated-content {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            transition-delay: var(--animation-delay);
+        }
+        .animated-content.in-view {
+            opacity: 1;
+            transform: translateY(0);
         }
     </style>
-    <!-- خطوط عربية -->
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header class="header">
-        <h1>مصدر المعرفة في العالم الرقمي</h1>
-    </header>
-    
-    <main class="container py-4">
-        <!-- واجهة الدردشة -->
-        <div class="chat-container p-3">
-            <div class="response mb-3">
-                <p>مرحباً، أنا مساعدك في الأمن السيبراني. كيف يمكنني مساعدتك اليوم؟</p>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-brain"></i>
+                <span>عالم الذكاء الاصطناعي</span>
             </div>
-            <!-- منطقة المحادثة الديناميكية -->
+            <div class="nav-links">
+                <a href="index.html">الرئيسية</a>
+                <a href="#ai-intro" class="active">الذكاء الاصطناعي</a>
+                <a href="#deep-learning">تعلم الآلة</a>
+                <a href="#neural-networks">الشبكات العصبية</a>
+                <a href="#nlp">معالجة اللغة</a>
+                <a href="#developments">التطورات</a>
+            </div>
         </div>
-        
-        <!-- أقسام الموقع -->
-        <div class="row mt-4">
-            <div class="col-md-3 mb-3">
-                <div class="card bg-dark">
-                    <div class="card-body">
-                        <h5 class="card-title">المدونة</h5>
-                        <p class="card-text">أحدث مقالات الأمن السيبراني</p>
-                        <button class="btn btn-hacker w-100">استعراض</button>
-                    </div>
+    </nav>
+    
+    <!-- Main Learning Content -->
+    <main class="learning-content">
+        <section id="ai-intro" class="learning-section animated-content" style="--animation-delay: 0s;">
+            <h2>الذكاء الاصطناعي (AI)</h2>
+            <p>الذكاء الاصطناعي (Artificial Intelligence - AI) هو فرع من علوم الحاسوب يهدف إلى إنشاء آلات قادرة على أداء مهام تتطلب عادةً الذكاء البشري. يشمل ذلك القدرة على التعلم، وحل المشكلات، واتخاذ القرارات، وفهم اللغة، وإدراك البيئة. يتطور الذكاء الاصطناعي باستمرار، ويُعتبر محركًا رئيسيًا للابتكار في العديد من الصناعات.</p>
+
+            <h3>مفاهيم أساسية في الذكاء الاصطناعي</h3>
+            <ul>
+                <li><strong>التعلم الآلي (Machine Learning - ML):</strong> هو مجموعة فرعية من الذكاء الاصطناعي تتيح للأنظمة التعلم من البيانات دون برمجة صريحة. بدلاً من اتباع تعليمات محددة، تتعرف الخوارزميات على الأنماط في البيانات وتستخدمها للتنبؤ أو اتخاذ القرارات.</li>
+                <li><strong>الشبكات العصبية (Neural Networks):</strong> مستوحاة من بنية الدماغ البشري، وهي أساس للتعلم العميق. تتكون من طبقات من العقد (الخلايا العصبية) المتصلة ببعضها، حيث تمر المعلومات وتُعالج.</li>
+                <li><strong>معالجة اللغة الطبيعية (Natural Language Processing - NLP):</strong> تمكن الآلات من فهم، تفسير، وتوليد اللغة البشرية. تستخدم في الترجمة الآلية، تحليل المشاعر، والمساعدين الافتراضيين.</li>
+                <li><strong>الرؤية الحاسوبية (Computer Vision):</strong> تمنح الآلات القدرة على "رؤية" وتفسير الصور ومقاطع الفيديو. تُستخدم في التعرف على الوجوه، والسيارات ذاتية القيادة، والفحص الطبي.</li>
+            </ul>
+
+            <h3>أنواع الذكاء الاصطناعي (AI Types)</h3>
+            <p id="ai-types">يمكن تصنيف الذكاء الاصطناعي بعدة طرق، أبرزها:</p>
+            <ul>
+                <li><strong>الذكاء الاصطناعي الضيق (Narrow AI / Weak AI):</strong> مصمم لأداء مهمة واحدة محددة بكفاءة عالية (مثل التعرف على الصوت، لعب الشطرنج). معظم تطبيقات الذكاء الاصطناعي الحالية تندرج تحت هذا النوع.</li>
+                <li><strong>الذكاء الاصطناعي العام (General AI / Strong AI):</strong> يمتلك قدرات معرفية تعادل أو تفوق البشر في مجموعة واسعة من المهام. هذا النوع لا يزال قيد البحث والتطوير.</li>
+                <li><strong>الذكاء الاصطناعي الفائق (Superintelligence AI):</strong> ذكاء اصطناعي يتفوق على الذكاء البشري في جميع الجوانب، بما في ذلك الإبداع، حل المشكلات، والمهارات الاجتماعية. هو مفهوم مستقبلي افتراضي.</li>
+            </ul>
+
+            <h3>تطبيقات الذكاء الاصطناعي (AI Applications)</h3>
+            <p id="ai-applications">تتوسع تطبيقات الذكاء الاصطناعي لتشمل كل جانب من حياتنا تقريبًا:</p>
+            <ul>
+                <li><strong>الرعاية الصحية:</strong> تشخيص الأمراض، اكتشاف الأدوية، الجراحة الروبوتية، تحليل الصور الطبية.</li>
+                <li><strong>السيارات ذاتية القيادة:</strong> القيادة الآمنة، تحسين تدفق حركة المرور.</li>
+                <li><strong>الخدمات المصرفية والمالية:</strong> الكشف عن الاحتيال، التداول الآلي، تقييم المخاطر.</li>
+                <li><strong>خدمة العملاء:</strong> روبوتات الدردشة (Chatbots)، المساعدين الافتراضيين.</li>
+                <li><strong>التسويق والتجارة الإلكترونية:</strong> التوصيات المخصصة للمنتجات، الإعلانات المستهدفة.</li>
+                <li><strong>التعليم:</strong> منصات التعلم التكيفية، الدروس الخصوصية الذكية.</li>
+            </ul>
+        </section>
+
+        <section id="deep-learning" class="learning-section animated-content" style="--animation-delay: 0.2s;">
+            <h2>تعلم الآلة العميق (Deep Learning)</h2>
+            <p>تعلم الآلة العميق هو مجال فرعي من التعلم الآلي مستوحى من بنية ووظيفة الدماغ البشري، وتحديداً الشبكات العصبية البيولوجية. يعتمد على استخدام شبكات عصبية اصطناعية عميقة (Deep Neural Networks) تتكون من طبقات متعددة (عادةً ثلاث طبقات أو أكثر) لمعالجة البيانات المعقدة والكبيرة.</p>
+
+            <h3>كيف يعمل التعلم العميق؟</h3>
+            <p>خلافًا لأساليب التعلم الآلي التقليدية التي غالبًا ما تتطلب "هندسة الميزات" (Feature Engineering) اليدوية (أي تحديد الميزات الهامة يدويًا من البيانات)، فإن الشبكات العصبية العميقة يمكنها اكتشاف الميزات تلقائيًا من البيانات الخام. هذا يعني أنها تستطيع معالجة كميات هائلة من البيانات غير المهيكلة، مثل الصور، الصوت، والنصوص، واستخلاص الأنماط المعقدة منها.</p>
+            <ul>
+                <li><strong>الطبقات المخفية:</strong> كل طبقة في الشبكة العصبية العميقة تتعلم تمثيلاً مختلفًا (ميزة) للبيانات. على سبيل المثال، في التعرف على الصور، قد تتعلم الطبقة الأولى الحواف، والثانية الأشكال، والثالثة الأجزاء، وهكذا حتى الطبقات الأخيرة التي تتعرف على الكائنات المعقدة.</li>
+                <li><strong>البيانات الكبيرة:</strong> يحتاج التعلم العميق إلى كميات هائلة من البيانات (Big Data) لتدريب النماذج بشكل فعال، بالإضافة إلى قوة حاسوبية كبيرة (GPUs) لمعالجة هذه البيانات.</li>
+            </ul>
+
+            <h3>تطبيقات التعلم العميق</h3>
+            <ul>
+                <li><strong>التعرف على الصور والكائنات:</strong> المستخدم في السيارات ذاتية القيادة، أنظمة الأمن، التشخيص الطبي.</li>
+                <li><strong>معالجة اللغة الطبيعية:</strong> الترجمة الآلية، تحليل المشاعر، روبوتات المحادثة المتقدمة (مثل ChatGPT).</li>
+                <li><strong>التعرف على الكلام:</strong> المساعدات الصوتية (سيري، أليكسا).</li>
+                <li><strong>الأنظمة التوصية:</strong> اقتراح الأفلام، المنتجات، والموسيقى.</li>
+                <li><strong>توليد المحتوى:</strong> إنشاء صور واقعية، نصوص، وحتى مقاطع فيديو (مثل نماذج انتشار).</li>
+            </ul>
+        </section>
+
+        <section id="neural-networks" class="learning-section animated-content" style="--animation-delay: 0.4s;">
+            <h2>الشبكات العصبية (Neural Networks)</h2>
+            <p>الشبكات العصبية الاصطناعية (Artificial Neural Networks - ANNs) هي نماذج حاسوبية مستوحاة من بنية وعمل الدماغ البشري، خاصةً كيفية معالجة الخلايا العصبية للمعلومات. تشكل هذه الشبكات حجر الزاوية في التعلم العميق وقادرة على اكتشاف الأنماط المعقدة في مجموعات البيانات الكبيرة.</p>
+
+            <h3>بنية الشبكة العصبية</h3>
+            <p>تتكون الشبكة العصبية من ثلاث طبقات رئيسية على الأقل:</p>
+            <ul>
+                <li><strong>طبقة الإدخال (Input Layer):</strong> تستقبل البيانات الأولية التي ستتم معالجتها. عدد العقد في هذه الطبقة يعادل عدد الميزات في البيانات.</li>
+                <li><strong>الطبقات المخفية (Hidden Layers):</strong> هي الطبقات التي تقع بين طبقة الإدخال وطبقة الإخراج. تقوم كل عقدة في هذه الطبقات بإجراء حسابات معقدة على البيانات المستلمة من الطبقات السابقة وتمريرها إلى الطبقات التالية. قد تحتوي الشبكة على طبقة مخفية واحدة أو عدة طبقات (وهذا ما يجعلها "عميقة").</li>
+                <li><strong>طبقة الإخراج (Output Layer):</strong> تنتج النتائج النهائية للشبكة، مثل تصنيف (على سبيل المثال، "قطة" أو "كلب") أو قيمة رقمية (على سبيل المثال، سعر منزل).</li>
+            </ul>
+
+            <h3>كيف تعمل الشبكات العصبية؟</h3>
+            <p>كل اتصال بين العقد في الشبكة يحمل "وزنًا" (weight) يمثل قوة هذا الاتصال. عندما يتم تمرير البيانات عبر الشبكة:</p>
+            <ul>
+                <li>تضرب كل عقدة المدخلات بأوزانها الخاصة، وتضيف "تحيزًا" (bias)، ثم تمرر النتيجة عبر "دالة تفعيل" (Activation Function).</li>
+                <li>تساعد دوال التفعيل الشبكة على تعلم العلاقات غير الخطية في البيانات.</li>
+                <li>تتعلم الشبكة عن طريق ضبط الأوزان والتحيزات بشكل متكرر أثناء عملية التدريب، لتقليل الفرق بين المخرجات المتوقعة والمخرجات الفعلية. هذه العملية تُعرف باسم "الانتشار العكسي" (Backpropagation).</li>
+            </ul>
+
+            <h3>أنواع الشبكات العصبية الشائعة</h3>
+            <ul>
+                <li><strong>الشبكات العصبية التلافيفية (Convolutional Neural Networks - CNNs):</strong> ممتازة لمعالجة البيانات الشبكية مثل الصور والفيديو، وتُستخدم بشكل واسع في الرؤية الحاسوبية.</li>
+                <li><strong>الشبكات العصبية المتكررة (Recurrent Neural Networks - RNNs):</strong> مصممة للتعامل مع البيانات المتسلسلة مثل النصوص والسلاسل الزمنية، وتُستخدم في معالجة اللغة الطبيعية والتعرف على الكلام.</li>
+                <li><strong>المحولات (Transformers):</strong> أصبحت هي النموذج السائد في معالجة اللغة الطبيعية، وقادرة على فهم العلاقات طويلة المدى في النصوص بفعالية كبيرة (مثل نماذج GPT).</li>
+            </ul>
+        </section>
+
+        <section id="nlp" class="learning-section animated-content" style="--animation-delay: 0.6s;">
+            <h2>معالجة اللغة الطبيعية (NLP)</h2>
+            <p>معالجة اللغة الطبيعية (Natural Language Processing - NLP) هي فرع من الذكاء الاصطناعي يهتم بتفاعل أجهزة الحاسوب مع اللغة البشرية، سواء كانت مكتوبة أو منطوقة. الهدف من NLP هو تمكين أجهزة الحاسوب من فهم، تفسير، وتوليد اللغة بطريقة مفيدة وذات معنى.</p>
+
+            <h3>تحديات معالجة اللغة الطبيعية</h3>
+            <p>اللغة البشرية معقدة للغاية وتحتوي على العديد من التحديات للآلات، منها:</p>
+            <ul>
+                <li><strong>الغموض (Ambiguity):</strong> الكلمات والجمل يمكن أن يكون لها معانٍ متعددة (مثال: "قامت" يمكن أن تعني وقفت أو أنجزت).</li>
+                <li><strong>السياق (Context):</strong> فهم معنى كلمة أو جملة يعتمد غالبًا على السياق المحيط بها.</li>
+                <li><strong>المفارقات والسخرية:</strong> من الصعب على الآلات فهم الفروق الدقيقة في النبرة أو السخرية.</li>
+                <li><strong>اللهجات والعامية:</strong> اختلاف الأساليب اللغوية بين المناطق والجماعات.</li>
+            </ul>
+
+            <h3>مهام معالجة اللغة الطبيعية الأساسية</h3>
+            <ul>
+                <li><strong>تحليل المشاعر (Sentiment Analysis):</strong> تحديد النبرة العاطفية للنص (إيجابية، سلبية، محايدة).</li>
+                <li><strong>الترجمة الآلية (Machine Translation):</strong> ترجمة النصوص من لغة إلى أخرى.</li>
+                <li><strong>التعرف على الكلام (Speech Recognition):</strong> تحويل الكلام المنطوق إلى نص مكتوب.</li>
+                <li><strong>توليد اللغة الطبيعية (Natural Language Generation - NLG):</strong> تحويل البيانات المهيكلة إلى نص بشري طبيعي.</li>
+                <li><strong>تلخيص النص (Text Summarization):</strong> إنشاء ملخصات موجزة من نصوص طويلة.</li>
+                <li><strong>روبوتات المحادثة (Chatbots) والمساعدين الافتراضيين:</strong> التفاعل مع المستخدمين باستخدام اللغة الطبيعية.</li>
+            </ul>
+
+            <h3>تطورات حديثة في معالجة اللغة الطبيعية</h3>
+            <p>شهدت السنوات الأخيرة قفزات هائلة في NLP بفضل التعلم العميق، خاصة مع ظهور نماذج "المحولات" (Transformers) مثل:</p>
+            <ul>
+                <li><strong>نماذج اللغة الكبيرة (Large Language Models - LLMs):</strong> مثل GPT-3 و GPT-4 و Gemini، التي أحدثت ثورة في توليد النصوص، الإجابة على الأسئلة، وحتى البرمجة. هذه النماذج مدربة على كميات هائلة من البيانات النصية وتظهر قدرات مدهشة على الفهم والتوليد.</li>
+                <li><strong>نماذج التضمين (Embeddings):</strong> تحويل الكلمات والجمل إلى متجهات رقمية يمكن للآلات فهمها ومعالجتها، مما يسمح بفهم أفضل للعلاقات الدلالية بين الكلمات.</li>
+            </ul>
+        </section>
+
+        <section id="developments" class="learning-section animated-content" style="--animation-delay: 0.8s;">
+            <h2>التطورات المستقبلية في الذكاء الاصطناعي</h2>
+            <p>يشهد مجال الذكاء الاصطناعي تطورات متسارعة باستمرار، مما يفتح آفاقًا جديدة ومثيرة. فيما يلي بعض أبرز التطورات المتوقعة والاتجاهات الرئيسية في السنوات القادمة:</p>
+
+            <h3>الذكاء الاصطناعي التوليدي (Generative AI)</h3>
+            <p>تُعد نماذج الذكاء الاصطناعي التوليدي، مثل DALL-E وMidjourney (لتوليد الصور) وChatGPT (لتوليد النصوص)، من أبرز الابتكارات. نتوقع:</p>
+            <ul>
+                <li><strong>توليد محتوى أكثر إبداعًا وواقعية:</strong> قدرة النماذج على إنشاء محتوى (نصوص، صور، فيديو، موسيقى) لا يمكن تمييزه عن المحتوى البشري.</li>
+                <li><strong>تطبيقات أوسع:</strong> في التصميم الجرافيكي، إنتاج الأفلام، تطوير الألعاب، وكتابة المحتوى التسويقي.</li>
+                <li><strong>الذكاء الاصطناعي كأداة إبداعية مساعدة:</strong> تمكين الفنانين والمصممين من استكشاف أفكار جديدة بسرعة أكبر.</li>
+            </ul>
+
+            <h3>الذكاء الاصطناعي المسؤول والأخلاقي (Responsible and Ethical AI)</h3>
+            <p>مع تزايد قوة الذكاء الاصطناعي، يزداد التركيز على تطويره واستخدامه بشكل مسؤول وأخلاقي:</p>
+            <ul>
+                <li><strong>الشفافية وقابلية التفسير (Explainable AI - XAI):</strong> تطوير نماذج يمكن للبشر فهم كيفية اتخاذها للقرارات، مما يعزز الثقة والمساءلة.</li>
+                <li><strong>معالجة التحيزات (Bias Mitigation):</strong> جهود أكبر لتقليل التحيزات في البيانات والنماذج لضمان العدالة والإنصاف.</li>
+                <li><strong>الأطر التنظيمية:</strong> حكومات ومنظمات عالمية تعمل على وضع قوانين ومعايير لاستخدام الذكاء الاصطناعي بشكل آمن ومفيد.</li>
+            </ul>
+
+            <h3>الذكاء الاصطناعي في الحوسبة الطرفية (Edge AI)</h3>
+            <p>يتجه الذكاء الاصطناعي نحو معالجة البيانات محليًا على الأجهزة الطرفية (مثل الهواتف الذكية، أجهزة إنترنت الأشياء) بدلاً من الاعتماد الكلي على السحابة:</p>
+            <ul>
+                <li><strong>مزايا الأداء:</strong> معالجة أسرع للبيانات، تقليل زمن الاستجابة (latency).</li>
+                <li><strong>الخصوصية والأمان:</strong> تقليل الحاجة لإرسال البيانات الحساسة إلى السحابة.</li>
+                <li><strong>تطبيقات إنترنت الأشياء (IoT):</strong> تمكين الأجهزة الذكية من اتخاذ قرارات مستقلة وفعالة.</li>
+            </ul>
+
+            <h3>الذكاء الاصطناعي في الرعاية الصحية والعلوم</h3>
+            <p>يستمر الذكاء الاصطناعي في إحداث ثورة في هذين المجالين:</p>
+            <ul>
+                <li><strong>اكتشاف الأدوية وتطويرها:</strong> تسريع عملية البحث عن علاجات جديدة.</li>
+                <li><strong>الطب الدقيق والشخصي:</strong> تصميم علاجات مخصصة لكل مريض بناءً على بياناته الجينية والصحية.</li>
+                <li><strong>اكتشاف المواد الجديدة:</strong> تسريع عملية اكتشاف مواد ذات خصائص فريدة في علوم المواد.</li>
+                <li><strong>محاكاة الأنظمة المعقدة:</strong> في الفيزياء الفلكية، علوم المناخ، وغيرها.</li>
+            </ul>
+
+            <h3>الذكاء الاصطناعي الكمومي (Quantum AI)</h3>
+            <p>دمج الذكاء الاصطناعي مع الحوسبة الكمومية لإنشاء خوارزميات جديدة يمكنها حل مشكلات معقدة للغاية تفوق قدرة الحواسيب الكلاسيكية:</p>
+            <ul>
+                <li><strong>نماذج تعلم آلي أكثر قوة:</strong> قدرات غير مسبوقة في معالجة البيانات وتحسين الخوارزميات.</li>
+                <li><strong>حلول لمشكلات معقدة:</strong> في مجالات مثل التشفير، تصميم المواد، والتحسين اللوجستي.</li>
+            </ul>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>عبدالعزيز الحمداني</h3>
+                <p>خبير في الذكاء الاصطناعي وتعلم الآلة، أسعى لنشر المعرفة وتطوير المجتمع التقني في سلطنة عمان والعالم العربي.</p>
+                <div class="social-links">
+                    <a href="https://github.com/3RBAI" target="_blank"><i class="fab fa-github"></i></a>
+                    <a href="https://youtube.com/@abdulaziz-x7r1g" target="_blank"><i class="fab fa-youtube"></i></a>
+                    <a href="mailto:wolfonlyoman@gmail.com"><i class="fas fa-envelope"></i></a>
+                    <a href="https://t.me/wolfaiOM" target="_blank"><i class="fab fa-telegram"></i></a>
                 </div>
             </div>
-            <!-- باقي الأقسام (اتصل بنا، من نحن، سياسة الخصوصية) -->
-        </div>
-        
-        <!-- النشرة البريدية -->
-        <div class="newsletter mt-4 p-3">
-            <h5>انضم للنشرة الإخبارية</h5>
-            <div class="input-group">
-                <input type="email" class="form-control bg-dark text-light" placeholder="بريدك الإلكتروني">
-                <button class="btn btn-hacker">انضم</button>
+            
+            <div class="footer-column">
+                <h3>روابط سريعة</h3>
+                <p><a href="index.html">الرئيسية</a></p>
+                <p><a href="#ai-intro">الذكاء الاصطناعي</a></p>
+                <p><a href="#deep-learning">تعلم الآلة</a></p>
+                <p><a href="#neural-networks">الشبكات العصبية</a></p>
+                <p><a href="#nlp">معالجة اللغة</a></p>
+                <p><a href="#developments">التطورات</a></p>
+            </div>
+            
+            <div class="footer-column">
+                <h3>اتصل بنا</h3>
+                <p><i class="fas fa-envelope" style="color: var(--yellow-400); margin-left: 10px;"></i> wolfonlyoman@gmail.com</p>
+                <p><i class="fas fa-phone" style="color: var(--yellow-400); margin-left: 10px;"></i> +968 9464 2987</p>
+                <p><i class="fas fa-map-marker-alt" style="color: var(--yellow-400); margin-left: 10px;"></i> سلطنة عمان</p>
             </div>
         </div>
         
-        <!-- وسائل التواصل -->
-        <div class="social-icons mt-3 text-center">
-            <a href="#"><i class="fab fa-telegram mx-2"></i></a>
-            <a href="#"><i class="fab fa-youtube mx-2"></i></a>
-            <a href="#"><i class="fab fa-tiktok mx-2"></i></a>
-            <a href="#"><i class="fab fa-instagram mx-2"></i></a>
+        <div class="copyright">
+            <p>جميع الحقوق محفوظة &copy; 2023 عبدالعزيز الحمداني | تم التصميم باستخدام ألوان تاكد</p>
         </div>
-    </main>
+    </footer>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const navLinks = document.querySelectorAll('.nav-links a');
+            const sections = document.querySelectorAll('section[id]');
+
+            // لتحديد الرابط النشط في شريط التنقل
+            const highlightNavLink = () => {
+                let currentActive = null;
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop - nav.offsetHeight - 20; // خصم ارتفاع شريط التنقل وهامش بسيط
+                    const sectionBottom = sectionTop + section.offsetHeight;
+                    if (window.scrollY >= sectionTop && window.scrollY < sectionBottom) {
+                        currentActive = section.id;
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') && link.getAttribute('href').includes(currentActive)) {
+                        link.classList.add('active');
+                    }
+                     // تأكيد أن رابط "المزيد" أو "الرئيسية" نشط إذا لم يكن هناك قسم محدد
+                    if (window.location.pathname.includes('learning.html') && currentActive === null && link.getAttribute('href').includes('deep-learning')) {
+                        link.classList.add('active');
+                    } else if (window.location.pathname.includes('index.html') && link.getAttribute('href').includes('index.html')) {
+                        link.classList.add('active');
+                    }
+                });
+            };
+
+            // عند تحميل الصفحة والتمرير
+            window.addEventListener('scroll', highlightNavLink);
+            highlightNavLink(); // استدعاء عند التحميل الأول
+
+            // عند النقر على روابط التنقل في صفحة التعلم، قم بالتمرير بسلاسة
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    const href = this.getAttribute('href');
+                    if (href.startsWith('#')) {
+                        e.preventDefault();
+                        const targetId = href.substring(1);
+                        const targetSection = document.getElementById(targetId);
+                        if (targetSection) {
+                            const offsetTop = targetSection.offsetTop - nav.offsetHeight; // خصم ارتفاع الشريط
+                            window.scrollTo({
+                                top: offsetTop,
+                                behavior: 'smooth'
+                            });
+                        }
+                    }
+                });
+            });
+
+            // Intersection Observer for scroll animations
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1 // العنصر مرئي بنسبة 10% لبدء الحركة
+            };
+            
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('in-view');
+                    } else {
+                        entry.target.classList.remove('in-view'); // إزالة الكلاس للسماح بإعادة الحركة
+                    }
+                });
+            }, observerOptions);
+            
+            // مراقبة جميع العناصر التي تحمل فئة 'animated-content'
+            const animatedElements = document.querySelectorAll('.animated-content');
+            animatedElements.forEach((el, index) => {
+                el.style.setProperty('--animation-delay', `${index * 0.05}s`); // تأخير بسيط لكل عنصر
+                observer.observe(el);
+            });
+        });
+    </script>
 </body>
 </html>
